@@ -1,0 +1,32 @@
+#auth {
+    background-color: #ffffff;
+    min-height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center;
+}
+#auth .login__details {
+    background: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* #auth .login__banner {
+  background: url("../../assets/images/3185953.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.reveal__password {
+    position: absolute;
+    top: 6px;
+    right: 10px;
+    cursor: pointer;
+    transition: 400ms;
+}
+.reveal__password:hover {
+    color: var(--green);
+}
