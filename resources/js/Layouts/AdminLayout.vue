@@ -97,7 +97,7 @@ onMounted(() => {
                 aria-expanded="false"
               >
                 <Icon class="navbar-icon" icon="zondicons:notification" />
-                <div class="count-symbol bg-danger">
+                <div class="count-symbol bg-danger rounded-pill">
                   <p class="p-0 m-0 fw-bolder">9+</p>
                 </div>
               </a>
@@ -276,7 +276,7 @@ onMounted(() => {
             </Link>
           </li>
           <li class="nav-item">
-            <Link class="nav-link" :href="route('admin.dashboard.index')">
+            <Link class="nav-link" :href="route('admin.index')">
               <Icon icon="mdi:user-circle-outline" class="menu-icon" />
               <span class="menu-title">Profile</span>
             </Link>
@@ -342,6 +342,12 @@ onMounted(() => {
             </div>
           </li>
 
+          <li class="nav-item">
+            <Link class="nav-link" :href="route('admin.promotion.index')">
+              <Icon icon="ps:promo" class="menu-icon" />
+              <span class="menu-title">Promotions</span>
+            </Link>
+          </li>
           <li class="nav-item">
             <Link class="nav-link" :href="route('admin.subcategory.index')">
               <Icon icon="uiw:setting-o" class="menu-icon" />

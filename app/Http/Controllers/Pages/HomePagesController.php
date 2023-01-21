@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\Product;
-use App\Models\Admin\SubCategory;
+use App\Models\Admin\Subcategory;
+use App\Models\Review;
 use App\Models\WishList;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -16,15 +17,12 @@ class HomePagesController extends Controller
     public function index()
     {
 
-        $products = Product::paginate(10);
+        $products = Product::with('reviews.user')->latest()->paginate(12);
         return Inertia::render('HomePage', compact('products'));
     }
-    // Product Page 
     /**
      * Search products
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $request->query
-     * @return \Illuminate\Http\Response
+     *  $request->query
      */
     public function searchProducts(Request $request)
     {
@@ -38,30 +36,70 @@ class HomePagesController extends Controller
 
         return $products;
     }
-    /**
-     * Product Page I
-     *  Get products by SubCategory Slugs
-     *
-     *   $request
-     * @param  int  $slug
-     */
-    public function productsBySubcategory($category_slug, $subcategory_slug)
-    {
-        // Get all products in the selected subcategory
-        $products = SubCategory::with('products')->where('slug', $subcategory_slug)->first()->products;
-        return Inertia::render('Product/ProductsBySubcategoryPage', compact('products'));
-    }
 
     /**
-     * Product Page II
-     *  Get All Products 
-     *   $request
-     * @param 
+     * Product Page 
+     * Get products by SubCategory Slugs 
+     * Get All Products 
+     * Get products by filter parameters
      */
-    public function productPage()
+    public function products(Request $request, SubCategory $subcategory)
     {
-        $products = Product::paginate(10);
-        return Inertia::render('Product/ProductsPage', compact('products'));
+        if ($subcategory->id) {
+            $products = Product::with('reviews')->where('subcategory_id', $subcategory->id)->paginate(15);
+            return Inertia::render('Product/ProductsPage', compact('products'));
+        }
+        $value = $request->query('query');
+        // $fliter = $request->query('product_display');
+        if ($value == 'top_rated') {
+            $products = Product::with('reviews')->orderBy('reviews_count', 'desc')->paginate(15);
+            return Inertia::render('Product/ProductsPage', compact('products'));
+
+        } elseif ($value == 'top_selling') {
+            $products = Product::with('reviews')->orderBy('sales_count', 'desc')->paginate(15);
+            return Inertia::render('Product/ProductsPage', compact('products'));
+
+        } elseif ($value == 'product_display') {
+            $products = Product::with('reviews')->latest()->paginate(15);
+            return Inertia::render('Product/ProductsPage', compact('products'));
+
+        } elseif ($request->query('product_display')) {
+            $products = Product::with('reviews')->paginate($request->query('product_display'));
+            return Inertia::render('Product/ProductsPage', compact('products'));
+
+        } else {
+            $products = Product::with('reviews')->latest()->paginate(15);
+            return Inertia::render('Product/ProductsPage', compact('products'));
+        }
+        // return Inertia::render('Product/ProductsPage', compact('products'));
+    }
+    public function productDetails(Product $product)
+    {
+        $relatedProducts = $product->with('reviews.user')->where('subcategory_id', $product->subcategory->id)->whereNot('id', $product->id)->get();
+        $productDetails = $product->with('subcategory.category', 'reviews.user')->where('id', $product->id)->latest()->first();
+        return Inertia::render('Product/ProductDetailsPage', [
+            'product' => $productDetails,
+            'relatedProducts' => $relatedProducts,
+        ]);
+    }
+    public function sendReview(Request $request, Product $product)
+    {
+        $data = $request->validate([
+            'comment' => 'required|string',
+            'rating' => 'required|integer',
+            'user_id' => 'string',
+            'product_id' => 'string',
+        ]);
+        $product->update([
+            'reviews_count' => $product->reviews_count++
+        ]);
+        Review::create([
+            'comment' => $data['comment'],
+            'rating' => $data['rating'],
+            'user_id' => $data['user_id'],
+            'product_id' => $data['product_id'],
+        ]);
+        return redirect()->back();
     }
 
     public function addToCart(Request $request)

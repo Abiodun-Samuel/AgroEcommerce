@@ -9,13 +9,19 @@ defineProps([
   "products_count",
   "orders_count",
 ]);
+
+const step_one = {
+  slug: "Promotions",
+  link: false,
+  route_name: null,
+};
 </script>
 
 <template>
-  <Head title="Admin Dashboard" />
+  <Head title="Promotions" />
 
   <AdminLayout>
-    <DashboardBreadcrump />
+    <DashboardBreadcrump :step_one="step_one" />
 
     <div class="container">
       <div class="row">

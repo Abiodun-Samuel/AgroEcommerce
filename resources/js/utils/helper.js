@@ -1,5 +1,5 @@
 import { useToast } from "vue-toastification";
-import { Cloudinary } from "@cloudinary/url-gen";
+import moment from "moment";
 
 export const toast = useToast();
 
@@ -21,6 +21,7 @@ export const breakpoints = {
 };
 
 export const firstLetterUpperCase = (string) => {
+    if (!string) return null;
     return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
@@ -49,8 +50,26 @@ export const formatCurrency = (amount) => {
     }
 };
 
-export const cloud = new Cloudinary({
-    cloud: {
-        cloudName: import.meta.env.VITE_CLOUDNAME,
-    },
-});
+export const formatTime = (time) => {
+    let display = moment(time).utc(time).format("DD MMM YYYY hh:mma");
+    return display;
+};
+
+export const slugify = (string) => {
+    return string
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "")
+        .replace(/[\s_-]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+};
+
+export const unslugify = (slug) => {
+    if (!slug) return null;
+    let words = slug.split("-");
+    for (var i = 0; i < words.length; i++) {
+        var word = words[i];
+        words[i] = word.charAt(0).toUpperCase() + word.slice(1);
+    }
+    return words.join(" ");
+};

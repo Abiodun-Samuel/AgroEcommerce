@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
+use App\Traits\CloudinaryUpload;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
@@ -11,93 +12,87 @@ use Illuminate\Support\Str;
 
 class AdminCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return
-     */
+    use CloudinaryUpload;
+
+
     public function index()
     {
         $categories = Category::get();
-        return Inertia::render('Admin/Category/Index', [
+        return Inertia::render('Admin/Category/CategoryIndex', [
             'categories' => $categories,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-    * Store a newly created resource in storage.
-    *
-    * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    */
     public function store(Request $request)
     {
         $request->validate([
             'category_img' => ['required'],
             'category_title' => ['required'],
         ]);
-
+        $banner_img = $this->uploadImage($request->file('category_img'), $request->folder);
         Category::create([
-            'banner_img' => $request->category_img,
+            'banner_img' => $banner_img,
             'title' => $request->category_title,
             'slug' => Str::slug($request->category_title, '-'),
         ]);
-
         return Redirect::route('admin.category.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function edit(Category $category)
     {
-        //
+        return Inertia::render('Admin/Category/CategoryEdit', [
+            'category' => $category,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, Category $category)
     {
-        //
+        $request->validate([
+            'category_img' => ['required'],
+            'category_title' => ['required'],
+        ]);
+
+        if ($request->hasFile('category_img')) {
+            $val = $this->searchImage($request->category_img_id);
+            if ($val['total_count'] >= 1) {
+                $this->deleteImage($request->category_img_id);
+                $banner_img = $this->uploadImage($request->file('category_img'), $request->folder);
+                $category->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->category_title,
+                    'slug' => Str::slug($request->category_title, '-'),
+                ]);
+            } else {
+                $banner_img = $this->uploadImage($request->file('category_img'), $request->folder);
+                $category->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->category_title,
+                    'slug' => Str::slug($request->category_title, '-'),
+                ]);
+            }
+        } else {
+            $category->update([
+                'banner_img' => $request->category_img,
+                'title' => $request->category_title,
+                'slug' => Str::slug($request->category_title, '-'),
+            ]);
+        }
+        return Redirect::route('admin.category.index');
     }
 
-    /**
-    * Remove the specified resource from storage.
-    *
-    * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    */
     public function destroy(Category $category)
     {
+        $this->deleteImage(json_decode($category->banner_img)->img_id);
         $category->delete();
         return Redirect::route('admin.category.index');
     }

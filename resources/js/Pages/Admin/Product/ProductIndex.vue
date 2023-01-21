@@ -28,18 +28,20 @@
                     <th scope="row">{{ index + 1 }}</th>
                     <td scope="row">
                       <img
-                        width="40"
-                        :src="product.image"
+                        :src="JSON.parse(product.image)?.img_url"
                         alt="product image"
                       />
                     </td>
                     <td>{{ product.title }}</td>
-                    <td>{{ product.sub_category.category.title }}</td>
-                    <td>{{ product.sub_category.title }}</td>
+                    <td>{{ product.subcategory?.category?.title }}</td>
+                    <td>{{ product.subcategory?.title }}</td>
                     <td>{{ product.stock }}</td>
                     <td>
-                      &#8358;{{ product.price }} / &#8358;{{
-                        product.discount_price ? product.discount_price : "---"
+                      &#8358;{{ product.price }} /
+                      {{
+                        product.discount_price
+                          ? "&#8358;" + product.discount_price
+                          : "---"
                       }}
                     </td>
 
@@ -51,15 +53,22 @@
                         align-items-center
                       "
                     >
-                      <button class="btn btn-primary btn-sm">
+                      <Link
+                        target="_blank"
+                        :href="route('product-details-page', product.slug)"
+                        class="btn btn-primary btn-sm"
+                      >
                         <Icon icon="ph:eye-bold" height="17" />
-                      </button>
-                      <button class="btn btn-success btn-sm">
+                      </Link>
+                      <Link
+                        :href="route('admin.product.edit', product.id)"
+                        class="btn btn-success btn-sm"
+                      >
                         <Icon
                           icon="material-symbols:edit-square-outline"
                           height="17"
                         />
-                      </button>
+                      </Link>
                       <button
                         @click="
                           showDeleteProductModal = true;

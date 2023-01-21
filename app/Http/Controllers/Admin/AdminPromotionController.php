@@ -4,47 +4,20 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Admin\Category;
-use App\Models\Admin\Product;
-use App\Models\Admin\SubCategory;
-use App\Models\User;
 use Inertia\Inertia;
 
-class AdminDashboardController extends Controller
+class AdminPromotionController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     */
+    * Display a listing of the resource.
+    *
+    //  * @return \Illuminate\Http\Response
+    */
     public function index()
     {
-        $users = User::paginate(10);
-        $products = Product::count();
-        $categories = Category::count();
-        $subcategories = SubCategory::count();
-        return Inertia::render('Admin/AdminIndex', [
-            'users' => $users,
-            'products_count' => $products,
-            'categories_count' => $categories,
-            'subcategories_count' => $subcategories,
+        return Inertia::render('Admin/Promotion/PromotionIndex', [
+            // 'users_count' => $users,
         ]);
-    }
-
-    public function userDelete(User $user)
-    {
-        $user->delete();
-        return redirect()->back();
-    }
-    public function updateRole(Request $request, User $user)
-    {
-        $request->validate([
-            'role' => 'required|string',
-        ]);
-        $user->update([
-            'role' => $request->role,
-            'is_admin' => $request->role == 'Admin' ? true : false,
-        ]);
-        return redirect()->back();
     }
 
     /**

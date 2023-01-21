@@ -34,20 +34,33 @@
                   :wrapAround="true"
                 >
                   <slide v-for="(category, index) in categories" :key="index">
-                    <div class="rounded me-2 mb-2 category__slider-body">
+                    <div
+                      @click="subcategories = category.subcategory"
+                      class="rounded me-2 mb-2 category__slider-body"
+                    >
                       <img
+                        v-if="category.banner_img"
+                        :src="JSON.parse(category.banner_img)?.img_url"
+                        alt="profile-img"
+                        class="rounded img-fluid"
+                      />
+                      <img
+                        v-else
                         src="../../../images/category/category_one.jpg"
                         alt="profile-img"
                         class="rounded img-fluid"
                       />
-                      <div class="dropdown-center my-1">
+                      <div class="category__slider-text">
+                        <p>{{ category.title }}</p>
+                      </div>
+                      <!-- <div class="dropdown-center my-1">
                         <button
                           class="dropdown-toggle btn"
                           type="button"
                           data-bs-toggle="dropdown"
                           aria-expanded="false"
                         >
-                          {{ category.title }}
+                         
                         </button>
                         <ul class="dropdown-menu border-0 shadow p-0 m-0">
                           <li
@@ -79,7 +92,7 @@
                             </Link>
                           </li>
                         </ul>
-                      </div>
+                      </div> -->
                     </div>
                   </slide>
 
@@ -92,6 +105,30 @@
           </div>
         </div>
       </div>
+
+      <div v-if="subcategories.length" class="row">
+        <!-- <div class="col-lg-12"> -->
+        <!-- -->
+        <Link
+          :href="route('product-page', subcategory.slug)"
+          v-for="(subcategory, index) in subcategories"
+          :key="subcategory.id + index"
+          data-aos="fade-up"
+          :data-aos-delay="index * 50"
+          class="shadow-sm rounded col-lg-2 col-md-3 col-sm-4 col-4 mb-1"
+          style="padding: 4px"
+        >
+          <!-- <div class="col-3"> -->
+          <img
+            :src="JSON.parse(subcategory.banner_img).img_url"
+            :alt="subcategory.title"
+            class="rounded"
+          />
+          <span>{{ subcategory.title }}</span>
+          <!-- </div> -->
+        </Link>
+      </div>
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -103,6 +140,7 @@ import { Link, usePage } from "@inertiajs/inertia-vue3";
 import { Carousel, Slide } from "vue3-carousel";
 
 const categories = computed(() => usePage().props.value.data.categories);
+const subcategories = ref([]);
 
 const myCarousel = ref(null);
 const breakpoints = {
@@ -111,11 +149,11 @@ const breakpoints = {
     snapAlign: "center",
   },
   700: {
-    itemsToShow: 2,
+    itemsToShow: 2.5,
     snapAlign: "center",
   },
   1024: {
-    itemsToShow: 4,
+    itemsToShow: 4.5,
     snapAlign: "start",
   },
 };
@@ -161,18 +199,21 @@ const prev = () => {
 }
 .category__slider-body:hover {
   box-shadow: var(--shadow-1);
+  cursor: pointer;
 }
-.dropdown-center {
-  background: url("../../../images/bg/btn-brush-bg-2.png") no-repeat;
-  background-position: center;
-}
-.dropdown-item:hover {
-  background: var(--green-0);
-  color: var(--black);
-}
-.category__slider-body button {
+.category__slider-text p {
   color: var(--green-5);
   font-weight: 600;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  padding: 10px 0;
+  margin: 5px 0;
+}
+.category__slider-text {
+  background: url("../../../images/bg/btn-brush-bg-2.png") no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+a:hover {
+  border: 1.4px solid var(--green-0);
 }
 </style>

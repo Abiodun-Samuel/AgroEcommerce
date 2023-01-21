@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {
@@ -41,10 +42,11 @@ class RegisteredUserController extends Controller
             'email' => 'required|string|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+       
         $user = User::create([
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
+            'initial' => Str::upper(Str::limit($request->first_name, 1, '') . Str::limit($request->last_name, 1, '')),
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
@@ -52,7 +54,7 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
-        
+
         return Redirect::route('verification.notice');
     }
 }

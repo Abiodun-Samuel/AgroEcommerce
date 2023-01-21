@@ -56,7 +56,7 @@
                   v-for="products_result in products_results"
                   :key="products_result.id"
                   class="d-flex align-items-center"
-                  :href="route('product.show', products_result.slug)"
+                  :href="route('product-details-page', products_result.slug)"
                 >
                   <Icon
                     class="search__icon"
@@ -80,15 +80,21 @@
             "
           >
             <div class="box">
-              <Link href="" class="d-flex align-items-center">
+              <button
+                @click="wishlistShow = !wishlistShow"
+                class="d-flex align-items-center"
+                as="button"
+                type="button"
+                href="#"
+              >
                 <div class="icon">
                   <p class="count">
-                    {{ auth_user ? auth_user.wishlist_count : 0 }}
+                    {{ wishList.length }}
                   </p>
                   <Icon icon="ph:heart" height="25" />
                 </div>
                 <span class="d-none d-lg-flex">Wishlist</span>
-              </Link>
+              </button>
             </div>
             <div class="box">
               <Link class="d-flex align-items-center">
@@ -232,7 +238,13 @@
                   <li class="rounded">
                     <Link
                       style="margin-bottom: 7px"
-                      :href="route('track.order')"
+                      :href="
+                        auth_user.is_admin ||
+                        auth_user.role === 'Admin' ||
+                        auth_user.role === 'Super Admin'
+                          ? route('admin.order.index')
+                          : route('user.order.index')
+                      "
                       class="dropdown-item d-flex align-items-center rounded"
                     >
                       <Icon
@@ -688,6 +700,114 @@
       </div>
     </div>
   </div>
+
+  <!-- wishlist  -->
+  <div v-if="wishlistShow" class="wishlist__box shadow-lg bg-light">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center">
+        <h3 class="fw-bolder my-0 py-0">My Wishlist</h3>
+        <button
+          @click="wishlistShow = !wishlistShow"
+          class="border-0 btn p-0 m-0"
+        >
+          <Icon class="text-danger" height="25" icon="carbon:close-filled" />
+        </button>
+      </div>
+      <hr />
+      <div
+        v-if="wishList.length"
+        class="d-flex justify-content-between align-items-center"
+      >
+        <button @click="clearWishList" class="btn btn-sm btn-danger">
+          Clear All
+        </button>
+        <button
+          @click="addToCart(product)"
+          class="btn-sm btn-success"
+          :disabled="cart_loader"
+        >
+          <span
+            v-if="cart_loader"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          Add All
+        </button>
+      </div>
+
+      <template v-if="wishList.length">
+        <hr />
+        <div
+          style="padding: 10px"
+          v-for="item in wishList"
+          :key="item"
+          class="my-1 shadow rounded"
+        >
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <img
+                width="55"
+                height="55"
+                class="rounded"
+                :src="JSON.parse(item.image).img_url"
+                :alt="item.title"
+              />
+            </div>
+            <div>
+              <h5 class="fw-bolder">{{ item.title }}</h5>
+              <p class="fw-light">{{ item.sub_title }}</p>
+            </div>
+          </div>
+          <hr class="my-0 py-0" />
+          <div class="d-flex gap-2 justify-content-between align-items-center">
+            <h5
+              style="background: var(--green-0); padding: 2px"
+              class="fw-bolder rounded"
+            >
+              <span>&#8358;</span>{{ formatCurrency(item.price) }}
+            </h5>
+            <div
+              class="d-flex gap-1 justify-content-between align-items-center"
+            >
+              <button
+                @click="removeFromWishList(item.id)"
+                class="btn text-danger"
+              >
+                <Icon
+                  height="15"
+                  icon="material-symbols:delete-outline-rounded"
+                />
+              </button>
+              <button
+                @click="addToCart(product)"
+                class="shadow btn-sm btn-success"
+                :disabled="cart_loader"
+              >
+                <span
+                  v-if="cart_loader"
+                  class="spinner-border spinner-border-sm"
+                  role="status"
+                  aria-hidden="true"
+                ></span>
+                <span
+                  v-else
+                  class="d-flex align-items-center justify-content-center"
+                >
+                  <Icon height="13" icon="ic:outline-shopping-cart" />
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-else>
+        <div class="text-center">
+          <NoResult text="No products in your wishlist" />
+        </div>
+      </template>
+    </div>
+  </div>
 </template>
           
 
@@ -697,15 +817,15 @@ import { computed, onMounted, reactive, ref } from "vue";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
 import { Inertia } from "@inertiajs/inertia";
 import store from "@/store";
+import NoResult from "@/Components/Common/NoResult.vue";
+import { firstLetterUpperCase, formatCurrency } from "@/utils/helper.js";
 
-const cart = computed(() => store.getters["cart/cartItems"]);
-
+const wishList = computed(() => store.getters["wishlistStore/wishListItems"]);
 const auth_user = computed(() => usePage().props.value.auth.user);
 // const data = computed(() => usePage().props.value.data);
-// console.log(data.value.cart);
-// console.log(auth_user.value);
 
 const mobileNavShow = ref(false);
+const wishlistShow = ref(false);
 const body__overlay = ref(false);
 const val = ref(null);
 
@@ -713,6 +833,14 @@ const products_results = ref([]);
 const form = reactive({
   query: "",
 });
+
+const removeFromWishList = (productId) => {
+  store.dispatch("wishlistStore/removeFromWishList", productId);
+};
+const clearWishList = (params) => {
+  store.dispatch("wishlistStore/clearWishList");
+};
+const addToCart = (params) => {};
 
 const mobileNavHandler = () => {
   const mobileNav = document.querySelector(".mobile__nav");
@@ -735,7 +863,6 @@ const remove_searchbox = () => {
 const search = (e) => {
   if (e.target.value.length > 3 || form.query.length > 3) {
     axios.post(route("product.search", { query: form.query })).then((res) => {
-      console.log(res.data);
       products_results.value = res.data;
     });
   } else {
@@ -744,7 +871,7 @@ const search = (e) => {
 };
 
 onMounted(() => {
-  store.dispatch("cart/getCart");
+  // store.dispatch("cart/getCart");
   let e, o, n;
   o = 0;
   n = document.querySelector(".header__two");
@@ -924,5 +1051,23 @@ onMounted(() => {
   box-shadow: inset 4px 4px 8px -1px rgba(0, 0, 0, 0.25),
     inset -4px -4px 8px -1px hsla(0, 0%, 100%, 0);
   transform: scale(0.95);
+}
+
+.wishlist__box {
+  position: fixed;
+  min-height: 100vh;
+  width: 50%;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 1rem 1rem;
+  z-index: 2100;
+  transition: left 500ms ease;
+  overflow-y: scroll;
+}
+@media screen and (max-width: 991.5px) {
+  .wishlist__box {
+    width: 90%;
+  }
 }
 </style>

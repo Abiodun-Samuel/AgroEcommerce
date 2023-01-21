@@ -43,7 +43,7 @@ class HandleInertiaRequests extends Middleware
                 // 'user' => $request->user() ? $request->user()->withCount('cart', 'wishlist')->first() : null,
             ],
             'data' => [
-                'categories' => Category::with('sub_category.products')->get(),
+                'categories' => Category::with('subcategory.products')->get(),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

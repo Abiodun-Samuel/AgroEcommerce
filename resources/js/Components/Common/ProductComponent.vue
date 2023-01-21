@@ -1,29 +1,44 @@
 <template>
-  <div class="card mb-3 rounded border-0 bg-white" id="product_component">
-    <div class="discount_percentage">
+  <div class="card mb-2 rounded border-0 bg-white" id="product_component">
+    <div v-if="product.discount_price" class="discount_percentage">
       <p>{{ discountPercentage(product.price, product.discount_price) }}</p>
     </div>
-    <Link>
-      <img :src="product.image" class="img-fluid" alt="product image" />
+    <Link :href="route('product-details-page', product.slug)">
+      <img
+        :src="JSON.parse(product.image)?.img_url"
+        class="img-fluid rounded"
+        alt="product image"
+      />
     </Link>
     <div class="card-body">
-      <Link>
-        <h6 class="card-title product_name fw-bolder">
+      <Link :href="route('product-details-page', product.slug)">
+        <h6 class="card-title product_name fw-bolder text-truncate">
           {{ firstLetterUpperCase(product.title) }}
+          <span class="fw-normal small"> ({{ product.pack_size }})</span>
         </h6>
       </Link>
 
       <div class="discount d-flex justify-content-between my-1">
         <p class="price fw-bolder text-success">
-          &#8358; {{ formatCurrency(product.discount_price) }}
+          &#8358;
+          {{
+            !product.discount_price
+              ? formatCurrency(product.price)
+              : formatCurrency(product.discount_price)
+          }}
         </p>
-        <p class="inflatedprice text-danger">
+        <p v-if="product.discount_price" class="inflatedprice text-danger">
           &#8358; {{ formatCurrency(product.price) }}
         </p>
       </div>
 
       <div class="my-1">
-        <Rating :value="2.5" :text="'2 Reviews'" />
+        <Rating
+          :value="averageRating"
+          :text="`${product.reviews.length} review${
+            product.reviews.length > 1 ? 's' : ''
+          }`"
+        />
       </div>
 
       <div class="d-flex align-items-center">
@@ -44,7 +59,7 @@
           </span>
         </button>
         <div class="ms-2">
-          <button class="wish_btn">
+          <button @click="addToWishList(product)" class="wish_btn">
             <Icon icon="ph:heart" height="17" />
           </button>
         </div>
@@ -57,23 +72,9 @@
 import { Link } from "@inertiajs/inertia-vue3";
 import { Icon } from "@iconify/vue";
 import Rating from "@/Components/Common/Rating.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { toast } from "@/utils/helper";
 import store from "@/store";
-
-const addToCart = async (params) => {
-  const product = {
-    id: params.id,
-    title: params.title,
-    slug: params.slug,
-    image: params.image,
-    price: params.price,
-    quantity: params.quantity,
-  };
-  const res = await store.dispatch("cart/addToCart", { product });
-  toast.success(res);
-};
-
 import {
   firstLetterUpperCase,
   discountPercentage,
@@ -81,9 +82,40 @@ import {
   formatCurrency,
 } from "@/utils/helper.js";
 
-defineProps(["product"]);
+const averageRating = computed(() => {
+  if (!props.product.reviews.length) return 0;
+  const totalRatings = props.product.reviews.reduce(
+    (total, num) => total + num.rating,
+    0
+  );
+  const calc = (totalRatings * 5) / (props.product.reviews.length * 5);
+  return calc.toFixed(2);
+});
 
-const rating = ref(6);
+const addToWishList = (params) => {
+  const product = {
+    id: params.id,
+    title: params.title,
+    sub_title: params.sub_title,
+    image: params.image,
+    price: params.discount_price ? params.discount_price : params.price,
+    quantity: 1,
+  };
+  store.dispatch("wishlistStore/addToWishList", product);
+};
+const addToCart = (params) => {
+  const product = {
+    id: params.id,
+    title: params.title,
+    sub_title: params.sub_title,
+    image: params.image,
+    price: params.discount_price ? params.discount_price : params.price,
+    quantity: 1,
+  };
+  // store.dispatch("wistlist/addToWishList", product);
+};
+
+const props = defineProps(["product"]);
 </script>
 
 <style lang="css" scoped>
@@ -93,6 +125,7 @@ const rating = ref(6);
 }
 #product_component.card:hover {
   box-shadow: var(--shadow-1);
+  transform: scale(1.02);
 }
 #product_component .discount_percentage {
   position: absolute;

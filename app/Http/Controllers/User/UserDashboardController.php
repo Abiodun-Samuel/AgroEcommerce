@@ -23,7 +23,7 @@ class UserDashboardController extends Controller
         $products = Product::get();
         $categories = Category::get();
         $subcategories = SubCategory::get();
-        return Inertia::render('Dashboard/User/Index', [
+        return Inertia::render('User/UserIndex', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
             'users' => $users,

@@ -21,8 +21,7 @@ import "aos/dist/aos.css";
 
 import "bootstrap/dist/js/bootstrap.js";
 
-AOS.init({ duration: 500, mirror: true });
-
+AOS.init({ duration: 500 });
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText ||
     "SuperoAgrobase Ltd";

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
-use App\Models\Admin\SubCategory;
+use App\Models\Admin\Subcategory;
+use App\Traits\CloudinaryUpload;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 
 class AdminSubcategoryController extends Controller
 {
+    use CloudinaryUpload;
+
     /**
     * Display a listing of the resource.
     *
@@ -19,9 +22,9 @@ class AdminSubcategoryController extends Controller
     */
     public function index()
     {
-        $subcategories = SubCategory::with('category')->get();
+        $subcategories = Subcategory::with('category')->get();
         $categories = Category::get();
-        return Inertia::render('Admin/Subcategory/Index', [
+        return Inertia::render('Admin/Subcategory/SubcategoryIndex', [
             'subcategories' => $subcategories,
             'categories' => $categories,
         ]);
@@ -50,9 +53,9 @@ class AdminSubcategoryController extends Controller
             'subcategory_title' => ['required'],
             'category_id' => ['required'],
         ]);
-
-        SubCategory::create([
-            'banner_img' => $request->subcategory_img,
+        $banner_img = $this->uploadImage($request->file('subcategory_img'), $request->folder);
+        Subcategory::create([
+            'banner_img' => $banner_img,
             'title' => $request->subcategory_title,
             'slug' => Str::slug($request->subcategory_title, '-'),
             'category_id' => $request->category_id,
@@ -72,26 +75,62 @@ class AdminSubcategoryController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    * Show the form for editing the specified resource.
+    *
+    * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    */
+    public function edit(Subcategory $subcategory)
     {
-        //
+        return Inertia::render('Admin/Subcategory/SubcategoryEdit', [
+            'subcategory' => $subcategory,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(Request $request, Subcategory $subcategory)
     {
-        //
+        //          category_id: props.subcategory.category_id,
+//   subcategory_img: props.subcategory.banner_img,
+//   subcategory_title: props.subcategory.title,
+//   subcategory_img_id: JSON.parse(props.subcategory.banner_img)?.img_id,
+//   folder: "subcategory",
+        $request->validate([
+            'subcategory_img' => ['required'],
+            'subcategory_title' => ['required'],
+            'category_id' => ['required'],
+            'folder' => ['required'],
+            'subcategory_img_id' => ['required'],
+        ]);
+
+        if ($request->hasFile('subcategory_img')) {
+            $val = $this->searchImage($request->subcategory_img_id);
+            if ($val['total_count'] >= 1) {
+                $this->deleteImage($request->subcategory_img_id);
+                $banner_img = $this->uploadImage($request->file('subcategory_img'), $request->folder);
+                $subcategory->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->subcategory_title,
+                    'slug' => Str::slug($request->subcategory_title, '-'),
+                    'category_id' => $request->category_id
+                ]);
+            } else {
+                $banner_img = $this->uploadImage($request->file('subcategory_img'), $request->folder);
+                $subcategory->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->subcategory_title,
+                    'slug' => Str::slug($request->subcategory_title, '-'),
+                    'category_id' => $request->category_id
+                ]);
+            }
+        } else {
+            $subcategory->update([
+                'banner_img' => $request->subcategory_img,
+                'title' => $request->subcategory_title,
+                'slug' => Str::slug($request->subcategory_title, '-'),
+                'category_id' => $request->category_id
+            ]);
+        }
+        return Redirect::route('admin.subcategory.index');
     }
 
     /**
@@ -102,6 +141,7 @@ class AdminSubcategoryController extends Controller
     */
     public function destroy(Subcategory $subcategory)
     {
+        $this->deleteImage(json_decode($subcategory->banner_img)->img_id);
         $subcategory->delete();
         return Redirect::route('admin.subcategory.index');
     }

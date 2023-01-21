@@ -9,6 +9,8 @@
       <FormError :errors="form.errors" />
 
       <div class="product_form bg-white shadow-sm p-1 mb-2">
+        <h5 class="fw-bolder text-success">Edit {{ product.title }}</h5>
+        <hr />
         <div class="row">
           <div class="col-lg-3 col-md-6 col-6 my-1">
             <label for="categories" class="form-label">Categories</label>
@@ -115,7 +117,7 @@
               placeholder="Pack size"
               v-model="form.pack_size"
             />
-            <span class="small text-danger fw-normal fst-italic"
+            <span class="small text-danger fst-italic fw-normal"
               >(e.g 100ml, 500kg)</span
             >
           </div>
@@ -201,11 +203,11 @@
         <div class="row">
           <div class="col-lg-12 text-end">
             <button
-              @click="saveProduct"
+              @click="editProduct"
               :disabled="form.processing"
               class="btn btn-success"
             >
-              <span>save</span>
+              <span>Edit</span>
               <span
                 v-if="form.processing"
                 class="spinner-border spinner-border-sm mx-1"
@@ -229,29 +231,33 @@ import { ref, reactive } from "vue";
 import { toast } from "@/utils/helper";
 import { Icon } from "@iconify/vue";
 import PreLoader from "@/Components/Common/PreLoader.vue";
+import { firstLetterUpperCase } from "@/utils/helper";
 
-const props = defineProps(["categories"]);
+const props = defineProps(["product", "categories"]);
+console.log(props.product);
 
 const selectedCategory = ref([]);
-const fileSrc = ref(null);
+const fileSrc = ref(JSON.parse(props.product.image)?.img_url);
+
 const step_one = {
   slug: "Product",
   link: false,
   route_name: null,
 };
 const form = useForm({
-  category_id: null,
-  subcategory_id: null,
-  product_title: null,
-  product_subtitle: null,
-  pack_size: null,
-  product_brand: null,
-  product_image: null,
-  product_stock: null,
-  price: null,
-  product_ingredient: null,
-  product_description: null,
-  discountPrice: null,
+  category_id: props.product.category_id,
+  subcategory_id: props.product.subcategory_id,
+  product_title: props.product.title,
+  product_subtitle: props.product.sub_title,
+  pack_size: props.product.pack_size,
+  product_brand: props.product.brands,
+  product_image: props.product.image,
+  product_stock: props.product.stock,
+  price: props.product.price,
+  product_ingredient: props.product.ingredients,
+  product_description: props.product.description,
+  discountPrice: props.product.discount_price,
+  product_img_id: JSON.parse(props.product.image)?.img_id,
   folder: "products",
 });
 
@@ -278,16 +284,21 @@ function saveImage(e) {
   reader.readAsDataURL(fileList);
 }
 
-const saveProduct = () => {
+const editProduct = () => {
   form.clearErrors();
-  form.post(route("admin.product.store"), {
+  form.post(route("admin.product.update", props.product.id), {
     preserveScroll: true,
     onSuccess: () => {
-      toast.success("New Product has been saved successfully");
+      toast.success(
+        firstLetterUpperCase(props.product.title) +
+          " has been edited successfully"
+      );
       form.reset();
     },
     onError: () => {
-      toast.error(`Unable to save new product`);
+      toast.error(
+        `Unable to edit ${firstLetterUpperCase(props.product.title)}`
+      );
     },
   });
 };

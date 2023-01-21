@@ -1,6 +1,12 @@
 <template>
   <GuestLayout>
-    <BreadCrump :step_one="step_one" />
+    <BreadCrump
+      v-if="route().params.subcategory"
+      :step_one="step_one"
+      :step_two="step_two"
+    />
+    <BreadCrump v-else :step_one="step_one" />
+
     <div id="product">
       <div class="container">
         <div class="row">
@@ -20,11 +26,10 @@
                     v-model="result_count"
                     @change="filterResultCount"
                   >
-                    <option selected value="all_products">All Products</option>
+                    <option selected value="default">All Products</option>
                     <option value="5">5</option>
                     <option value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="50">50</option>
+                    <option value="15">15</option>
                   </select>
                 </div>
                 <div class="filter_two">
@@ -45,9 +50,9 @@
             </div>
 
             <div class="row">
-              <template v-if="all_products.data.length">
+              <template v-if="all_products.length">
                 <div
-                  v-for="product in all_products.data"
+                  v-for="product in all_products"
                   :key="product.id"
                   class="col-lg-4 col-md-6 col-sm-6 col-6"
                 >
@@ -76,7 +81,7 @@
             </div>
 
             <div class="row mt-1">
-              <Pagination :links="all_products.links" />
+              <Pagination :links="products.links" />
             </div>
           </div>
         </div>
@@ -94,47 +99,66 @@ import { Icon } from "@iconify/vue";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
 import ProductPageSideBar from "@/Components/Common/ProductPageSideBar.vue";
+import { unslugify } from "@/utils/helper";
+import moment from "moment";
 
+const step_one = {
+  slug: "Products",
+  link: route().params?.subcategory ? true : false,
+  route_name: route().params?.subcategory ? "product-page" : null,
+};
+const step_two = {
+  slug: unslugify(route()?.params?.subcategory),
+  link: false,
+  route_name: null,
+};
 const props = defineProps({
   products: Array,
 });
-
 const categories = computed(() => usePage().props.value.data.categories);
 
-const result_count = ref("all_products");
+const result_count = ref("default");
 const result_format = ref("default");
-const all_products = ref(props.products);
-
+const all_products = ref(props.products.data);
 function dynamicSort(property, order) {
-  if (order == "alpha") var sortOrder = 1;
-
-  // if (property[0] === "-") {
-  //   sortOrder = -1;
-  //   property = property.substr(1);
-  // }
-
-  return function (a, b) {
-    if (sortOrder == -1) {
-      return b[property].localeCompare(a[property]);
-    } else {
-      return a[property].localeCompare(b[property]);
-    }
-  };
+  if (order == "alpha" || order == "non_alpha") {
+    var sortOrder = order == "alpha" ? 1 : -1;
+    return function (a, b) {
+      if (sortOrder == -1) {
+        return b[property].localeCompare(a[property]);
+      } else {
+        return a[property].localeCompare(b[property]);
+      }
+    };
+  }
 }
 
 const filterResultCount = () => {
-  if (result_count.value == "all_products")
-    return (all_products.value = props.products);
-  all_products.value = props.products.slice(0, Number(result_count.value));
+  // if (result_count.value == "default")
+  //   return (all_products.value = props.products.data);
+  // all_products.value = props.products.data.slice(0, Number(result_count.value));
 };
 
 const filterResultFormat = () => {
-  all_products.value.sort(dynamicSort("title", result_format.value));
-};
-const step_one = {
-  slug: "Products",
-  link: false,
-  route_name: null,
+  if (result_format.value == "default") {
+    all_products.value = props.products.data;
+    return all_products.value.sort(function (a, b) {
+      return moment(b.updated_at) - moment(a.updated_at);
+    });
+  }
+  if (result_format.value == "alpha" || result_format.value == "non_alpha") {
+    all_products.value.sort(dynamicSort("title", result_format.value));
+  }
+  if (result_format.value == "newest") {
+    return all_products.value.sort(function (a, b) {
+      return moment(b.updated_at) - moment(a.updated_at);
+    });
+  }
+  if (result_format.value == "oldest") {
+    return all_products.value.sort(function (a, b) {
+      return moment(a.updated_at) - moment(b.updated_at);
+    });
+  }
 };
 </script>
 

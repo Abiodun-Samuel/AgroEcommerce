@@ -1,14 +1,16 @@
 <template>
-  <Head title="Category" />
+  <Head title="SubCategory" />
 
   <AdminLayout>
     <DashboardBreadcrump :step_one="step_one" />
     <hr />
 
     <div class="container">
+      <FormError :errors="form.errors" />
+
       <div class="row">
-        <div class="col-lg-12">
-          <div class="category mb-2">
+        <div class="col-lg-12 mb-2">
+          <div class="category">
             <div class="accordion accordion-flush" id="accordionFlushExample">
               <div class="accordion-item">
                 <h2 class="accordion-header" id="flush-headingOne">
@@ -17,7 +19,8 @@
                       accordion-button
                       collapsed
                       fw-bolder
-                      text-success
+                      bg-success
+                      text-light
                       shadow-sm
                     "
                     type="button"
@@ -28,53 +31,94 @@
                   >
                     <Icon
                       icon="eos-icons:content-new"
-                      class="me-1 text-success"
+                      class="me-1 text-light"
                       height="20"
                     />
-                    New Category
+                    Subcategory
                   </button>
                 </h2>
                 <div
                   id="flush-collapseOne"
-                  class="accordion-collapse collapse"
+                  class="accordion-collapse collapse show"
                   aria-labelledby="flush-headingOne"
                   data-bs-parent="#accordionFlushExample"
                 >
                   <div class="accordion-body p-1">
                     <div class="row">
-                      <div class="my-1 col-lg-6 col-md-6">
+                      <div class="my-1 col-lg-4 col-md-6">
+                        <label for="category_image" class="form-label"
+                          >Categories</label
+                        >
+                        <select
+                          class="form-select"
+                          aria-label="Default select example"
+                          v-model="form.category_id"
+                        >
+                          <option selected disabled>Select Category</option>
+                          <option
+                            v-for="category in categories"
+                            :key="category.id"
+                            :value="category.id"
+                          >
+                            {{ category.title }}
+                          </option>
+                        </select>
+                      </div>
+
+                      <div class="my-1 col-lg-4 col-md-6">
                         <label for="category_title" class="form-label"
-                          >Category Title</label
+                          >Subcategory Title</label
                         >
                         <input
                           type="text"
                           class="form-control"
                           id="category_title"
-                          placeholder="category"
-                          v-model="form.category_title"
+                          placeholder="subcategory"
+                          v-model="form.subcategory_title"
                         />
                       </div>
-                      <div class="my-1 col-lg-6 col-md-6">
+                      <div class="my-1 col-lg-4 col-md-6">
                         <label for="category_image" class="form-label"
-                          >Category Image</label
+                          >Subcategory Image</label
                         >
                         <input
                           type="file"
                           class="form-control"
-                          id="category_image"
+                          id="subcategory_image"
                           @change="getFile($event)"
                           accept=".jpg, .jpeg, .png"
                         />
+                        <div class="mt-1">
+                          <div
+                            class="img_container position-relative"
+                            v-if="fileSrc"
+                          >
+                            <img
+                              :src="fileSrc"
+                              alt="product preview"
+                              width="100"
+                              class="rounded shadow-sm"
+                            />
+                            <button class="" @click="deleteImage">
+                              <Icon
+                                color="text-danger"
+                                icon="material-symbols:edit"
+                                height="15"
+                              />
+                            </button>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
                     <button
                       :disabled="
                         form.processing ||
-                        !form.category_img ||
-                        !form.category_title
+                        !form.subcategory_img ||
+                        !form.category_id ||
+                        !form.subcategory_title
                       "
-                      @click="save"
+                      @click="saveSubcategory"
                       class="btn btn-success"
                     >
                       <span>Save</span>
@@ -90,38 +134,38 @@
               </div>
             </div>
           </div>
+        </div>
 
-          <div class="category__table my-3">
-            <div class="table-responsive" v-if="categories.length">
+        <div class="col-lg-12 mt-1">
+          <div class="category__table">
+            <div class="table-responsive" v-if="subcategories.length">
               <table class="table table-hover table-bordered">
                 <thead class="table-dark">
                   <tr>
                     <th scope="col">S/N</th>
                     <th scope="col">Id</th>
                     <th scope="col">Image</th>
-                    <th scope="col">Title</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Subcategory Title</th>
                     <th scope="col">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(category, index) in categories"
-                    :key="category.id"
+                    v-for="(subcategory, index) in subcategories"
+                    :key="subcategory.id"
                   >
                     <th scope="row">{{ index + 1 }}</th>
-                    <td scope="row">{{ category.id.substring(0, 7) }}...</td>
+                    <td scope="row">{{ subcategory.id.substring(0, 7) }}...</td>
                     <td>
                       <img
+                        :src="JSON.parse(subcategory.banner_img)?.img_url"
                         width="40"
-                        :src="
-                          category.banner_img
-                            ? category.banner_img
-                            : category_img
-                        "
-                        alt="category image"
+                        alt="sub category image"
                       />
                     </td>
-                    <td>{{ category.title }}</td>
+                    <td>{{ subcategory.category.title }}</td>
+                    <td>{{ subcategory.title }}</td>
                     <td
                       class="
                         d-flex
@@ -130,17 +174,17 @@
                         align-items-center
                       "
                     >
-                      <button class="btn btn-success btn-sm">
+                      <Link
+                        :href="route('admin.subcategory.edit', subcategory.id)"
+                        class="btn btn-success btn-sm"
+                      >
                         <Icon
                           icon="material-symbols:edit-square-outline"
                           height="17"
                         />
-                      </button>
+                      </Link>
                       <button
-                        @click="
-                          showDeleteCategoryModal = true;
-                          formDelete.id = category.id;
-                        "
+                        @click="deleteSubcategory(subcategory.id)"
                         class="btn btn-danger btn-sm"
                       >
                         <Icon icon="ic:outline-delete-forever" height="17" />
@@ -151,7 +195,7 @@
               </table>
             </div>
             <div v-else class="text-center">
-              <NoResult text="No Categories found" :link="false" />
+              <NoResult text="No SubCategories found" :link="false" />
             </div>
           </div>
         </div>
@@ -160,10 +204,10 @@
   </AdminLayout>
 
   <Modal
-    :show="showDeleteCategoryModal"
+    :show="showDeleteSubcategoryModal"
     :size="'modal-sm'"
     :footer="true"
-    @close="showDeleteCategoryModal = false"
+    @close="showDeleteSubcategoryModal = false"
   >
     <template #header>
       <h4
@@ -183,8 +227,9 @@
 
     <template #body>
       <h5 class="fw-bold text-secondary">
-        Are you sure you want to delete this category?
+        All Products attached to this subcategory will also be deleted.
       </h5>
+      <p class="text-danger">Do you want to delete this subcategory?</p>
     </template>
 
     <template #footer>
@@ -200,7 +245,7 @@
           ></span>
         </button>
         <button
-          @click="showDeleteCategoryModal = false"
+          @click="showDeleteSubcategoryModal = false"
           class="btn btn-sm btn-success"
         >
           No, Cancel
@@ -212,73 +257,102 @@
 
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, useForm } from "@inertiajs/inertia-vue3";
+import { Head, useForm, Link } from "@inertiajs/inertia-vue3";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
-import { ref } from "vue";
-import { toast } from "@/utils/helper";
-import { Icon } from "@iconify/vue";
 import NoResult from "@/Components/Common/NoResult.vue";
 import category_img from "@/assets/images/icons/subcategory.png";
 import Modal from "@/Components/Common/Modal.vue";
+import FormError from "@/Components/Common/FormError.vue";
+import { ref } from "vue";
+import { Icon } from "@iconify/vue";
+import { toast } from "@/utils/helper";
 
-const props = defineProps(["categories"]);
+defineProps(["subcategories", "categories"]);
 
-let file = ref("");
-const showDeleteCategoryModal = ref(false);
-
-const form = useForm({
-  category_img: null,
-  category_title: null,
-});
-
+const showDeleteSubcategoryModal = ref(false);
+const fileSrc = ref(null);
 const formDelete = useForm({
   id: null,
 });
 
+const form = useForm({
+  subcategory_img: null,
+  subcategory_title: null,
+  category_id: null,
+  folder: "subcategory",
+});
+
 const step_one = {
-  slug: "Category",
+  slug: "Subcategory",
   link: false,
   route_name: null,
 };
-function getFile(e) {
-  const fileList = e.target.files[0];
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    form.category_img = reader.result;
-  };
-  reader.readAsDataURL(fileList);
-}
+
+const deleteSubcategory = (id) => {
+  showDeleteSubcategoryModal.value = true;
+  formDelete.id = id;
+};
 
 const deleteAction = () => {
-  formDelete.delete(route("admin.category.destroy", formDelete.id), {
+  formDelete.delete(route("admin.subcategory.destroy", formDelete.id), {
     preserveScroll: true,
     onSuccess: () => {
-      toast.success("Category has been deleted successfully");
+      toast.success("Subcategory has been deleted successfully");
       formDelete.reset();
-      showDeleteCategoryModal.value = false;
+      showDeleteSubcategoryModal.value = false;
     },
     onError: () => {
-      toast.error(`Unable to delete this category`);
+      toast.error(`Unable to save subcategory`);
     },
   });
 };
 
-const save = () => {
-  form.post(route("admin.category.store"), {
+function deleteImage() {
+  const fileList = document.getElementById("subcategory_image");
+  fileList.value = null;
+  fileSrc.value = null;
+  form.subcategory_img = null;
+}
+
+function getFile(e) {
+  const fileList = e.target.files[0];
+  form.subcategory_img = fileList;
+  const reader = new FileReader();
+  reader.onloadend = () => {
+    fileSrc.value = reader.result;
+  };
+  reader.readAsDataURL(fileList);
+}
+
+const saveSubcategory = () => {
+  form.clearErrors();
+  const fileList = document.getElementById("subcategory_image");
+  form.post(route("admin.subcategory.store"), {
     preserveScroll: true,
     onSuccess: () => {
-      toast.success("New category has been saved successfully");
+      toast.success("New Subcategory has been saved successfully");
       form.reset();
+      if (fileList) fileList.value = null;
+      fileSrc.value = null;
     },
     onError: () => {
-      toast.error(`Unable to save new category`);
+      toast.error(`Unable to save new subcategory`);
     },
   });
 };
 </script>
 
-<style lang="css" scoped>
-.accordion-button:hover {
-  background: var(--light);
+<style lang='css' scoped>
+.img_container {
+  width: 100px;
+}
+.img_container button {
+  position: absolute;
+  top: -5px;
+  right: -11px;
+  background: #f6f5f5;
+  padding: 2px;
+  border-radius: 3px;
+  color: red;
 }
 </style>

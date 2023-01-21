@@ -2,7 +2,8 @@
 
 namespace App\Models\Admin;
 
-use App\Models\Admin\SubCategory;
+use App\Models\Admin\Subcategory;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
@@ -17,7 +18,7 @@ class Product extends Model
         'sub_title',
         'slug',
         'category_id',
-        'sub_category_id',
+        'subcategory_id',
         'image',
         'brands',
         'description',
@@ -26,10 +27,16 @@ class Product extends Model
         'price',
         'discount_price',
         'stock',
+        'reviews_count',
+        'sales_count'
     ];
 
-    public function sub_category()
+    public function subcategory()
     {
-        return $this->belongsTo(SubCategory::class);
+        return $this->belongsTo(Subcategory::class);
+    }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 }

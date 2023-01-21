@@ -12,19 +12,22 @@
           <div class="products__section__header-button">
             <Link
               :href="route('product-page')"
-              class="btn btn-outline-success rounded-pill"
+              class="btn btn-md btn-outline-success rounded-pill"
             >
               All Products
             </Link>
-            <button class="btn btn-outline-success rounded-pill">
-              New Products
-            </button>
-            <button class="btn btn-outline-success rounded-pill">
+            <Link
+              :href="route('product-page', { query: 'top_rated' })"
+              class="btn btn-md btn-outline-success rounded-pill"
+            >
               Top Rated
-            </button>
-            <button class="btn btn-outline-success rounded-pill">
+            </Link>
+            <Link
+              :href="route('product-page', { query: 'top_selling' })"
+              class="btn btn-md btn-outline-success rounded-pill"
+            >
               Top Selling
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -35,7 +38,7 @@
             :key="product.id"
             data-aos="fade-up"
             :data-aos-delay="index * 50"
-            class="col-lg-3 col-md-6 col-sm-6 col-6"
+            class="col-lg-3 col-md-6 col-sm-6 col-6 d-flex align-items-stretch"
           >
             <ProductComponent :product="product" />
           </div>

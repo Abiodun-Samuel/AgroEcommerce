@@ -1,26 +1,23 @@
 <template>
   <div v-if="links.length > 3">
-    <div class="flex flex-wrap justify-content-end">
+    <div class="d-flex justify-content-end">
       <template v-for="(link, p) in links" :key="p">
         <div
           v-if="link.url === null"
-          class="mr-1 mb-1 p-1 text-sm leading-4 text-gray-400 border rounded"
+          class="
+            btn btn-sm
+            border
+            rounded
+            bg-transparent
+            text-secondary
+            not-allowed
+          "
           v-html="link.label"
         />
         <Link
           v-else
-          class="
-            mr-1
-            mb-1
-            p-1
-            text-sm
-            leading-4
-            border
-            rounded
-            hover:bg-white
-            focus:border-indigo-500 focus:text-indigo-500
-          "
-          :class="{ 'bg-blue-700 text-white': link.active }"
+          class="btn btn-sm border rounded"
+          :class="{ 'bg-success text-light': link.active }"
           :href="link.url"
           v-html="link.label"
         />
@@ -33,3 +30,13 @@
 import { Link } from "@inertiajs/inertia-vue3";
 defineProps(["links"]);
 </script>
+
+<style lang='css' scoped>
+a:hover {
+  background: var(--green-0);
+  color: var(--black);
+}
+.not-allowed {
+  cursor: not-allowed;
+}
+</style>

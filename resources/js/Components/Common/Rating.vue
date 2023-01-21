@@ -25,7 +25,7 @@
       <Icon v-else-if="value >= 4.5" icon="ic:sharp-star-half" />
       <Icon v-else icon="ic:sharp-star-border" />
     </span>
-    <p class="small py-0 my-0 ms-1 text-secondary" v-if="text">{{ text }}</p>
+    <p class="small py-0 my-0 ms-1 text-warning" v-if="text">{{ text }}</p>
   </div>
 </template>
 
@@ -33,7 +33,7 @@
 import { Icon } from "@iconify/vue";
 defineProps({
   value: { type: Number, default: 0, required: true },
-  color: { type: String, default: "#E4811C", required: true },
+  color: { type: String, default: "#E4811C", required: false },
   text: { type: String, default: "", required: false },
 });
 </script>

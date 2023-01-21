@@ -109,8 +109,8 @@ const loginWithGoogle = (response) => {
   <Head title="Register" />
 
   <div id="auth" class="row">
-    <div class="col-lg-6 login__details my-3">
-      <div class="login__form shadow rounded py-1 px-2">
+    <div class="col-lg-6 login__details mb-2">
+      <div class="login__form">
         <Link href="/">
           <img
             src="../../../images/logo/logo.png"

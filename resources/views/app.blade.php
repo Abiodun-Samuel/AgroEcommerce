@@ -16,7 +16,6 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <!-- Scripts -->
-    <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>
     <style>
         body {
             font-family: "Poppins", sans-serif !important;
@@ -27,16 +26,21 @@
             width: 13px;
         }
 
-        /* Track */
         body::-webkit-scrollbar-track {
             box-shadow: inset 0 0 5px grey;
             border-radius: 5px;
         }
 
-        /* Handle */
         body::-webkit-scrollbar-thumb {
             background: #28c76f;
             border-radius: 5px;
+        }
+
+        button:disabled,
+        button[disabled] {
+            border: 1px solid #d8d8d8 !important;
+            background: #d8d8d8 !important;
+            color: #666666 !important;
         }
     </style>
     @routes

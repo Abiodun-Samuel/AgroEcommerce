@@ -3,48 +3,58 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Admin\Category;
-use App\Models\Admin\Product;
-use App\Models\Admin\SubCategory;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Redirect;
 
-class AdminDashboardController extends Controller
+class AdminProfileController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     */
+    * Display a listing of the resource.
+    *
+    //  * @return \Illuminate\Http\Response
+    */
     public function index()
     {
-        $users = User::paginate(10);
-        $products = Product::count();
-        $categories = Category::count();
-        $subcategories = SubCategory::count();
-        return Inertia::render('Admin/AdminIndex', [
-            'users' => $users,
-            'products_count' => $products,
-            'categories_count' => $categories,
-            'subcategories_count' => $subcategories,
-        ]);
+        return Inertia::render('Admin/Profile/ProfileIndex');
     }
-
-    public function userDelete(User $user)
-    {
-        $user->delete();
-        return redirect()->back();
-    }
-    public function updateRole(Request $request, User $user)
+    public function updateAvatar(Request $request, User $user)
     {
         $request->validate([
-            'role' => 'required|string',
+            'avatar' => ['required'],
         ]);
         $user->update([
-            'role' => $request->role,
-            'is_admin' => $request->role == 'Admin' ? true : false,
+            'avatar' => $request->avatar,
         ]);
-        return redirect()->back();
+        return Redirect::route('admin.index');
+    }
+    public function updateProfile(Request $request, User $user)
+    {
+        // dd($request->country['name']);
+        // dd($request->all());
+        $request->validate([
+            'email' => 'required|email',
+            'gender' => 'required|string',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'country' => 'required',
+            'state' => 'required|string',
+            'city' => 'required|string',
+            'dob' => 'required|string',
+        ]);
+        $user->update([
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'country' => $request->country['name'],
+            'state' => $request->state,
+            'city' => $request->city,
+            'dob' => $request->dob,
+            'is_completed' => true
+        ]);
+        return Redirect::route('admin.index');
     }
 
     /**

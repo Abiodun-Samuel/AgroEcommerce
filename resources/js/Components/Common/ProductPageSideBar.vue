@@ -26,13 +26,13 @@
         </div>
         <div class="highlight">
           <p class="m-0 p-0 d-flex justify-content-end">
-            {{ category.sub_category.length }}
+            {{ category.subcategory.length }}
           </p>
         </div>
       </div>
 
       <ul class="dropdown-menu p-0 border-0 shadow">
-        <li v-for="(subcategory, index) in category.sub_category" :key="index">
+        <li v-for="(subcategory, index) in category.subcategory" :key="index">
           <Link
             class="
               dropdown-item
@@ -40,9 +40,7 @@
               align-items-center
               justify-content-between
             "
-            :href="
-              route('productsBySubcategory', [category.slug, subcategory.slug])
-            "
+            :href="route('product-page', subcategory.slug)"
           >
             <div class="d-flex align-items-center">
               <Icon

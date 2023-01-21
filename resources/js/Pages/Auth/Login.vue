@@ -60,7 +60,7 @@ const loginWithGoogle = (response) => {
   <Head title="Sign In" />
 
   <div id="auth" class="row">
-    <div class="col-lg-6 login__details my-4">
+    <div class="col-lg-6 login__details mb-2">
       <div class="login__form">
         <Link href="/">
           <img
@@ -110,8 +110,10 @@ const loginWithGoogle = (response) => {
             <InputError class="mt-1" :message="form.errors.password" />
           </div>
 
-          <div class="block my-2 flex items-center justify-content-between">
-            <label class="flex items-center">
+          <div
+            class="block my-1 d-flex align-items-center justify-content-between"
+          >
+            <label class="d-flex align-items-center">
               <Checkbox name="remember" v-model:checked="form.remember" />
               <span class="ml-2 text-sm text-gray-600">Remember me</span>
             </label>
