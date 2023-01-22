@@ -27,5 +27,27 @@ class Review extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public static function boot()
+    {
+        parent::boot();
+        // static::created(function ($item) {
+        //     dd($item);
+        // });
+        //     static::creating(function ($item) {
+        //         Log::info('Creating event call: ' . $item);
+        //     });
+
+        //     static::updating(function ($item) {
+        //         Log::info('Updating event call: ' . $item);
+
+        //         $item->slug = Str::slug($item->name);
+        //     });
+        //     static::updated(function ($item) {
+        //         Log::info('Updated event call: ' . $item);
+        //     });
+        //     static::deleted(function ($item) {
+        //         Log::info('Deleted event call: ' . $item);
+        //     });
+    }
 
 }

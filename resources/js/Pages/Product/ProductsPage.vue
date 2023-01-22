@@ -1,4 +1,6 @@
 <template>
+  <Head title="Products" />
+
   <GuestLayout>
     <BreadCrump
       v-if="route().params.subcategory"
@@ -12,45 +14,15 @@
         <div class="row">
           <!-- filter options  -->
           <div class="col-lg-3 col-md-4 my-2">
-            <ProductPageSideBar />
+            <ProductPageSideBar
+              @filterByPriceRange="filterByPriceRange"
+              @filterResultFormat="filterResultFormat"
+              @filterTopProducts="filterTopProducts"
+            />
           </div>
           <div class="col-lg-9 col-md-8 my-2">
-            <div class="row mb-3">
-              <div
-                class="col-12 d-flex justify-content-between align-items-center"
-              >
-                <div class="filter_one">
-                  <select
-                    class="form-select"
-                    aria-label="Default select example"
-                    v-model="result_count"
-                    @change="filterResultCount"
-                  >
-                    <option selected value="default">All Products</option>
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                    <option value="15">15</option>
-                  </select>
-                </div>
-                <div class="filter_two">
-                  <select
-                    @change="filterResultFormat"
-                    class="form-select"
-                    v-model="result_format"
-                    aria-label="Default select example"
-                  >
-                    <option value="default" selected>Default</option>
-                    <option value="newest">Newest</option>
-                    <option value="oldest">Oldest</option>
-                    <option value="alpha">Name: A-Z</option>
-                    <option value="non_alpha">Name: Z-A</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-
             <div class="row">
-              <template v-if="all_products.length">
+              <template v-if="all_products?.length">
                 <div
                   v-for="product in all_products"
                   :key="product.id"
@@ -80,7 +52,7 @@
               </template>
             </div>
 
-            <div class="row mt-1">
+            <div v-if="products.links" class="row mt-1">
               <Pagination :links="products.links" />
             </div>
           </div>
@@ -94,7 +66,7 @@
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { computed, ref } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage, Head, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
@@ -115,11 +87,11 @@ const step_two = {
 const props = defineProps({
   products: Array,
 });
-const categories = computed(() => usePage().props.value.data.categories);
-
+const categories = computed(() => usePage().props.data.categories);
 const result_count = ref("default");
 const result_format = ref("default");
-const all_products = ref(props.products.data);
+const all_products = ref(props.products.data || props.products);
+
 function dynamicSort(property, order) {
   if (order == "alpha" || order == "non_alpha") {
     var sortOrder = order == "alpha" ? 1 : -1;
@@ -133,31 +105,104 @@ function dynamicSort(property, order) {
   }
 }
 
-const filterResultCount = () => {
-  // if (result_count.value == "default")
-  //   return (all_products.value = props.products.data);
-  // all_products.value = props.products.data.slice(0, Number(result_count.value));
+const filterResultFormat = (data) => {
+  if (data.result_format == "alpha" || data.result_format == "non_alpha") {
+    if (props.products.data) {
+      all_products.value = props.products.data.sort(
+        dynamicSort("title", data.result_format)
+      );
+    } else {
+      all_products.value = props.products.sort(
+        dynamicSort("title", data.result_format)
+      );
+    }
+  }
+  if (data.result_format == "newest") {
+    if (props.products.data) {
+      all_products.value = props.products.data.sort(function (a, b) {
+        return moment(b.updated_at) - moment(a.updated_at);
+      });
+    } else {
+      all_products.value = props.products.sort(function (a, b) {
+        return moment(b.updated_at) - moment(a.updated_at);
+      });
+    }
+  }
+  if (data.result_format == "oldest") {
+    if (props.products.data) {
+      all_products.value = props.products.data.sort(function (a, b) {
+        return moment(a.updated_at) - moment(b.updated_at);
+      });
+    } else {
+      all_products.value = props.products.sort(function (a, b) {
+        return moment(a.updated_at) - moment(b.updated_at);
+      });
+    }
+  }
 };
 
-const filterResultFormat = () => {
-  if (result_format.value == "default") {
-    all_products.value = props.products.data;
-    return all_products.value.sort(function (a, b) {
-      return moment(b.updated_at) - moment(a.updated_at);
+const filterByPriceRange = (data) => {
+  if (props.products.data) {
+    all_products.value = props.products.data.filter((product) => {
+      if (product.discount_price)
+        return (
+          Number(product.discount_price) >= data.price_min &&
+          Number(product.discount_price) <= data.price_max
+        );
+      if (!product.discount_price)
+        return (
+          Number(product.price) >= data.price_min &&
+          Number(product.price) <= data.price_max
+        );
+    });
+  } else {
+    all_products.value = props.products.filter((product) => {
+      if (product.discount_price)
+        return (
+          Number(product.discount_price) >= data.price_min &&
+          Number(product.discount_price) <= data.price_max
+        );
+      if (!product.discount_price)
+        return (
+          Number(product.price) >= data.price_min &&
+          Number(product.price) <= data.price_max
+        );
     });
   }
-  if (result_format.value == "alpha" || result_format.value == "non_alpha") {
-    all_products.value.sort(dynamicSort("title", result_format.value));
+};
+const filterTopProducts = (data) => {
+  if (data.format == "top_selling") {
+    if (props.products.data) {
+      all_products.value = props.products.data.sort(function (a, b) {
+        return b.sales_count - a.sales_count;
+      });
+    } else {
+      all_products.value = props.products.sort(function (a, b) {
+        return b.sales_count - a.sales_count;
+      });
+    }
   }
-  if (result_format.value == "newest") {
-    return all_products.value.sort(function (a, b) {
-      return moment(b.updated_at) - moment(a.updated_at);
-    });
+  if (data.format == "top_rated") {
+    if (props.products.data) {
+      all_products.value = props.products.data.sort(function (a, b) {
+        return b.reviews_count - a.reviews_count;
+      });
+    } else {
+      all_products.value = props.products.sort(function (a, b) {
+        return b.reviews_count - a.reviews_count;
+      });
+    }
   }
-  if (result_format.value == "oldest") {
-    return all_products.value.sort(function (a, b) {
-      return moment(a.updated_at) - moment(b.updated_at);
-    });
+  if (data.format == "with_discount") {
+    if (props.products.data) {
+      all_products.value = props.products.data.filter(function (product) {
+        return product.discount_price;
+      });
+    } else {
+      all_products.value = props.products.filter(function (product) {
+        return product.discount_price;
+      });
+    }
   }
 };
 </script>

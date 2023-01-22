@@ -1,7 +1,45 @@
-<template>
-  <Head title="Profile" />
+<script setup>
+import UserLayout from "@/Layouts/UserLayout.vue";
+import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
+import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
+import FormError from "@/Components/Common/FormError.vue";
+import NoResult from "@/Components/Common/NoResult.vue";
+import category_img from "@/assets/images/icons/subcategory.png";
+import Modal from "@/Components/Common/Modal.vue";
+import Camera from "simple-vue-camera";
+import { computed, ref } from "vue";
+import { toast } from "@/utils/helper";
+import moment from "moment";
+import { Icon } from "@iconify/vue";
+import avatar from "@/assets/images/img/avatar.png";
+import { Country, State } from "country-state-city";
 
-  <AdminLayout>
+const user = computed(() => usePage().props.auth.user);
+let fileSrc = ref(null);
+const form = useForm({
+  avatar: fileSrc.value,
+});
+const formUpdate = useForm({
+  gender: user.value.gender,
+  phone: user.value.phone,
+  address: user.value.address,
+  city: user.value.city,
+  state: user.value.state,
+  country: user.value.country,
+  email: user.value.email,
+  dob: user.value.dob,
+});
+const step_one = {
+  slug: "Profile",
+  link: false,
+  route_name: null,
+};
+</script>
+
+<template>
+  <Head title="User" />
+
+  <UserLayout>
     <DashboardBreadcrump :step_one="step_one" />
     <hr />
 
@@ -183,217 +221,10 @@
         </div>
       </div>
     </div>
-  </AdminLayout>
-
-  <Modal
-    :show="showImageUploadModal"
-    :size="'modal-md'"
-    :footer="true"
-    @close="showImageUploadModal = false"
-  >
-    <template #header>
-      <h4
-        class="
-          modal-title
-          text-warning
-          d-flex
-          align-items-center
-          gap-1
-          fw-bolder
-        "
-      >
-        Profile Image
-      </h4>
-    </template>
-
-    <template #body>
-      <FormError :errors="form.errors" />
-      <div class="d-flex justify-content-center align-items-center gap-2 mb-2">
-        <button
-          @click="passport_type = 'upload'"
-          class="btn btn-sm btn-outline-success"
-        >
-          Upload
-        </button>
-        <button
-          @click="passport_type = 'snap'"
-          class="btn btn-sm btn-outline-success"
-        >
-          Take Picture
-          <span
-            v-show="spinner"
-            class="spinner-border spinner-border-sm text-success"
-          ></span>
-        </button>
-      </div>
-      <hr />
-
-      <div class="passport d-flex justify-content-between">
-        <div>
-          <div v-if="passport_type == 'upload'" class="file-input">
-            <input
-              type="file"
-              name="file-input"
-              id="file-input"
-              class="file-input__input"
-              accept=".jpg, .jpeg, .png"
-              @change="getFile($event)"
-            />
-            <div class="d-flex justify-content-center align-items-center">
-              <label class="file-input__label" for="file-input">
-                <p class="btn btn-primary p-1">Upload picture</p>
-              </label>
-            </div>
-          </div>
-          <div v-if="passport_type == 'snap'" class="camera">
-            <Camera
-              :resolution="{ width: 150, height: 150 }"
-              ref="camera"
-              autoplay
-              @loading="spinner = true"
-              @started="spinner = false"
-            >
-              <!-- -->
-            </Camera>
-            <div class="d-flex justify-content-center mt-1">
-              <button @click="snapshot" class="btn btn-sm btn-primary">
-                Snap
-              </button>
-            </div>
-          </div>
-        </div>
-        <div v-if="fileSrc" class="show_preview position-relative text-center">
-          <img :src="fileSrc" alt="preview" class="rounded shadow" />
-          <button @click="removeImage" class="btn btn-sm btn-danger mt-1">
-            Delete
-          </button>
-        </div>
-      </div>
-    </template>
-
-    <template #footer>
-      <button
-        :disabled="!fileSrc"
-        @click="uploadProfileImage"
-        class="btn btn-success w-100"
-      >
-        Upload
-        <span
-          v-show="form.processing"
-          class="spinner-border spinner-border-sm text-white"
-        ></span>
-      </button>
-    </template>
-  </Modal>
-  <!--  -->
+  </UserLayout>
 </template>
 
-<script setup>
-import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
-import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
-import FormError from "@/Components/Common/FormError.vue";
-import NoResult from "@/Components/Common/NoResult.vue";
-import category_img from "@/assets/images/icons/subcategory.png";
-import Modal from "@/Components/Common/Modal.vue";
-import Camera from "simple-vue-camera";
-import { computed, ref } from "vue";
-import { toast } from "@/utils/helper";
-import moment from "moment";
-import { Icon } from "@iconify/vue";
-import avatar from "@/assets/images/img/avatar.png";
-import { Country, State } from "country-state-city";
-
-const user = computed(() => usePage().props.auth.user);
-const formUpdate = useForm({
-  gender: user.value.gender,
-  phone: user.value.phone,
-  address: user.value.address,
-  city: user.value.city,
-  state: user.value.state,
-  country: user.value.country,
-  email: user.value.email,
-  dob: user.value.dob,
-});
-const step_one = {
-  slug: "Profile",
-  link: false,
-  route_name: null,
-};
-
-const countries = ref(Country.getAllCountries());
-const states = ref([]);
-
-const getCountryCode = (value) => {
-  states.value = State.getStatesOfCountry(value.isoCode);
-};
-
-let passport_type = ref("upload");
-const camera = ref();
-let fileSrc = ref(null);
-let spinner = ref(false);
-const showImageUploadModal = ref(false);
-const form = useForm({
-  avatar: fileSrc.value,
-});
-
-const snapshot = async () => {
-  await camera.value?.snapshot({ width: 150, height: 150 }, "image/png", 0.5);
-  const dataUrl = camera.value?.canvas.toDataURL("image/png");
-  fileSrc.value = dataUrl;
-  form.avatar = dataUrl;
-};
-
-function getFile(e) {
-  const reader = new FileReader();
-  reader.onloadend = () => {
-    fileSrc.value = reader.result;
-    form.avatar = reader.result;
-  };
-  reader.readAsDataURL(e.target.files[0]);
-}
-function removeImage() {
-  const fileList = document.getElementById("file-input");
-  if (fileList) fileList.value = null;
-  fileSrc.value = null;
-}
-
-const uploadProfileImage = () => {
-  form.clearErrors();
-  const file = document.getElementById("file-input");
-  form.post(route("admin.update-avatar", user.value.id), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast.success("Profile image has been updated successfully");
-      form.reset();
-      if (file) file.value = null;
-      fileSrc.value = null;
-    },
-    onError: () => {
-      toast.error(`Unable to update profile image`);
-    },
-  });
-};
-
-const updateProfile = () => {
-  formUpdate.clearErrors();
-  const myDob = moment(formUpdate.dob).format("YYYY");
-  const getYear = new Date().getFullYear();
-  if (getYear - myDob < 18)
-    return toast.error("You must be greater than 18 years old");
-  formUpdate.post(route("admin.update-profile", user.value.id), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast.success("Profile has been updated successfully");
-    },
-    onError: () => {
-      toast.error(`Unable to update profile.`);
-    },
-  });
-};
-</script>
-
-<style lang="css" scoped>
+<style scoped>
 .camera {
   width: 150px;
   height: 150px;

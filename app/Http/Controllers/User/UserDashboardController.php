@@ -32,6 +32,19 @@ class UserDashboardController extends Controller
             'subcategories' => $subcategories,
         ]);
     }
+    public function myProfile()
+    {
+        return Inertia::render('User/UserProfileIndex', [
+            // 'orders' => $orders,
+        ]);
+    }
+    public function myOrders()
+    {
+        $orders = [];
+        return Inertia::render('User/UserOrderIndex', [
+            'orders' => $orders,
+        ]);
+    }
     /**
      * Display the user's profile form.
      *

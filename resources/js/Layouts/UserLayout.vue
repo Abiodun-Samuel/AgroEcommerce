@@ -1,10 +1,10 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Footer from "@/Components/Dashboard/Footer.vue";
 
-const user = computed(() => usePage().props.value.auth.user);
+const user = computed(() => usePage().props.auth.user);
 
 onMounted(() => {
   var body = document.querySelector("body");
@@ -276,7 +276,7 @@ onMounted(() => {
             </Link>
           </li> -->
           <li class="nav-item">
-            <Link class="nav-link" :href="route('user.index')">
+            <Link class="nav-link" :href="route('user.profile.index')">
               <Icon icon="mdi:user-circle-outline" class="menu-icon" />
               <span class="menu-title">Profile</span>
             </Link>
@@ -288,7 +288,7 @@ onMounted(() => {
             </Link>
           </li> -->
           <li class="nav-item">
-            <Link class="nav-link" :href="route('user.subcategory.index')">
+            <Link class="nav-link" :href="route('user.order.index')">
               <Icon
                 icon="icon-park-outline:transaction-order"
                 class="menu-icon"

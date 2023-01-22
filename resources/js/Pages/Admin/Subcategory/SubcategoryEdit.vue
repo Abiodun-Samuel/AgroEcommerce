@@ -97,7 +97,7 @@
 
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, useForm, usePage } from "@inertiajs/inertia-vue3";
+import { Head, useForm, usePage } from "@inertiajs/vue3";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
 import { ref, computed } from "vue";
 import { toast, firstLetterUpperCase } from "@/utils/helper";
@@ -105,7 +105,7 @@ import { Icon } from "@iconify/vue";
 import FormError from "@/Components/Common/FormError.vue";
 
 const props = defineProps(["subcategory"]);
-const categories = computed(() => usePage().props.value.data.categories);
+const categories = computed(() => usePage().props.data.categories);
 const fileSrc = ref(JSON.parse(props.subcategory.banner_img)?.img_url);
 const formEdit = useForm({
   category_id: props.subcategory.category_id,

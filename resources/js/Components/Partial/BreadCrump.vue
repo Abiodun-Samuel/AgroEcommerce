@@ -60,7 +60,7 @@
 </template>
 
 <script setup>
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { firstLetterUpperCase } from "@/utils/helper";
 
 defineProps(["step_one", "step_two", "step_three"]);

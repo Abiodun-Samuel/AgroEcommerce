@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import SideView from "@/Components/Side.vue";
 
 const props = defineProps({

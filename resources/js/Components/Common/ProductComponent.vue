@@ -69,7 +69,7 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Rating from "@/Components/Common/Rating.vue";
 import { ref, computed } from "vue";

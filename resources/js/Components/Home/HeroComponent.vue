@@ -73,7 +73,7 @@ const hero_imgs = [hero_img1, hero_img2];
   height: 500px;
   display: flex;
   align-items: center;
-  justify-content: start;
+  /* justify-content: start; */
 }
 .hero__text h1 {
   font-family: Verdana, Geneva, Tahoma, sans-serif;

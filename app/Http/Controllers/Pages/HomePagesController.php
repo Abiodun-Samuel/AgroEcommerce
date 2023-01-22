@@ -45,33 +45,28 @@ class HomePagesController extends Controller
      */
     public function products(Request $request, SubCategory $subcategory)
     {
+        $all_products = $request->query('all_products');
+        $value = $request->query('query');
+
         if ($subcategory->id) {
             $products = Product::with('reviews')->where('subcategory_id', $subcategory->id)->paginate(15);
             return Inertia::render('Product/ProductsPage', compact('products'));
         }
-        $value = $request->query('query');
-        // $fliter = $request->query('product_display');
         if ($value == 'top_rated') {
             $products = Product::with('reviews')->orderBy('reviews_count', 'desc')->paginate(15);
             return Inertia::render('Product/ProductsPage', compact('products'));
-
-        } elseif ($value == 'top_selling') {
+        }
+        if ($value == 'top_selling') {
             $products = Product::with('reviews')->orderBy('sales_count', 'desc')->paginate(15);
             return Inertia::render('Product/ProductsPage', compact('products'));
-
-        } elseif ($value == 'product_display') {
-            $products = Product::with('reviews')->latest()->paginate(15);
-            return Inertia::render('Product/ProductsPage', compact('products'));
-
-        } elseif ($request->query('product_display')) {
-            $products = Product::with('reviews')->paginate($request->query('product_display'));
-            return Inertia::render('Product/ProductsPage', compact('products'));
-
-        } else {
-            $products = Product::with('reviews')->latest()->paginate(15);
+        }
+        if ($all_products) {
+            $products = Product::with('reviews')->latest()->get();
             return Inertia::render('Product/ProductsPage', compact('products'));
         }
-        // return Inertia::render('Product/ProductsPage', compact('products'));
+        $products = Product::with('reviews')->latest()->paginate(15);
+        return Inertia::render('Product/ProductsPage', compact('products'));
+
     }
     public function productDetails(Product $product)
     {

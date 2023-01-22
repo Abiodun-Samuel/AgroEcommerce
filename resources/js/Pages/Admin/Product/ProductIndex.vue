@@ -145,7 +145,7 @@
 
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm } from "@inertiajs/vue3";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
 import { ref } from "vue";
 import { toast } from "@/utils/helper";

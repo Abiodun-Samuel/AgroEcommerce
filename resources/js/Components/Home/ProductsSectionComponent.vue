@@ -14,7 +14,7 @@
               :href="route('product-page')"
               class="btn btn-md btn-outline-success rounded-pill"
             >
-              All Products
+              Products
             </Link>
             <Link
               :href="route('product-page', { query: 'top_rated' })"
@@ -74,7 +74,7 @@
 <script setup>
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
-import { Link } from "@inertiajs/inertia-vue3";
+import { Link } from "@inertiajs/vue3";
 
 defineProps(["products"]);
 </script>

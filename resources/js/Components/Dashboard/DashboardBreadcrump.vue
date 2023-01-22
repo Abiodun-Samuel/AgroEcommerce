@@ -7,7 +7,13 @@
             <ol class="breadcrumb">
               <li class="breadcrumb-item">
                 <Link
-                  :href="route('admin.dashboard.index')"
+                  :href="
+                    auth_user.is_admin ||
+                    auth_user.role === 'Admin' ||
+                    auth_user.role === 'Super Admin'
+                      ? route('admin.dashboard.index')
+                      : route('user.dashboard.index')
+                  "
                   class="d-flex align-items-center text-white"
                 >
                   Dashboard
@@ -64,10 +70,12 @@
 </template>
 
 <script setup>
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { firstLetterUpperCase } from "@/utils/helper";
+import { computed } from "vue";
 
 defineProps(["step_one", "step_two", "step_three"]);
+const auth_user = computed(() => usePage().props.auth.user);
 </script>
 
 <style lang="css" scoped>

@@ -136,10 +136,10 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { Carousel, Slide } from "vue3-carousel";
 
-const categories = computed(() => usePage().props.value.data.categories);
+const categories = computed(() => usePage().props.data.categories);
 const subcategories = ref([]);
 
 const myCarousel = ref(null);

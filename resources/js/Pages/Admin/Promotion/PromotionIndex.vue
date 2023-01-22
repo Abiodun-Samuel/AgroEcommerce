@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head } from "@inertiajs/inertia-vue3";
+import { Head } from "@inertiajs/vue3";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
 
 defineProps([

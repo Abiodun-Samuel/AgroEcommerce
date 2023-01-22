@@ -814,15 +814,14 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, onMounted, reactive, ref } from "vue";
-import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3";
-import { Inertia } from "@inertiajs/inertia";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import store from "@/store";
 import NoResult from "@/Components/Common/NoResult.vue";
 import { firstLetterUpperCase, formatCurrency } from "@/utils/helper.js";
 
 const wishList = computed(() => store.getters["wishlistStore/wishListItems"]);
-const auth_user = computed(() => usePage().props.value.auth.user);
-// const data = computed(() => usePage().props.value.data);
+const auth_user = computed(() => usePage().props.auth.user);
+// const data = computed(() => usePage().props.data);
 
 const mobileNavShow = ref(false);
 const wishlistShow = ref(false);

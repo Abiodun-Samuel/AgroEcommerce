@@ -8,7 +8,7 @@
 <script setup>
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import { computed } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 
 const props = defineProps({

@@ -73,3 +73,20 @@ export const unslugify = (slug) => {
     }
     return words.join(" ");
 };
+const filterResultCount = () => {
+    if (result_count.value == "default")
+        return (all_products.value = props.products.data
+            ? props.products.data
+            : props.products);
+    if (props.products.data) {
+        all_products.value = props.products.data.slice(
+            0,
+            Number(result_count.value)
+        );
+    } else {
+        all_products.value = props.products.slice(
+            0,
+            Number(result_count.value)
+        );
+    }
+};

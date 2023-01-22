@@ -1,6 +1,6 @@
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, useForm, Link, usePage } from "@inertiajs/inertia-vue3";
+import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
 import NoResult from "@/Components/Common/NoResult.vue";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
 import { Icon } from "@iconify/vue";
@@ -9,7 +9,7 @@ import Modal from "@/Components/Common/Modal.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
 import { toast } from "@/utils/helper";
 
-const auth_user = computed(() => usePage().props.value.auth.user);
+const auth_user = computed(() => usePage().props.auth.user);
 const props = defineProps([
   "users",
   "categories_count",

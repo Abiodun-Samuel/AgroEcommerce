@@ -1,4 +1,6 @@
 <template>
+  <Head title="Product Details" />
+
   <GuestLayout>
     <BreadCrump :step_one="step_one" :step_two="step_two" />
     <div class="container">
@@ -362,8 +364,12 @@
     </template>
 
     <template #footer>
-      <div class="d-flex gap-1 align-items-center">
-        <button @click="sendReview" class="btn btn-sm btn-success">
+      <div>
+        <button
+          :disabled="!formReview.comment || formReview.processing"
+          @click="sendReview"
+          class="btn btn-sm btn-success mx-1"
+        >
           <span>Send</span>
           <span
             v-if="formReview.processing"
@@ -386,7 +392,7 @@ import FormError from "@/Components/Common/FormError.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { computed, ref } from "vue";
-import { Link, useForm, usePage } from "@inertiajs/inertia-vue3";
+import { Link, useForm, usePage, Head } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
@@ -402,8 +408,8 @@ import {
 } from "@/utils/helper.js";
 import store from "@/store";
 
-const auth_user = computed(() => usePage().props.value.auth.user);
-const categories = computed(() => usePage().props.value.data.categories);
+const auth_user = computed(() => usePage().props.auth.user);
+const categories = computed(() => usePage().props.data.categories);
 const props = defineProps({
   product: Object,
   relatedProducts: Array,

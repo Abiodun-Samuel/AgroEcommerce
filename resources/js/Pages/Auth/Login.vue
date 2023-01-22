@@ -5,12 +5,11 @@ import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
-import { Head, Link, useForm } from "@inertiajs/inertia-vue3";
+import { Head, Link, useForm, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import { toast } from "@/utils/helper";
 import { decodeCredential } from "vue3-google-login";
-import { Inertia } from "@inertiajs/inertia";
 
 defineProps({
   canResetPassword: Boolean,
@@ -52,7 +51,7 @@ const RevealPassword = () => {
 
 const loginWithGoogle = (response) => {
   const userData = decodeCredential(response.credential);
-  Inertia.post(route("google.login.callback"), userData);
+  router.post(route("google.login.callback"), userData);
 };
 </script>
 

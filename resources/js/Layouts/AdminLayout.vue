@@ -1,10 +1,10 @@
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { Link, usePage } from "@inertiajs/inertia-vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Footer from "@/Components/Dashboard/Footer.vue";
 
-const user = computed(() => usePage().props.value.auth.user);
+const user = computed(() => usePage().props.auth.user);
 
 onMounted(() => {
   var body = document.querySelector("body");

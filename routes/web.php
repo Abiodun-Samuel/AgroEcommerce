@@ -68,14 +68,10 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
 
 // Users 
 // Authenticated and verified routes 
-Route::name('user.')->prefix('user')->middleware(['auth', 'verified'])->group(function () {
+Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     // Dashboard Routes 
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard.index');
-    // Route::get('/dashboard/edit', [DashboardController::class, 'edit'])->name('dashboard.edit');
-    // Route::patch('/dashboard', [DashboardController::class, 'update'])->name('dashboard.update');
-    // Route::delete('/dashboard', [DashboardController::class, 'destroy'])->name('dashboard.destroy');
-    Route::get('/orders', [UserDashboardController::class, 'order'])->name('order.index');
-
+    Route::get('/my-orders', [UserDashboardController::class, 'myOrders'])->name('order.index');
 
     // to be deleted 
     // Dashboard Routes 
@@ -84,7 +80,7 @@ Route::name('user.')->prefix('user')->middleware(['auth', 'verified'])->group(fu
     // Route::delete('/dashboard', [AdminDashboardController::class, 'destroy'])->name('dashboard.destroy');
 
     //Admin dashbord
-    Route::get('/profile', [UserDashboardController::class, 'index'])->name('index');
+    Route::get('/profile', [UserDashboardController::class, 'myProfile'])->name('profile.index');
     Route::post('/update-avatar/{user}', [UserDashboardController::class, 'updateAvatar'])->name('update-avatar');
     Route::post('/update-profile/{user}', [UserDashboardController::class, 'updateProfile'])->name('update-profile');
 
@@ -111,7 +107,6 @@ Route::name('user.')->prefix('user')->middleware(['auth', 'verified'])->group(fu
 //Authenticated User Routes
 Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     Route::post('/send-review/{product}', [HomePagesController::class, 'sendReview'])->name('send-review');
-    // Route::post('/send-review', [HomePagesController::class, 'sendReview'])->name('send-review');
 });
 
 require __DIR__ . '/auth.php';

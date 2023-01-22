@@ -257,7 +257,7 @@
 
 <script setup>
 import AdminLayout from "@/Layouts/AdminLayout.vue";
-import { Head, useForm, Link } from "@inertiajs/inertia-vue3";
+import { Head, useForm, Link } from "@inertiajs/vue3";
 import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
 import NoResult from "@/Components/Common/NoResult.vue";
 import category_img from "@/assets/images/icons/subcategory.png";
