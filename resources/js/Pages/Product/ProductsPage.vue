@@ -18,6 +18,7 @@
               @filterByPriceRange="filterByPriceRange"
               @filterResultFormat="filterResultFormat"
               @filterTopProducts="filterTopProducts"
+              @clearFilter="clearFilter"
             />
           </div>
           <div class="col-lg-9 col-md-8 my-2">
@@ -107,37 +108,47 @@ function dynamicSort(property, order) {
 
 const filterResultFormat = (data) => {
   if (data.result_format == "alpha" || data.result_format == "non_alpha") {
-    if (props.products.data) {
-      all_products.value = props.products.data.sort(
-        dynamicSort("title", data.result_format)
-      );
-    } else {
-      all_products.value = props.products.sort(
-        dynamicSort("title", data.result_format)
-      );
-    }
+    all_products.value = all_products.value.sort(
+      dynamicSort("title", data.result_format)
+    );
+
+    // if (props.products.data) {
+    //   all_products.value = props.products.data.sort(
+    //     dynamicSort("title", data.result_format)
+    //   );
+    // } else {
+    //   all_products.value = props.products.sort(
+    //     dynamicSort("title", data.result_format)
+    //   );
+    // }
   }
   if (data.result_format == "newest") {
-    if (props.products.data) {
-      all_products.value = props.products.data.sort(function (a, b) {
-        return moment(b.updated_at) - moment(a.updated_at);
-      });
-    } else {
-      all_products.value = props.products.sort(function (a, b) {
-        return moment(b.updated_at) - moment(a.updated_at);
-      });
-    }
+    all_products.value = all_products.value.sort(function (a, b) {
+      return moment(b.updated_at) - moment(a.updated_at);
+    });
+    // if (props.products.data) {
+    //   all_products.value = props.products.data.sort(function (a, b) {
+    //     return moment(b.updated_at) - moment(a.updated_at);
+    //   });
+    // } else {
+    //   all_products.value = props.products.sort(function (a, b) {
+    //     return moment(b.updated_at) - moment(a.updated_at);
+    //   });
+    // }
   }
   if (data.result_format == "oldest") {
-    if (props.products.data) {
-      all_products.value = props.products.data.sort(function (a, b) {
-        return moment(a.updated_at) - moment(b.updated_at);
-      });
-    } else {
-      all_products.value = props.products.sort(function (a, b) {
-        return moment(a.updated_at) - moment(b.updated_at);
-      });
-    }
+    all_products.value = all_products.value.sort(function (a, b) {
+      return moment(a.updated_at) - moment(b.updated_at);
+    });
+    // if (props.products.data) {
+    //   all_products.value = props.products.data.sort(function (a, b) {
+    //     return moment(a.updated_at) - moment(b.updated_at);
+    //   });
+    // } else {
+    //   all_products.value = props.products.sort(function (a, b) {
+    //     return moment(a.updated_at) - moment(b.updated_at);
+    //   });
+    // }
   }
 };
 
@@ -172,26 +183,34 @@ const filterByPriceRange = (data) => {
 };
 const filterTopProducts = (data) => {
   if (data.format == "top_selling") {
-    if (props.products.data) {
-      all_products.value = props.products.data.sort(function (a, b) {
-        return b.sales_count - a.sales_count;
-      });
-    } else {
-      all_products.value = props.products.sort(function (a, b) {
-        return b.sales_count - a.sales_count;
-      });
-    }
+    all_products.value = all_products.value.sort(function (a, b) {
+      return b.sales_count - a.sales_count;
+    });
+
+    // if (props.products.data) {
+    //   all_products.value = props.products.data.sort(function (a, b) {
+    //     return b.sales_count - a.sales_count;
+    //   });
+    // } else {
+    //   all_products.value = props.products.sort(function (a, b) {
+    //     return b.sales_count - a.sales_count;
+    //   });
+    // }
   }
   if (data.format == "top_rated") {
-    if (props.products.data) {
-      all_products.value = props.products.data.sort(function (a, b) {
-        return b.reviews_count - a.reviews_count;
-      });
-    } else {
-      all_products.value = props.products.sort(function (a, b) {
-        return b.reviews_count - a.reviews_count;
-      });
-    }
+    all_products.value = all_products.value.sort(function (a, b) {
+      return b.reviews_count - a.reviews_count;
+    });
+
+    // if (props.products.data) {
+    //   all_products.value = props.products.data.sort(function (a, b) {
+    //     return b.reviews_count - a.reviews_count;
+    //   });
+    // } else {
+    //   all_products.value = props.products.sort(function (a, b) {
+    //     return b.reviews_count - a.reviews_count;
+    //   });
+    // }
   }
   if (data.format == "with_discount") {
     if (props.products.data) {
@@ -203,6 +222,13 @@ const filterTopProducts = (data) => {
         return product.discount_price;
       });
     }
+  }
+};
+const clearFilter = () => {
+  if (props.products.data) {
+    all_products.value = props.products.data;
+  } else {
+    all_products.value = props.products;
   }
 };
 </script>

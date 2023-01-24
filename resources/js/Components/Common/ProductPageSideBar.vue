@@ -28,6 +28,7 @@
             class="d-flex align-items-center justify-content-between"
             :href="route('product-page', subcategory.slug)"
             style="margin: 7px 0px"
+            preserve-scroll
           >
             <div class="d-flex align-items-center">
               <Icon
@@ -50,7 +51,8 @@
     <h4 class="text-dark fw-bolder">Filter</h4>
     <hr />
     <Link
-      class="btn btn-outline-primary w-100 rounded-pill"
+      preserve-scroll
+      class="btn btn-sm btn-outline-primary w-100 rounded"
       :href="route('product-page', { all_products: true })"
     >
       All Products
@@ -60,7 +62,7 @@
       <input
         class="form-check-input"
         type="radio"
-        name="filtercheckbox"
+        name="filterOrigin"
         id="filterProductsByPrice1"
         @input="
           emit('filterByPriceRange', {
@@ -80,7 +82,7 @@
       <input
         class="form-check-input"
         type="radio"
-        name="filtercheckbox"
+        name="filterOrigin"
         id="filterProductsByPrice2"
         @input="
           emit('filterByPriceRange', {
@@ -100,7 +102,7 @@
       <input
         class="form-check-input"
         type="radio"
-        name="filtercheckbox"
+        name="filterOrigin"
         id="filterProductsByPrice3"
         @input="
           emit('filterByPriceRange', {
@@ -116,6 +118,22 @@
         Price Range: Above &#8358; 1000
       </label>
     </div>
+    <div class="form-check" style="margin: 7px 0">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="filterOrigin"
+        id="product_order_seven"
+        @input="emit('filterTopProducts', { format: 'with_discount' })"
+      />
+      <label
+        class="form-check-label text-primary small"
+        for="product_order_seven"
+      >
+        Product: With discount
+      </label>
+    </div>
+
     <hr />
     <div class="form-check" style="margin: 7px 0">
       <input
@@ -149,6 +167,7 @@
     </div>
     <div class="form-check" style="margin: 7px 0">
       <input
+        ref="checkboxes"
         class="form-check-input"
         type="radio"
         name="filtercheckbox"
@@ -166,6 +185,7 @@
       <input
         class="form-check-input"
         type="radio"
+        ref="checkboxes"
         name="filtercheckbox"
         id="product_order_four"
         @input="emit('filterResultFormat', { result_format: 'non_alpha' })"
@@ -177,8 +197,6 @@
         Product: Z-A
       </label>
     </div>
-
-    <hr />
     <div class="form-check" style="margin: 7px 0">
       <input
         class="form-check-input"
@@ -198,6 +216,7 @@
       <input
         class="form-check-input"
         type="radio"
+        ref="checkboxes"
         name="filtercheckbox"
         id="product_order_six"
         @input="emit('filterTopProducts', { format: 'top_rated' })"
@@ -209,20 +228,14 @@
         Product: Top Rated
       </label>
     </div>
-    <div class="form-check" style="margin: 7px 0">
-      <input
-        class="form-check-input"
-        type="radio"
-        name="filtercheckbox"
-        id="product_order_seven"
-        @input="emit('filterTopProducts', { format: 'with_discount' })"
-      />
-      <label
-        class="form-check-label text-primary small"
-        for="product_order_seven"
+    <hr />
+    <div>
+      <button
+        @click="clearFilter"
+        class="btn btn-sm btn-outline-danger w-100 rounded"
       >
-        Product: With discount
-      </label>
+        Clear
+      </button>
     </div>
   </div>
 </template>
@@ -237,6 +250,12 @@ import { Icon } from "@iconify/vue";
 const emit = defineEmits(["filterByPriceRange"]);
 
 const categories = computed(() => usePage().props.data.categories);
+
+const clearFilter = () => {
+  const checkboxes = document.querySelectorAll(".form-check-input");
+  checkboxes.forEach((checkbox) => (checkbox.checked = false));
+  emit("clearFilter");
+};
 </script>
 
 <style lang="css" scoped>
