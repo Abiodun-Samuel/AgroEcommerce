@@ -4,8 +4,12 @@ import HeroComponent from "@/Components/Home/HeroComponent.vue";
 import CategoryComponent from "@/Components/Home/CategoryComponent.vue";
 import ProductsSectionComponent from "@/Components/Home/ProductsSectionComponent.vue";
 import PromotionComponent from "@/Components/Home/PromotionComponent.vue";
+import { computed } from "vue";
+import { usePage } from "@inertiajs/vue3";
 
-defineProps(["products"]);
+defineProps(["products", "promotions"]);
+const settings = computed(() => usePage().props.data.settings);
+const auth_user = computed(() => usePage().props.auth.user);
 </script>
 
 <template>
@@ -14,6 +18,9 @@ defineProps(["products"]);
     <HeroComponent />
     <CategoryComponent />
     <ProductsSectionComponent :products="products" />
-    <PromotionComponent />
+    <PromotionComponent
+      :promotions="promotions"
+      v-if="settings.promotion == true"
+    />
   </GuestLayout>
 </template>

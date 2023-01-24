@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Models\Admin\Category;
 // use App\Models\User;
+use App\Models\Admin\Setting;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
@@ -44,6 +45,7 @@ class HandleInertiaRequests extends Middleware
             ],
             'data' => [
                 'categories' => Category::with('subcategory.products')->get(),
+                'settings' => Setting::first(),
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

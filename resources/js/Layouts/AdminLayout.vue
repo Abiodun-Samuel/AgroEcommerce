@@ -350,6 +350,15 @@ onMounted(() => {
           </li>
           <li class="nav-item">
             <Link class="nav-link" :href="route('admin.subcategory.index')">
+              <Icon
+                icon="icon-park-outline:weixin-cards-offers"
+                class="menu-icon"
+              />
+              <span class="menu-title">Promotions</span>
+            </Link>
+          </li>
+          <li class="nav-item">
+            <Link class="nav-link" :href="route('admin.subcategory.index')">
               <Icon icon="uiw:setting-o" class="menu-icon" />
               <span class="menu-title">Settings</span>
             </Link>

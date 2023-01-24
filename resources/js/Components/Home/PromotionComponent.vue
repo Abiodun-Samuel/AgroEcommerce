@@ -11,43 +11,17 @@
       </div>
       <div class="row mt-2">
         <div
+          v-for="(promotion, index) in promotions"
+          :key="promotion.id + index"
           data-aos="fade-up"
-          data-aos-delay="0"
-          class="col-lg-4 col-md-6 mb-1"
+          :data-aos-delay="50 * index"
+          class="col-lg-3 col-md-6 mb-1"
         >
           <div class="promotion__box">
             <img
               class="img-fluid shadow-sm rounded"
               loading="lazy"
-              src="@/assets/images/offers/offer1.png"
-              alt="amazing_offers"
-            />
-          </div>
-        </div>
-        <div
-          data-aos="fade-up"
-          data-aos-delay="50"
-          class="col-lg-4 col-md-6 mb-1"
-        >
-          <div class="promotion__box">
-            <img
-              class="img-fluid shadow-sm rounded"
-              loading="lazy"
-              src="@/assets/images/offers/offers2.png"
-              alt="amazing_offers"
-            />
-          </div>
-        </div>
-        <div
-          data-aos="fade-up"
-          data-aos-delay="100"
-          class="col-lg-4 col-md-6 mb-1"
-        >
-          <div class="promotion__box">
-            <img
-              class="img-fluid shadow-sm rounded"
-              loading="lazy"
-              src="@/assets/images/offers/offer3.png"
+              :src="JSON.parse(promotion.banner_img).img_url"
               alt="amazing_offers"
             />
           </div>
@@ -58,6 +32,7 @@
 </template>
 
 <script setup>
+defineProps(["promotions"]);
 </script>
 
 <style lang="css" scoped>

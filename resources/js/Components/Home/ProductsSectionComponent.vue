@@ -14,7 +14,7 @@
               :href="route('product-page')"
               class="btn btn-md btn-outline-success rounded-pill"
             >
-              Products
+              All Products
             </Link>
             <Link
               :href="route('product-page', { query: 'top_rated' })"

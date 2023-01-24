@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Pages;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\Product;
+// use App\Models\Admin\Setting;
+use App\Models\Admin\Promotion;
 use App\Models\Admin\Subcategory;
 use App\Models\Review;
 use App\Models\WishList;
@@ -16,9 +18,9 @@ class HomePagesController extends Controller
     //Home Page
     public function index()
     {
-
-        $products = Product::with('reviews.user')->latest()->paginate(12);
-        return Inertia::render('HomePage', compact('products'));
+        $promotions = Promotion::get();
+        $products = Product::with('reviews.user')->latest()->paginate(15);
+        return Inertia::render('HomePage', compact('products', 'promotions'));
     }
     /**
      * Search products
@@ -117,3 +119,7 @@ class HomePagesController extends Controller
         return response()->json($cart);
     }
 }
+
+// Setting::create([
+//     'promotion' => true
+// ]);

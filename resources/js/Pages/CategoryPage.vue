@@ -16,8 +16,6 @@ const props = defineProps({
 });
 
 const data = computed(() => usePage().props);
-// console.log(data.value);
-console.log(props.sub_category);
 const slug = route().params;
 </script>
 
