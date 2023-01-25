@@ -64,6 +64,8 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::get('/promotions', [AdminPromotionController::class, 'index'])->name('promotion.index');
     Route::post('/promotions', [AdminPromotionController::class, 'store'])->name('promotion.store');
     Route::get('/promotions/{promotion}', [AdminPromotionController::class, 'edit'])->name('promotion.edit');
+    Route::post('/promotions/{promotion}', [AdminPromotionController::class, 'update'])->name('promotion.update');
+    Route::delete('/promotions/{promotion}', [AdminPromotionController::class, 'destroy'])->name('promotion.destroy');
     //Admin orders
     Route::get('/orders', [AdminPromotionController::class, 'index'])->name('order.index');
     //Admin promotion

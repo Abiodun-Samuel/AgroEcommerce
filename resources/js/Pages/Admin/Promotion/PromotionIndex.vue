@@ -5,9 +5,11 @@ import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue"
 import { ref } from "vue";
 import { toast } from "@/utils/helper";
 import { Icon } from "@iconify/vue";
+import Modal from "@/Components/Common/Modal.vue";
 
-defineProps(["promotions"]);
+const props = defineProps(["promotions"]);
 
+const showDeletePromotionModal = ref(false);
 let fileSrc = ref(null);
 const step_one = {
   slug: "Promotions",
@@ -19,6 +21,9 @@ const form = useForm({
   promotion_title: null,
   promotion_desc: null,
   folder: "promotion",
+});
+const formDelete = useForm({
+  id: null,
 });
 
 function getFile(e) {
@@ -47,6 +52,19 @@ const savePromotion = () => {
     },
     onError: () => {
       toast.error(`Unable to save new promotion`);
+    },
+  });
+};
+const deletePromotion = () => {
+  formDelete.delete(route("admin.promotion.destroy", formDelete.id), {
+    preserveScroll: true,
+    onSuccess: () => {
+      toast.success("Promotion has been deleted successfully");
+      formDelete.reset();
+      showDeletePromotionModal.value = false;
+    },
+    onError: () => {
+      toast.error(`Unable to delete this promotion`);
     },
   });
 };
@@ -159,12 +177,7 @@ const savePromotion = () => {
                       </div>
                       <div class="col-lg-12">
                         <button
-                          :disabled="
-                            form.processing ||
-                            !form.promotion_img ||
-                            !form.promotion_desc ||
-                            !form.promotion_title
-                          "
+                          :disabled="form.processing || !form.promotion_img"
                           @click="savePromotion"
                           class="btn btn-success"
                         >
@@ -236,7 +249,7 @@ const savePromotion = () => {
                       </Link>
                       <button
                         @click="
-                          showDeletepromotionModal = true;
+                          showDeletePromotionModal = true;
                           formDelete.id = promotion.id;
                         "
                         class="btn btn-danger btn-sm"
@@ -256,6 +269,58 @@ const savePromotion = () => {
       </div>
     </div>
   </AdminLayout>
+  <Modal
+    :show="showDeletePromotionModal"
+    :size="'modal-sm'"
+    :footer="true"
+    @close="showDeletePromotionModal = false"
+  >
+    <template #header>
+      <h4
+        class="
+          modal-title
+          text-warning
+          d-flex
+          align-items-center
+          gap-1
+          fw-bolder
+        "
+      >
+        <Icon icon="icon-park-outline:caution" />
+        Caution
+      </h4>
+    </template>
+
+    <template #body>
+      <p class="text-danger lead">
+        Are you sure you want to delete this promotion?
+      </p>
+    </template>
+
+    <template #footer>
+      <div>
+        <button
+          :disabled="formDelete.processing"
+          @click="deletePromotion"
+          class="btn btn-sm btn-danger mx-1"
+        >
+          <span>Yes, Delete</span>
+          <span
+            v-if="formDelete.processing"
+            class="spinner-border spinner-border-sm mx-1"
+            role="status"
+            aria-hidden="true"
+          ></span>
+        </button>
+        <button
+          @click="showDeletePromotionModal = false"
+          class="btn btn-sm btn-success"
+        >
+          No, Cancel
+        </button>
+      </div>
+    </template>
+  </Modal>
 </template>
 
 <style scoped>

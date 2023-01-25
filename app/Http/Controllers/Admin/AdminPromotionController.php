@@ -45,8 +45,8 @@ class AdminPromotionController extends Controller
     {
         $request->validate([
             'promotion_img' => 'required',
-            'promotion_desc' => 'required|string',
-            'promotion_title' => 'required|string',
+            'promotion_desc' => 'string|nullable',
+            'promotion_title' => 'string|nullable',
         ]);
         $banner_img = $this->uploadImage($request->file('promotion_img'), $request->folder);
         Promotion::create([
@@ -71,12 +71,13 @@ class AdminPromotionController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function edit($id)
+    public function edit(Promotion $promotion)
     {
-        //
+        return Inertia::render('Admin/Promotion/PromotionEdit', [
+            'promotion' => $promotion
+        ]);
     }
 
     /**
@@ -86,19 +87,51 @@ class AdminPromotionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Promotion $promotion)
     {
-        //
+        $request->validate([
+            'promotion_img' => 'required',
+            'promotion_title' => 'string|nullable',
+            'promotion_desc' => 'string|nullable'
+        ]);
+
+        if ($request->hasFile('promotion_img')) {
+            $val = $this->searchImage($request->promotion_img_id);
+            if ($val['total_count'] >= 1) {
+                $this->deleteImage($request->promotion_img_id);
+                $banner_img = $this->uploadImage($request->file('promotion_img'), $request->folder);
+                $promotion->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->promotion_title,
+                    'description' => $request->promotion_desc,
+                ]);
+            } else {
+                $banner_img = $this->uploadImage($request->file('promotion_img'), $request->folder);
+                $promotion->update([
+                    'banner_img' => $banner_img,
+                    'title' => $request->promotion_title,
+                    'description' => $request->promotion_desc,
+                ]);
+            }
+        } else {
+            $promotion->update([
+                'banner_img' => $request->promotion_img,
+                'title' => $request->promotion_title,
+                'description' => $request->promotion_desc,
+            ]);
+        }
+        return redirect()->route('admin.promotion.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     *
      */
-    public function destroy($id)
+    public function destroy(Promotion $promotion)
     {
-        //
+        $this->deleteImage(json_decode($promotion->banner_img)->img_id);
+        $promotion->delete();
+        return redirect()->back();
     }
 }

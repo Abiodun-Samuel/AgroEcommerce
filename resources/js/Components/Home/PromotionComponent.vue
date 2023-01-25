@@ -24,6 +24,10 @@
               :src="JSON.parse(promotion.banner_img).img_url"
               alt="amazing_offers"
             />
+            <div class="promotion__details shadow-sm rounded">
+              <h4 class="text-light fw-bolder">{{ promotion?.title }}</h4>
+              <p class="text-secondary">{{ promotion?.description }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -48,5 +52,29 @@ defineProps(["promotions"]);
 .promotion__section__header h3 {
   font-size: 2rem;
   font-weight: bolder;
+}
+.promotion__box {
+  position: relative;
+  transition: 500ms ease;
+}
+.promotion__details {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: 500ms ease;
+}
+.promotion__box:hover .promotion__details {
+  display: flex;
+  background: rgba(0, 0, 0, 0.65);
+  cursor: pointer;
 }
 </style>
