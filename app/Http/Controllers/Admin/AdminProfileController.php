@@ -48,7 +48,7 @@ class AdminProfileController extends Controller
             'gender' => $request->gender,
             'phone' => $request->phone,
             'address' => $request->address,
-            'country' => $request->country['name'],
+            'country' => gettype($request->country) == 'array' ? $request->country['name'] : $request->country,
             'state' => $request->state,
             'city' => $request->city,
             'dob' => $request->dob,

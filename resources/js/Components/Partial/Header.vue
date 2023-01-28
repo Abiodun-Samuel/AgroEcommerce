@@ -702,7 +702,11 @@
   </div>
 
   <!-- wishlist  -->
-  <div v-if="wishlistShow" class="wishlist__box shadow-lg bg-light">
+  <div
+    v-if="wishlistShow"
+    class="wishlist__box shadow-lg bg-light"
+    data-aos="fade-left"
+  >
     <div class="container">
       <div class="d-flex justify-content-between align-items-center">
         <h3 class="fw-bolder my-0 py-0">My Wishlist</h3>

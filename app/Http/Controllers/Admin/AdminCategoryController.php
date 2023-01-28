@@ -14,7 +14,6 @@ class AdminCategoryController extends Controller
 {
     use CloudinaryUpload;
 
-
     public function index()
     {
         $categories = Category::get();

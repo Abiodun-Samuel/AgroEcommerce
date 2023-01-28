@@ -84,12 +84,12 @@ Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     // Route::patch('/dashboard', [AdminDashboardController::class, 'update'])->name('dashboard.update');
     // Route::delete('/dashboard', [AdminDashboardController::class, 'destroy'])->name('dashboard.destroy');
 
-    //Admin dashbord
+    //User Dashboard
     Route::get('/profile', [UserDashboardController::class, 'myProfile'])->name('profile.index');
     Route::post('/update-avatar/{user}', [UserDashboardController::class, 'updateAvatar'])->name('update-avatar');
     Route::post('/update-profile/{user}', [UserDashboardController::class, 'updateProfile'])->name('update-profile');
 
-    //Admin Dashboard Category
+
     Route::get('/category', [AdminCategoryController::class, 'index'])->name('category.index');
     Route::get('/category/{category}', [AdminCategoryController::class, 'edit'])->name('category.edit');
     Route::post('/category/{category}', [AdminCategoryController::class, 'update'])->name('category.update');

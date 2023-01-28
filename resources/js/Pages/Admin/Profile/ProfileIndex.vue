@@ -171,7 +171,7 @@
               :disabled="formUpdate.processing"
               class="btn btn-success w-100"
             >
-              <span>Edit</span>
+              <span>Update</span>
               <span
                 v-if="formUpdate.processing"
                 class="spinner-border spinner-border-sm mx-1"

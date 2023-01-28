@@ -342,12 +342,12 @@ onMounted(() => {
             </div>
           </li> -->
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <Link class="nav-link" :href="route('user.subcategory.index')">
               <Icon icon="uiw:setting-o" class="menu-icon" />
               <span class="menu-title">Settings</span>
             </Link>
-          </li>
+          </li> -->
           <!-- <li class="nav-item">
             <a class="nav-link" href="pages/tables/basic-table.html">
               <span class="menu-title">Tables</span>

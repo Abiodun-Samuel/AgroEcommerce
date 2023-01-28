@@ -4,9 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Admin\Category;
-use App\Models\Admin\Product;
-use App\Models\Admin\SubCategory;
+use App\Traits\CloudinaryUpload;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,19 +15,12 @@ use App\Models\User;
 
 class UserDashboardController extends Controller
 {
+    use CloudinaryUpload;
     public function index(Request $request)
     {
-        $users = User::get();
-        $products = Product::get();
-        $categories = Category::get();
-        $subcategories = SubCategory::get();
+        $orders = [];
         return Inertia::render('User/UserIndex', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-            'users' => $users,
-            'products' => $products,
-            'categories' => $categories,
-            'subcategories' => $subcategories,
+            'orders' => $orders,
         ]);
     }
     public function myProfile()
@@ -37,6 +28,44 @@ class UserDashboardController extends Controller
         return Inertia::render('User/UserProfileIndex', [
             // 'orders' => $orders,
         ]);
+    }
+    public function updateAvatar(Request $request, User $user)
+    {
+
+        $request->validate([
+            'avatar' => 'required',
+        ]);
+        $user->update([
+            'avatar' => $request->avatar,
+        ]);
+        return redirect()->back();
+    }
+
+    public function updateProfile(Request $request, User $user)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'gender' => 'required|string',
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'country' => 'required',
+            'state' => 'required|string',
+            'city' => 'required|string',
+            'dob' => 'required|string',
+        ]);
+
+        $user->update([
+            'email' => $request->email,
+            'gender' => $request->gender,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'country' => gettype($request->country) == 'array' ? $request->country['name'] : $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
+            'dob' => $request->dob,
+            'is_completed' => true
+        ]);
+        return redirect()->back();
     }
     public function myOrders()
     {
