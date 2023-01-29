@@ -195,7 +195,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         CloudinaryLabs\CloudinaryLaravel\CloudinaryServiceProvider::class,
-
+        Darryldecode\Cart\CartServiceProvider::class,
     ],
 
     /*
@@ -210,7 +210,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class
+        'Cloudinary' => CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::class,
+        'Cart' => Darryldecode\Cart\Facades\CartFacade::class
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

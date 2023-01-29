@@ -45,10 +45,10 @@
         <button
           @click="addToCart(product)"
           class="shadow btn-sm btn-success w-100"
-          :disabled="cart_loader"
+          :disabled="loading"
         >
           <span
-            v-if="cart_loader"
+            v-if="loading"
             class="spinner-border spinner-border-sm"
             role="status"
             aria-hidden="true"
@@ -69,19 +69,22 @@
 </template>
 
 <script setup>
-import { Link } from "@inertiajs/vue3";
+import { Link, useForm } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Rating from "@/Components/Common/Rating.vue";
 import { ref, computed } from "vue";
-import { toast } from "@/utils/helper";
 import store from "@/store";
 import {
+  toast,
   firstLetterUpperCase,
   discountPercentage,
   formatProductName,
   formatCurrency,
 } from "@/utils/helper.js";
 
+const props = defineProps(["product"]);
+
+const loading = ref(false);
 const averageRating = computed(() => {
   if (!props.product.reviews.length) return 0;
   const totalRatings = props.product.reviews.reduce(
@@ -104,18 +107,32 @@ const addToWishList = (params) => {
   store.dispatch("wishlistStore/addToWishList", product);
 };
 const addToCart = (params) => {
+  loading.value = true;
   const product = {
     id: params.id,
-    title: params.title,
-    sub_title: params.sub_title,
+    name: params.title,
     image: params.image,
-    price: params.discount_price ? params.discount_price : params.price,
+    slug: params.slug,
+    stock: params.stock,
+    price: Number(params.discount_price)
+      ? Number(params.discount_price)
+      : Number(params.price),
     quantity: 1,
   };
-  // store.dispatch("wistlist/addToWishList", product);
+  axios
+    .post(route("add-to-cart"), product)
+    .then((res) => {
+      loading.value = false;
+      toast.success(
+        firstLetterUpperCase(props.product.title) +
+          " has been added to your cart."
+      );
+    })
+    .catch(() => {
+      loading.value = false;
+      toast.error(`Unable to add ${props.product.title} to your cart.`);
+    });
 };
-
-const props = defineProps(["product"]);
 </script>
 
 <style lang="css" scoped>

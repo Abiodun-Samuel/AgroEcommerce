@@ -98,26 +98,6 @@ class HomePagesController extends Controller
         ]);
         return redirect()->back();
     }
-
-    public function addToCart(Request $request)
-    {
-        $cart = $request->session()->get('add-to-cart');
-
-        if (is_null($cart)) {
-            $cart = array($request->product);
-        } else {
-            // $cart = unserialize($cart);
-            array_push($cart, $request->product);
-        }
-        $request->session()->put('add-to-cart', $cart);
-        return response()->json(['message' => $request->product['title'] . 'has been added to your cart', 'cart' => $cart]);
-    }
-    public function getCart(Request $request)
-    {
-        $cart = $request->session()->get('add-to-cart');
-        // dd($cart);
-        return response()->json($cart);
-    }
 }
 
 // Setting::create([

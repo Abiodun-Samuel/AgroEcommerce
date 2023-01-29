@@ -97,7 +97,7 @@
               </button>
             </div>
             <div class="box">
-              <Link class="d-flex align-items-center">
+              <Link :href="route('cart')" class="d-flex align-items-center">
                 <div class="icon">
                   <p class="count">
                     {{ cart?.length }}
@@ -825,7 +825,6 @@ import { firstLetterUpperCase, formatCurrency } from "@/utils/helper.js";
 
 const wishList = computed(() => store.getters["wishlistStore/wishListItems"]);
 const auth_user = computed(() => usePage().props.auth.user);
-// const data = computed(() => usePage().props.data);
 
 const mobileNavShow = ref(false);
 const wishlistShow = ref(false);

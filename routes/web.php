@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminPromotionController;
 use App\Http\Controllers\Admin\AdminSubcategoryController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Pages\HomePagesController;
 // users 
 use App\Http\Controllers\UploadController;
@@ -21,8 +22,11 @@ Route::get('/', [HomePagesController::class, 'index'])->name('home');
 Route::post('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
 Route::get('/products/{subcategory:slug?}', [HomePagesController::class, 'products'])->name('product-page');
 Route::get('/product/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
-Route::post('/add-to-cart', [HomePagesController::class, 'addToCart'])->name('add-to-cart');
-Route::get('/cart', [HomePagesController::class, 'getCart'])->name('cart');
+Route::get('/cart', [CartController::class, 'cartList'])->name('cart');
+Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
+Route::put('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
+Route::put('/remove-cart', [CartController::class, 'removeCart'])->name('remove-cart');
+Route::delete('/clear-cart', [CartController::class, 'clearAllCart'])->name('clear-cart');
 
 //Admin routes
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin'])->group(function () {
@@ -106,7 +110,6 @@ Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     Route::get('/product-create', [AdminProductController::class, 'create'])->name('product.create');
     Route::post('/product', [AdminProductController::class, 'store'])->name('product.store');
     Route::delete('/product/{product}', [AdminProductController::class, 'destroy'])->name('product.destroy');
-
 });
 
 //Authenticated User Routes
