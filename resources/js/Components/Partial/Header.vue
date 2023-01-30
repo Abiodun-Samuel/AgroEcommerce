@@ -100,7 +100,7 @@
               <Link :href="route('cart')" class="d-flex align-items-center">
                 <div class="icon">
                   <p class="count">
-                    {{ cart?.length }}
+                    {{ cartCount }}
                   </p>
                   <Icon icon="ic:outline-shopping-cart" height="25" />
                 </div>
@@ -725,19 +725,6 @@
         <button @click="clearWishList" class="btn btn-sm btn-danger">
           Clear All
         </button>
-        <button
-          @click="addToCart(product)"
-          class="btn-sm btn-success"
-          :disabled="cart_loader"
-        >
-          <span
-            v-if="cart_loader"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          Add All
-        </button>
       </div>
 
       <template v-if="wishList.length">
@@ -746,63 +733,9 @@
           style="padding: 10px"
           v-for="item in wishList"
           :key="item"
-          class="my-1 shadow rounded"
+          class="my-1 shadow-sm bg-white rounded"
         >
-          <div class="d-flex justify-content-between align-items-start">
-            <div>
-              <img
-                width="55"
-                height="55"
-                class="rounded"
-                :src="JSON.parse(item.image).img_url"
-                :alt="item.title"
-              />
-            </div>
-            <div>
-              <h5 class="fw-bolder">{{ item.title }}</h5>
-              <p class="fw-light">{{ item.sub_title }}</p>
-            </div>
-          </div>
-          <hr class="my-0 py-0" />
-          <div class="d-flex gap-2 justify-content-between align-items-center">
-            <h5
-              style="background: var(--green-0); padding: 2px"
-              class="fw-bolder rounded"
-            >
-              <span>&#8358;</span>{{ formatCurrency(item.price) }}
-            </h5>
-            <div
-              class="d-flex gap-1 justify-content-between align-items-center"
-            >
-              <button
-                @click="removeFromWishList(item.id)"
-                class="btn text-danger"
-              >
-                <Icon
-                  height="15"
-                  icon="material-symbols:delete-outline-rounded"
-                />
-              </button>
-              <button
-                @click="addToCart(product)"
-                class="shadow btn-sm btn-success"
-                :disabled="cart_loader"
-              >
-                <span
-                  v-if="cart_loader"
-                  class="spinner-border spinner-border-sm"
-                  role="status"
-                  aria-hidden="true"
-                ></span>
-                <span
-                  v-else
-                  class="d-flex align-items-center justify-content-center"
-                >
-                  <Icon height="13" icon="ic:outline-shopping-cart" />
-                </span>
-              </button>
-            </div>
-          </div>
+          <WishListItem :item="item" />
         </div>
       </template>
       <template v-else>
@@ -816,33 +749,31 @@
           
 
 <script setup>
+import WishListItem from "@/Components/Common/WishListItem.vue";
 import { Icon } from "@iconify/vue";
 import { computed, onMounted, reactive, ref } from "vue";
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { Link, usePage } from "@inertiajs/vue3";
 import store from "@/store";
 import NoResult from "@/Components/Common/NoResult.vue";
-import { firstLetterUpperCase, formatCurrency } from "@/utils/helper.js";
+import { toast } from "@/utils/helper.js";
 
 const wishList = computed(() => store.getters["wishlistStore/wishListItems"]);
 const auth_user = computed(() => usePage().props.auth.user);
+const cartCount = computed(() => usePage().props.data.cartCount);
 
 const mobileNavShow = ref(false);
 const wishlistShow = ref(false);
 const body__overlay = ref(false);
-const val = ref(null);
 
 const products_results = ref([]);
 const form = reactive({
   query: "",
 });
 
-const removeFromWishList = (productId) => {
-  store.dispatch("wishlistStore/removeFromWishList", productId);
-};
 const clearWishList = (params) => {
   store.dispatch("wishlistStore/clearWishList");
+  toast.success("Your wishlist has been cleared.");
 };
-const addToCart = (params) => {};
 
 const mobileNavHandler = () => {
   const mobileNav = document.querySelector(".mobile__nav");
@@ -873,7 +804,6 @@ const search = (e) => {
 };
 
 onMounted(() => {
-  // store.dispatch("cart/getCart");
   let e, o, n;
   o = 0;
   n = document.querySelector(".header__two");

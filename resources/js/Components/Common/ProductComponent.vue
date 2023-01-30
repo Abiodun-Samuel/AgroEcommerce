@@ -78,7 +78,6 @@ import {
   toast,
   firstLetterUpperCase,
   discountPercentage,
-  formatProductName,
   formatCurrency,
 } from "@/utils/helper.js";
 
@@ -108,7 +107,7 @@ const addToWishList = (params) => {
 };
 const addToCart = (params) => {
   loading.value = true;
-  const product = {
+  const product = useForm({
     id: params.id,
     name: params.title,
     image: params.image,
@@ -118,20 +117,40 @@ const addToCart = (params) => {
       ? Number(params.discount_price)
       : Number(params.price),
     quantity: 1,
-  };
-  axios
-    .post(route("add-to-cart"), product)
-    .then((res) => {
-      loading.value = false;
+  });
+  product.post(route("add-to-cart"), {
+    preserveScroll: true,
+    onSuccess: (val) => {
       toast.success(
         firstLetterUpperCase(props.product.title) +
           " has been added to your cart."
       );
-    })
-    .catch(() => {
       loading.value = false;
-      toast.error(`Unable to add ${props.product.title} to your cart.`);
-    });
+      product.reset();
+    },
+    onError: (err) => {
+      loading.value = false;
+      toast.error(
+        `${firstLetterUpperCase(props.product.title)} is already in your cart.`
+      );
+    },
+  });
+
+  // product
+  //   .post(route("add-to-cart"), product)
+  //   .then((res) => {
+  //     loading.value = false;
+  //     toast.success(
+  //       firstLetterUpperCase(props.product.title) +
+  //         " has been added to your cart."
+  //     );
+  //   })
+  //   .catch((err) => {
+  //     loading.value = false;
+  //     toast.error(
+  //       `${firstLetterUpperCase(props.product.title)} is already in your cart.`
+  //     );
+  //   });
 };
 </script>
 

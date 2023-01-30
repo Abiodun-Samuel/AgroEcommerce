@@ -145,6 +145,7 @@ function removeFile() {
 const editSubcategory = () => {
   formEdit.clearErrors();
   formEdit.post(route("admin.subcategory.update", props.subcategory.id), {
+    preserveScroll: true,
     onSuccess: () => {
       toast.success(
         firstLetterUpperCase(props.subcategory.title) +

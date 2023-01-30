@@ -1,10 +1,11 @@
 <script setup>
+import CartItem from "@/Components/Common/CartItem.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import { Head, Link, useForm } from "@inertiajs/vue3";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
-import { toast } from "@/utils/helper";
+import { toast, formatCurrency } from "@/utils/helper";
 import NoResult from "@/Components/Common/NoResult.vue";
 
 const props = defineProps(["cartItems", "cartTotal", "cartCount"]);
@@ -13,56 +14,18 @@ const step_one = {
   link: false,
   route_name: "",
 };
-console.log(props.cartItems);
-const formUpdate = useForm({
-  id: "",
-  type: "",
-});
+
 const formClear = useForm({});
 
-const updateCart = (params, data) => {
-  formUpdate.clearErrors();
-  formUpdate.id = params.id;
-  if (data == "inc") {
-    formUpdate.type = "inc";
-  }
-  if (data == "dec") {
-    formUpdate.type = "dec";
-  }
-  formUpdate.put(route("update-cart"), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast.success("Cart item has been updated successfully.");
-      formUpdate.reset();
-    },
-    onError: () => {
-      toast.error(`Unable to update your cart item.`);
-    },
-  });
-};
-const removeFromCart = (params) => {
-  formUpdate.clearErrors();
-  formUpdate.id = params.id;
-  formUpdate.put(route("remove-cart"), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast.success("Cart item has been removed successfully.");
-      formUpdate.reset();
-    },
-    onError: () => {
-      toast.error(`Unable to remove cart item.`);
-    },
-  });
-};
 const clearCart = () => {
   formClear.delete(route("clear-cart"), {
     preserveScroll: true,
     onSuccess: () => {
-      toast.success("Cart item has been removed successfully.");
+      toast.success("Cart has been cleared successfully.");
       formClear.reset();
     },
     onError: () => {
-      toast.error(`Unable to remove cart item.`);
+      toast.error(`Unable to clear your cart.`);
     },
   });
 };
@@ -90,12 +53,6 @@ const clearCart = () => {
               <h5 class="my-0 py-0 fw-bold">Cart({{ cartCount }})</h5>
             </div>
             <div>
-              <Link
-                class="btn btn-sm mx-1 btn-outline-success"
-                :href="route('product-page')"
-              >
-                Continue shopping
-              </Link>
               <button
                 @click="clearCart"
                 :disabled="formClear.processing"
@@ -117,77 +74,7 @@ const clearCart = () => {
               v-for="(cartItem, index) in cartItems"
               :key="cartItem + index"
             >
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <Link
-                    :href="
-                      route('product-details-page', cartItem.attributes.slug)
-                    "
-                  >
-                    <img
-                      width="55"
-                      height="55"
-                      class="rounded"
-                      :src="JSON.parse(cartItem.attributes.image).img_url"
-                      :alt="cartItem.name"
-                    />
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    :href="
-                      route('product-details-page', cartItem.attributes.slug)
-                    "
-                  >
-                    <h5 class="fw-bolder">{{ cartItem.name }}</h5>
-                  </Link>
-                  <p class="fw-light">
-                    Quantity:
-                    <span
-                      class="fw-bold"
-                      style="background: var(--green-0); padding: 2px"
-                    >
-                      {{ cartItem.quantity }}</span
-                    >
-                  </p>
-                </div>
-              </div>
-              <hr />
-              <div class="d-flex justify-content-between">
-                <div>
-                  <p class="fw-bold rounded my-0 py-0">
-                    Price: {{ cartItem.price }} X {{ cartItem.quantity }} =
-                    <span
-                      class="fw-bolder"
-                      style="background: var(--green-0); padding: 2px"
-                      >&#8358; {{ cartItem.price * cartItem.quantity }}</span
-                    >
-                  </p>
-                </div>
-                <div class="d-flex align-items-center gap-1">
-                  <button
-                    @click="updateCart(cartItem, 'dec')"
-                    :disabled="cartItem.quantity <= 1"
-                    class="btn btn-sm btn-success shadow"
-                  >
-                    <Icon icon="ic:baseline-minus" />
-                  </button>
-                  <p class="my-0">{{ cartItem.quantity }}</p>
-                  <button
-                    :disabled="cartItem.quantity == cartItem.attributes.stock"
-                    @click="updateCart(cartItem, 'inc')"
-                    class="btn btn-sm btn-success"
-                  >
-                    <Icon icon="material-symbols:add" />
-                  </button>
-                  <button
-                    @click="removeFromCart(cartItem)"
-                    class="btn btn-sm btn-outline-danger"
-                  >
-                    <Icon icon="material-symbols:delete-outline-rounded" />
-                  </button>
-                </div>
-              </div>
+              <CartItem :cartItem="cartItem" />
             </div>
           </div>
         </div>
@@ -196,13 +83,20 @@ const clearCart = () => {
             <h5 class="fw-bolder">Cart Summary</h5>
             <hr />
             <p>
-              <b>Subtotal: </b>
+              <b>Total: </b>
               <span
                 class="fw-bolder rounded"
                 style="background: var(--green-0); padding: 2px"
-                >&#8358; {{ cartTotal }}</span
+                >&#8358; {{ formatCurrency(cartTotal) }}</span
               >
             </p>
+            <hr />
+            <Link
+              class="btn btn-outline-success w-100"
+              :href="route('product-page')"
+            >
+              Continue Shopping
+            </Link>
             <hr />
             <button class="btn btn-primary w-100">CheckOut</button>
           </div>

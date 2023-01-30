@@ -38,6 +38,9 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request)
     {
 
+        $cartCollection = \Cart::getContent();
+        $cartCount = $cartCollection->count();
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => auth()->user() ? auth()->user() : null,
@@ -46,6 +49,7 @@ class HandleInertiaRequests extends Middleware
             'data' => [
                 'categories' => Category::with('subcategory.products')->get(),
                 'settings' => Setting::first(),
+                'cartCount' => $cartCount,
             ],
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy)->toArray(), [

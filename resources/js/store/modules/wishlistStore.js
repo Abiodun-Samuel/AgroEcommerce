@@ -50,11 +50,9 @@ const mutations = {
             (item) => item.id != payload
         );
         state.wishListItems = filteredItem;
-        toast.success("The product has been removed from your wishlist.");
     },
     CLEAR_WISHLIST(state) {
         state.wishListItems = [];
-        toast.success("Your wishlist has been cleared.");
     },
     SET_WISHLIST_LOADER(state, payload) {
         state.wishlist_loader = payload;

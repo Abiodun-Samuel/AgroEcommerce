@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -17,19 +18,20 @@ class CartController extends Controller
     }
     public function addToCart(Request $request)
     {
+        $existingItem = \Cart::get($request->id);
+        $product = Product::find($request->id);
+        if (!is_null($existingItem))
+            return redirect()->back()->withErrors(['status' => 'Error']);
         \Cart::add([
             'id' => $request->id,
             'name' => $request->name,
             'price' => $request->price,
             'quantity' => $request->quantity,
-            'attributes' => array(
-                'image' => $request->image,
-                'stock' => $request->stock,
-                'slug' => $request->slug,
-            )
+            'associatedModel' => $product
         ]);
-        return true;
+        return redirect()->back()->with('status', 'Success');
     }
+
     public function updateCart(Request $request)
     {
         \Cart::update(

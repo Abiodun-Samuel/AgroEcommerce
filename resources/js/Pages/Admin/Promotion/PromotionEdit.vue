@@ -136,6 +136,7 @@ function removeFile() {
 const editPromotion = () => {
   formEdit.clearErrors();
   formEdit.post(route("admin.promotion.update", props.promotion.id), {
+    preserveScroll: true,
     onSuccess: () => {
       toast.success(
         firstLetterUpperCase(props.promotion.title) +

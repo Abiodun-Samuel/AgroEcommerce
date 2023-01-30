@@ -26,5 +26,6 @@ button[disabled] {
     border: 1px solid #d8d8d8 !important;
     background: #d8d8d8 !important;
     color: #666666 !important;
+    z-index: inherit !important;
 }
 /* #28c76f */
