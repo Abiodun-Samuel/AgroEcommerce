@@ -26,8 +26,8 @@ const appName =
     "SuperoAgrobase Ltd";
 
 const options = {
-    position: "top-right",
-    timeout: 3000,
+    position: "top-center",
+    timeout: 2000,
     closeOnClick: true,
     pauseOnFocusLoss: true,
     pauseOnHover: true,
@@ -61,22 +61,4 @@ createInertiaApp({
             })
             .mount(el);
     },
-
-    // resolve: (name) =>
-    //     resolvePageComponent(
-    //         `./Pages/${name}.vue`,
-    //         import.meta.glob("./Pages/**/*.vue")
-    //     ),
-    // setup({ el, App, props, plugin }) {
-    //     return createApp({ render: () => h(app, props) })
-    //         .use(plugin)
-    //         .use(ZiggyVue, Ziggy)
-    //         .use(Toast, options)
-    //         .use(store)
-    //         .use(vue3GoogleLogin, {
-    //             clientId: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-    //         })
-    //         .mount(el);
-    // },
 });
-// InertiaProgress.init({ color: "#28c76f", showSpinner: true });

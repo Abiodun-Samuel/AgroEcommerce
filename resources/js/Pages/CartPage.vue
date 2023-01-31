@@ -60,11 +60,11 @@ const clearCart = () => {
               >
                 <span
                   v-if="formClear.processing"
-                  class="spinner-border spinner-border-sm mx-1"
+                  class="spinner-border spinner-border-sm"
                   role="status"
                   aria-hidden="true"
                 ></span>
-                Clear Cart
+                <span v-else>Clear Cart</span>
               </button>
             </div>
           </div>
@@ -107,7 +107,7 @@ const clearCart = () => {
           <NoResult text="Your cart is empty" />
           <Link
             class="btn rounded-pill btn-success mt-1"
-            :href="route('product-page')"
+            :href="route('product-page', { all_products: true })"
             >Products</Link
           >
         </div>

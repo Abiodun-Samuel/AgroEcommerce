@@ -12,6 +12,11 @@
           :alt="cartItem.name"
         />
       </Link>
+      <small class="my-0 py-0">{{
+        cartItem.associatedModel.stock > 0
+          ? `In Stock - ${cartItem.associatedModel.stock}`
+          : "Out of Stock"
+      }}</small>
     </div>
     <div>
       <Link
@@ -21,12 +26,7 @@
       </Link>
       <p class="fw-light my-0 py-0 small">
         Quantity:
-        <span
-          class="fw-bold rounded"
-          style="background: var(--green-0); padding: 2px"
-        >
-          {{ cartItem.quantity }}</span
-        >
+        <span class="fw-bolder"> {{ cartItem.quantity }}</span>
       </p>
       <p class="fw-light rounded my-0 py-0 small">
         Price: &#8358; {{ cartItem.price }} X {{ cartItem.quantity }} =
@@ -43,10 +43,11 @@
     <button
       @click="removeFromCart(cartItem)"
       class="btn btn-sm btn-outline-danger"
+      :disabled="formDelete.processing"
     >
       <span
         v-if="formDelete.processing"
-        class="spinner-border spinner-border-sm mx-1"
+        class="spinner-border spinner-border-sm"
         role="status"
         aria-hidden="true"
       ></span>
@@ -56,12 +57,12 @@
     <div class="d-flex align-items-center gap-1">
       <button
         @click="updateCart(cartItem, 'dec')"
-        :disabled="cartItem.quantity <= 1"
+        :disabled="cartItem.quantity <= 1 || loader_minus"
         class="btn btn-sm btn-success shadow"
       >
         <span
           v-if="loader_minus"
-          class="spinner-border spinner-border-sm mx-1"
+          class="spinner-border spinner-border-sm"
           role="status"
           aria-hidden="true"
         ></span>
@@ -69,13 +70,15 @@
       </button>
       <p class="my-0">{{ cartItem.quantity }}</p>
       <button
-        :disabled="cartItem.quantity == cartItem.attributes.stock"
+        :disabled="
+          cartItem.quantity >= cartItem.associatedModel.stock || loader_add
+        "
         @click="updateCart(cartItem, 'inc')"
         class="btn btn-sm btn-success"
       >
         <span
           v-if="loader_add"
-          class="spinner-border spinner-border-sm mx-1"
+          class="spinner-border spinner-border-sm"
           role="status"
           aria-hidden="true"
         ></span>

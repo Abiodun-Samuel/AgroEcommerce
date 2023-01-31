@@ -93,7 +93,7 @@
               </p>
               <div class="d-flex align-items-stretch gap-1">
                 <button
-                  :disabled="quantity === 0"
+                  :disabled="productForm.quantity <= 1"
                   @click="decreaseQuantity"
                   class="btn btn-sm btn-success"
                 >
@@ -106,11 +106,11 @@
                   name="quantity"
                   min="1"
                   :max="product.stock"
-                  v-model.number="quantity"
+                  v-model.number="productForm.quantity"
                   :disabled="
-                    quantity === 0 ||
-                    quantity === Number(product.stock) ||
-                    Number(product.stock) === 0
+                    productForm.quantity <= 1 ||
+                    productForm.quantity === Number(product.stock) ||
+                    Number(product.stock) <= 1
                   "
                 />
                 <!-- <input
@@ -126,7 +126,7 @@
                 <button
                   @click="increaseQuantity"
                   :disabled="
-                    quantity === Number(product.stock) ||
+                    productForm.quantity === Number(product.stock) ||
                     Number(product.stock) === 0
                   "
                   class="btn btn-sm btn-success"
@@ -137,11 +137,20 @@
               <hr />
               <div class="d-flex gap-3 align-items-center">
                 <button
-                  :disabled="Number(product.stock) === 0"
+                  :disabled="
+                    Number(product.stock) === 0 || productForm.processing
+                  "
                   @click="addToCart"
                   class="btn btn-success d-flex align-items-center"
                 >
+                  <span
+                    v-if="productForm.processing"
+                    class="spinner-border spinner-border-sm me-1"
+                    role="status"
+                    aria-hidden="true"
+                  ></span>
                   <Icon
+                    v-else
                     icon="ic:outline-shopping-cart"
                     height="19"
                     class="me-1"
@@ -430,7 +439,17 @@ const formReview = useForm({
   product_id: props.product.id,
   user_id: auth_user.value?.id,
 });
-const quantity = ref(1);
+const productForm = useForm({
+  id: props.product.id,
+  name: props.product.title,
+  image: props.product.image,
+  slug: props.product.slug,
+  stock: props.product.stock,
+  price: Number(props.product.discount_price)
+    ? Number(props.product.discount_price)
+    : Number(props.product.price),
+  quantity: 1,
+});
 const openReviewModal = ref(false);
 const productTab = ref("product-details");
 const rating = ref(5);
@@ -449,20 +468,12 @@ const averageRating = computed(() => {
   return calc.toFixed(2);
 });
 const increaseQuantity = () => {
-  if (quantity.value === Number(props.product.stock)) return null;
-  quantity.value++;
+  if (productForm.quantity === Number(props.product.stock)) return null;
+  productForm.quantity++;
 };
 const decreaseQuantity = () => {
-  if (quantity.value === 0) return null;
-  quantity.value--;
-};
-const addToCart = () => {
-  if (quantity.value > Number(props.product.stock))
-    return toast.error(
-      "Product quantity is greater than the quantity in stock"
-    );
-  if (Number(props.product.stock) == 0)
-    return toast.error("Product is out of stock");
+  if (productForm.quantity <= 1) return null;
+  productForm.quantity--;
 };
 const addToWishList = (params) => {
   const product = {
@@ -486,6 +497,31 @@ const sendReview = () => {
     },
     onError: () => {
       toast.error(`Unable to send your review`);
+    },
+  });
+};
+const addToCart = () => {
+  if (Number(props.product.stock) <= 0)
+    return toast.error("Product is out of stock");
+
+  if (productForm.quantity > Number(props.product.stock))
+    return toast.error(
+      "Product quantity is greater than the quantity in stock"
+    );
+
+  productForm.post(route("add-to-cart"), {
+    preserveScroll: true,
+    onSuccess: (val) => {
+      toast.success(
+        firstLetterUpperCase(props.product.title) +
+          " has been added to your cart."
+      );
+      productForm.reset();
+    },
+    onError: (err) => {
+      toast.error(
+        `${firstLetterUpperCase(props.product.title)} is already in your cart.`
+      );
     },
   });
 };
