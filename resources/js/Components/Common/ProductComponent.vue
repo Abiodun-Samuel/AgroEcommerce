@@ -100,6 +100,7 @@ const addToWishList = (params) => {
     title: params.title,
     sub_title: params.sub_title,
     image: params.image,
+    stock: params.stock,
     price: params.discount_price ? params.discount_price : params.price,
     quantity: 1,
   };

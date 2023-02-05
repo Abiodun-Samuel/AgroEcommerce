@@ -34,10 +34,8 @@
       <div class="row mt-2">
         <template v-if="products.data.length">
           <div
-            v-for="(product, index) in products.data"
+            v-for="product in products.data"
             :key="product.id"
-            data-aos="fade-up"
-            :data-aos-delay="index * 50"
             class="col-lg-3 col-md-6 col-sm-6 col-6 d-flex align-items-stretch"
           >
             <ProductComponent :product="product" />

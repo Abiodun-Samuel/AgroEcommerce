@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\AdminSubcategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Pages\HomePagesController;
 // users 
-use App\Http\Controllers\UploadController;
+use App\Http\Controllers\Pages\PagesController;
 use App\Http\Controllers\User\OrderController;
 use App\Http\Controllers\User\UserDashboardController;
 
@@ -22,6 +22,17 @@ Route::get('/', [HomePagesController::class, 'index'])->name('home');
 Route::post('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
 Route::get('/products/{subcategory:slug?}', [HomePagesController::class, 'products'])->name('product-page');
 Route::get('/product/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
+//newsletter
+Route::post('/subscribe-to-newsletter', [HomePagesController::class, 'subscribeToNewsletter'])->name('subscribe-to-newsletter');
+//pages 
+Route::get('/about', [PagesController::class, 'about'])->name('about');
+Route::get('/blogs', [PagesController::class, 'blogs'])->name('blogs');
+Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+//services
+Route::get('/service/agro-input', [PagesController::class, 'agroInput'])->name('agro-input');
+Route::get('/service/agricourt-ventures', [PagesController::class, 'agriCourt'])->name('agri-court');
+Route::get('/service/harvest-yield-farm', [PagesController::class, 'harvestYield'])->name('harvest-yield');
+//cart
 Route::get('/cart', [CartController::class, 'cartList'])->name('cart');
 Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-cart');
 Route::put('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
@@ -81,6 +92,9 @@ Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     // Dashboard Routes 
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/my-orders', [UserDashboardController::class, 'myOrders'])->name('order.index');
+    // create oders from cart
+    Route::get('/check-out', [OrderController::class, 'checkOut'])->name('check-out');
+    Route::post('/order', [OrderController::class, 'createOrder'])->name('order.create');
 
     // to be deleted 
     // Dashboard Routes 

@@ -98,7 +98,9 @@ const clearCart = () => {
               Continue Shopping
             </Link>
             <hr />
-            <button class="btn btn-primary w-100">CheckOut</button>
+            <Link :href="route('user.check-out')" class="btn btn-primary w-100"
+              >CheckOut (&#8358; {{ formatCurrency(cartTotal) }})</Link
+            >
           </div>
         </div>
       </div>

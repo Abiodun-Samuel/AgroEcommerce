@@ -26,7 +26,7 @@
                   <Icon height="20" width="20" icon="ooui:arrow-next-ltr" />
                 </button>
               </div>
-              <div data-aos="fade-up" data-aos-delay="50" class="my-1">
+              <div class="my-1">
                 <carousel
                   :breakpoints="breakpoints"
                   ref="myCarousel"

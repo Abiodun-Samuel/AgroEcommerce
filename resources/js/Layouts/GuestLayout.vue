@@ -1,5 +1,6 @@
 <script setup>
 import Header from "@/Components/Partial/Header.vue";
+import Footer from "@/Components/Partial/Footer.vue";
 </script>
 
 <template>
@@ -7,4 +8,5 @@ import Header from "@/Components/Partial/Header.vue";
   <div>
     <slot />
   </div>
+  <Footer />
 </template>

@@ -13,8 +13,6 @@
         <div
           v-for="(promotion, index) in promotions"
           :key="promotion.id + index"
-          data-aos="fade-up"
-          :data-aos-delay="50 * index"
           class="col-lg-3 col-md-6 mb-1"
         >
           <div class="promotion__box">

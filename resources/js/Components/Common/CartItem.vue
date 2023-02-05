@@ -5,6 +5,9 @@
         :href="route('product-details-page', cartItem.associatedModel.slug)"
       >
         <img
+          :style="
+            cartItem.associatedModel.stock <= 0 ? 'filter: grayscale(100%)' : ''
+          "
           width="60"
           height="60"
           class="rounded"

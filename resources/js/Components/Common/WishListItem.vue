@@ -2,12 +2,16 @@
   <div class="d-flex justify-content-between align-items-start">
     <div>
       <img
+        :style="item.stock <= 0 ? 'filter: grayscale(100%)' : ''"
         width="55"
         height="55"
         class="rounded"
         :src="JSON.parse(item.image).img_url"
         :alt="item.title"
       />
+      <small class="text-danger small">{{
+        item.stock <= 0 ? "Out of Stock" : "In Stock"
+      }}</small>
     </div>
     <div>
       <h5 class="fw-bolder">{{ item.title }}</h5>
@@ -27,7 +31,7 @@
         <Icon height="15" icon="material-symbols:delete-outline-rounded" />
       </button>
       <button
-        :disabled="product.processing"
+        :disabled="product.processing || item.stock <= 0"
         @click="addToCart(item)"
         class="shadow btn-sm btn-success"
       >
@@ -65,6 +69,10 @@ const product = useForm({
 });
 
 const addToCart = (params) => {
+  if (Number(props.item.stock) == 0)
+    return toast.error(
+      `${firstLetterUpperCase(params.title)} is out of stock.`
+    );
   product.post(route("add-to-cart"), {
     preserveScroll: true,
     onSuccess: () => {

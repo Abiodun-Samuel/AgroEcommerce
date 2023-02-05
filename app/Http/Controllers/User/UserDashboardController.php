@@ -74,6 +74,7 @@ class UserDashboardController extends Controller
             'orders' => $orders,
         ]);
     }
+
     /**
      * Display the user's profile form.
      *

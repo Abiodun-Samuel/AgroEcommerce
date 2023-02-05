@@ -3,18 +3,17 @@
 namespace App\Http\Controllers\Pages;
 
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Category;
 use App\Models\Admin\Product;
-// use App\Models\Admin\Setting;
 use App\Models\Admin\Promotion;
 use App\Models\Admin\Subcategory;
 use App\Models\Review;
-use App\Models\WishList;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Newsletter;
 
 class HomePagesController extends Controller
 {
+
     //Home Page
     public function index()
     {
@@ -72,6 +71,7 @@ class HomePagesController extends Controller
     }
     public function productDetails(Product $product)
     {
+        $product->update(["product_views" => $product->product_views++]);
         $relatedProducts = $product->with('reviews.user')->where('subcategory_id', $product->subcategory->id)->whereNot('id', $product->id)->get();
         $productDetails = $product->with('subcategory.category', 'reviews.user')->where('id', $product->id)->latest()->first();
         return Inertia::render('Product/ProductDetailsPage', [
@@ -97,6 +97,17 @@ class HomePagesController extends Controller
             'product_id' => $data['product_id'],
         ]);
         return redirect()->back();
+    }
+
+    public function subscribeToNewsletter(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+        if (!Newsletter::isSubscribed($request->email)) {
+            Newsletter::subscribe($request->email);
+        }
+        return response()->json(['status' => 'successful'], 201);
     }
 }
 
