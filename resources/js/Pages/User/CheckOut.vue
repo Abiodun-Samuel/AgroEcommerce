@@ -26,7 +26,6 @@ const states = ref([]);
 const getCountryCode = (value) => {
   states.value = State.getStatesOfCountry(value.isoCode);
 };
-
 const publicKey = ref(import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
 const email = ref(user.value.email);
 const amount = ref(props.cartTotal * 100);
@@ -39,19 +38,6 @@ const onCancelledPayment = () => {
   console.log("object");
 };
 
-const formUpdate = useForm({
-  first_name: user.value.first_name,
-  last_name: user.value.last_name,
-  phone: user.value.phone,
-  address: user.value.address,
-  city: user.value.city,
-  state: user.value.state,
-  country: user.value.country,
-  gender: user.value.gender,
-  email: user.value.email,
-  dob: user.value.dob,
-});
-
 const orderForm = useForm({
   first_name: user.value.first_name,
   last_name: user.value.last_name,
@@ -63,6 +49,7 @@ const orderForm = useForm({
   gender: user.value.gender,
   email: user.value.email,
   dob: user.value.dob,
+  save_as_my_address: false,
 });
 
 const formClear = useForm({});
@@ -90,21 +77,6 @@ const createOrder = () => {
     },
     onError: () => {
       toast.error(`Error, unable to create your order`);
-    },
-  });
-};
-
-const updateDetails = () => {
-  formUpdate.clearErrors();
-  formUpdate.post(route("user.update-profile", user.value.id), {
-    preserveScroll: true,
-    onSuccess: () => {
-      toast.success("Address details has been updated successfully");
-      formUpdate.reset();
-      showUpdateModal.value = false;
-    },
-    onError: () => {
-      toast.error(`Unable to update your address.`);
     },
   });
 };
@@ -142,16 +114,16 @@ const updateDetails = () => {
             <div class="row">
               <template v-if="user.is_completed == true">
                 <div class="col-12 px-4 py-1">
-                  <h5>{{ user.first_name }} {{ user.last_name }}</h5>
+                  <h5>{{ orderForm.first_name }} {{ orderForm.last_name }}</h5>
                   <p class="fw-light my-0 py-0">
-                    {{ user.email }}
+                    {{ orderForm.email }}
                   </p>
                   <p class="fw-light my-0 py-0">
-                    {{ user.phone }}
+                    {{ orderForm.phone }}
                   </p>
                   <p class="fw-light my-0 py-0">
-                    {{ user.address }}, {{ user.city }}, {{ user.state }},
-                    {{ user.country }}.
+                    {{ orderForm.address }}, {{ orderForm.city }},
+                    {{ orderForm.state }}, {{ orderForm.country?.name }}.
                   </p>
                 </div>
               </template>
@@ -364,7 +336,7 @@ const updateDetails = () => {
               "
             >
               <Icon icon="clarity:chat-bubble-outline-badged" height="15" />
-              Live Cart
+              Live Chat
             </button>
           </div>
         </div>
@@ -388,12 +360,12 @@ const updateDetails = () => {
           fw-bolder
         "
       >
-        Update details
+        Save details
       </h4>
     </template>
 
     <template #body>
-      <FormError :errors="formUpdate.errors" />
+      <FormError :errors="orderForm.errors" />
       <div class="row">
         <div class="col-lg-6 col-md-6 col-6 my-1">
           <label for="phone" class="form-label">Phone</label>
@@ -403,7 +375,7 @@ const updateDetails = () => {
             id="phone"
             class="form-control"
             placeholder="Phone number"
-            v-model="formUpdate.phone"
+            v-model="orderForm.phone"
           />
         </div>
         <!-- country, state, city -->
@@ -412,8 +384,8 @@ const updateDetails = () => {
           <select
             class="form-select"
             aria-label="Default select example"
-            v-model="formUpdate.country"
-            @change="getCountryCode(formUpdate.country)"
+            v-model="orderForm.country"
+            @change="getCountryCode(orderForm.country)"
           >
             <option
               v-for="country in countries"
@@ -429,7 +401,7 @@ const updateDetails = () => {
           <select
             class="form-select"
             aria-label="Default select example"
-            v-model="formUpdate.state"
+            v-model="orderForm.state"
           >
             <option v-for="state in states" :key="state" :value="state.name">
               {{ state.name }}
@@ -443,7 +415,7 @@ const updateDetails = () => {
             class="form-control"
             id="city"
             placeholder="City"
-            v-model="formUpdate.city"
+            v-model="orderForm.city"
           />
         </div>
         <!-- address  -->
@@ -453,23 +425,33 @@ const updateDetails = () => {
             id="address"
             rows="3"
             class="form-control"
-            v-model="formUpdate.address"
+            v-model="orderForm.address"
           ></textarea>
+        </div>
+        <!-- save as adress  -->
+        <div class="col-12">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              v-model="orderForm.save_as_my_address"
+              id="saveasmyaddress"
+            />
+            <label class="form-check-label small" for="saveasmyaddress">
+              Save as my address
+            </label>
+          </div>
         </div>
       </div>
     </template>
 
     <template #footer>
-      <button
-        @click="updateDetails"
-        :disabled="formUpdate.processing"
-        class="btn btn-success w-100"
-      >
-        <span
-          v-show="formUpdate.processing"
+      <button @click="showUpdateModal = false" class="btn btn-success w-100">
+        <!-- <span
+          v-show="orderForm.processing"
           class="spinner-border spinner-border-sm mx-1"
-        ></span>
-        Update
+        ></span> -->
+        Save
       </button>
     </template>
   </Modal>

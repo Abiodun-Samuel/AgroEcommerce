@@ -1,14 +1,12 @@
 <template>
-  <div>
+  <div class="pt-4">
     <!-- newsletter  -->
     <div class="container">
       <!-- subscribe to newsletter -->
       <div class="row d-flex justify-content-center">
         <div class="col-lg-8 col-md-10 col-10">
           <div class="footer__newsletter rounded p-2 shadow">
-            <div
-              class="footer__newslettter-content text-center p-lg-4 p-2 shadow"
-            >
+            <div class="footer__newslettter-content text-center p-2 shadow">
               <h2 class="fw-bolder text-white">Subscribe our newsletter</h2>
               <p class="lead text-light">
                 Subscribe to the mailing list to receive updates on special
@@ -46,7 +44,7 @@
     <footer id="footer">
       <div class="container pt-5">
         <div class="row pt-4">
-          <div class="col-lg-4 col-md-6 mb-1">
+          <div class="col-lg-4 col-md-6 mb-2">
             <div class="footer-box shadow">
               <h5 class="text-secondary">SuperoAgrobase Ltd</h5>
               <hr class="text-black" />
@@ -74,7 +72,7 @@
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 mb-1 footer-box">
+          <div class="col-lg-4 col-md-6 mb-2 footer-box">
             <h5 class="text-secondary">Services</h5>
             <hr class="text-black" />
             <ul class="list-unstyled">
@@ -108,7 +106,7 @@
             </ul>
           </div>
 
-          <div class="col-lg-4 col-md-6 mb-1 footer-box">
+          <div class="col-lg-4 col-md-6 mb-2 footer-box">
             <h5 class="text-secondary">Quick links</h5>
             <hr class="text-black" />
             <ul class="list-unstyled">

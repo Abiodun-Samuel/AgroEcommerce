@@ -4,9 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Product;
-use App\Rules\ProductStockPriceRule;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
+
 
 class OrderController extends Controller
 {
@@ -21,7 +22,7 @@ class OrderController extends Controller
         ]);
 
     }
-    public function createOrder()
+    public function createOrder(User $user)
     {
         $cartCollection = \Cart::getContent()->toArray();
         $products = Product::select('id', 'stock')
