@@ -36,7 +36,7 @@
           <div
             v-for="product in products.data"
             :key="product.id"
-            class="col-lg-3 col-md-6 col-sm-6 col-6 d-flex align-items-stretch"
+            class="col-lg-3 col-md-6 col-sm-6 d-flex align-items-stretch"
           >
             <ProductComponent :product="product" />
           </div>

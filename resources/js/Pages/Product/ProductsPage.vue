@@ -27,7 +27,7 @@
                 <div
                   v-for="product in all_products"
                   :key="product.id"
-                  class="col-lg-4 col-md-6 col-sm-6 col-6"
+                  class="col-lg-4 col-md-6 col-sm-6"
                 >
                   <ProductComponent :product="product" />
                 </div>
