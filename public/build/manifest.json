@@ -1,11 +1,11 @@
 {
-  "resources/js/assets/images/icons/users.png": {
-    "file": "assets/users.26a6afab.png",
-    "src": "resources/js/assets/images/icons/users.png"
-  },
   "resources/js/assets/images/icons/subcategory.png": {
     "file": "assets/subcategory.b4e641d1.png",
     "src": "resources/js/assets/images/icons/subcategory.png"
+  },
+  "resources/js/assets/images/icons/users.png": {
+    "file": "assets/users.26a6afab.png",
+    "src": "resources/js/assets/images/icons/users.png"
   },
   "resources/js/assets/images/icons/orders.png": {
     "file": "assets/orders.93976ea9.png",
@@ -15,13 +15,13 @@
     "file": "assets/product.9c3afb69.png",
     "src": "resources/js/assets/images/icons/product.png"
   },
-  "resources/images/logo/logo.png": {
-    "file": "assets/logo.5460c46c.png",
-    "src": "resources/images/logo/logo.png"
-  },
   "resources/js/assets/images/img/avatar.png": {
     "file": "assets/avatar.f4995ef6.png",
     "src": "resources/js/assets/images/img/avatar.png"
+  },
+  "resources/images/logo/logo.png": {
+    "file": "assets/logo.5460c46c.png",
+    "src": "resources/images/logo/logo.png"
   },
   "resources/js/assets/images/img/no-result.svg": {
     "file": "assets/no-result.6d12bd6a.svg",
@@ -31,13 +31,13 @@
     "file": "assets/hero-img2.c73e47a3.png",
     "src": "resources/images/img/hero-img2.png"
   },
-  "resources/images/img/hero-img1.png": {
-    "file": "assets/hero-img1.994c7a9e.png",
-    "src": "resources/images/img/hero-img1.png"
-  },
   "resources/images/category/category_one.jpg": {
     "file": "assets/category_one.26ae32b3.jpg",
     "src": "resources/images/category/category_one.jpg"
+  },
+  "resources/images/img/hero-img1.png": {
+    "file": "assets/hero-img1.994c7a9e.png",
+    "src": "resources/images/img/hero-img1.png"
   },
   "resources/js/assets/images/bg/bg.svg": {
     "file": "assets/bg.fb497198.svg",
@@ -55,13 +55,13 @@
     "file": "assets/auth-bg.b58b7286.png",
     "src": "resources/js/assets/images/bg/auth-bg.png"
   },
-  "resources/images/bg/bg.png": {
-    "file": "assets/bg.1d5322ca.png",
-    "src": "resources/images/bg/bg.png"
-  },
   "resources/images/bg/btn-brush-bg-2.png": {
     "file": "assets/btn-brush-bg-2.d6085fcd.png",
     "src": "resources/images/bg/btn-brush-bg-2.png"
+  },
+  "resources/images/bg/bg.png": {
+    "file": "assets/bg.1d5322ca.png",
+    "src": "resources/images/bg/bg.png"
   },
   "resources/js/app.js": {
     "file": "assets/app.c6ebc1e9.js",
