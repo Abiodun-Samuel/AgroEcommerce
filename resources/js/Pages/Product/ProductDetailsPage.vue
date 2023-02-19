@@ -305,7 +305,7 @@
           <div
             v-for="relatedProduct in relatedProducts"
             :key="relatedProduct.id"
-            class="col-lg-3 col-md-6 col-sm-6 col-6"
+            class="col-lg-3 col-md-6"
           >
             <ProductComponent :product="relatedProduct" />
           </div>
