@@ -1,1 +1,0 @@
-import{_ as o}from"./_plugin-vue_export-helper.cdc0426e.js";import{o as c,a as s,p as _,l as t,d as a}from"./app.636801a9.js";const d={},n=e=>(_("data-v-d490ecee"),e=e(),t(),e),p={class:"col-lg-6 login__banner"},i=n(()=>a("div",{class:"pane"},null,-1)),r=[i];function l(e,f){return c(),s("div",p,r)}const u=o(d,[["render",l],["__scopeId","data-v-d490ecee"]]);export{u as S};
