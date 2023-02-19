@@ -1,19 +1,19 @@
 {
-  "resources/js/assets/images/icons/users.png": {
-    "file": "assets/users.26a6afab.png",
-    "src": "resources/js/assets/images/icons/users.png"
-  },
   "resources/js/assets/images/icons/subcategory.png": {
     "file": "assets/subcategory.b4e641d1.png",
     "src": "resources/js/assets/images/icons/subcategory.png"
   },
-  "resources/js/assets/images/icons/orders.png": {
-    "file": "assets/orders.93976ea9.png",
-    "src": "resources/js/assets/images/icons/orders.png"
+  "resources/js/assets/images/icons/users.png": {
+    "file": "assets/users.26a6afab.png",
+    "src": "resources/js/assets/images/icons/users.png"
   },
   "resources/js/assets/images/icons/product.png": {
     "file": "assets/product.9c3afb69.png",
     "src": "resources/js/assets/images/icons/product.png"
+  },
+  "resources/js/assets/images/icons/orders.png": {
+    "file": "assets/orders.93976ea9.png",
+    "src": "resources/js/assets/images/icons/orders.png"
   },
   "resources/js/assets/images/img/avatar.png": {
     "file": "assets/avatar.f4995ef6.png",
@@ -47,13 +47,13 @@
     "file": "assets/btn-brush-bg-2.d6085fcd.png",
     "src": "resources/images/bg/btn-brush-bg-2.png"
   },
-  "resources/js/assets/images/bg/newsletter.jpg": {
-    "file": "assets/newsletter.b06e1c82.jpg",
-    "src": "resources/js/assets/images/bg/newsletter.jpg"
-  },
   "resources/js/assets/images/bg/bg.svg": {
     "file": "assets/bg.fb497198.svg",
     "src": "resources/js/assets/images/bg/bg.svg"
+  },
+  "resources/js/assets/images/bg/newsletter.jpg": {
+    "file": "assets/newsletter.b06e1c82.jpg",
+    "src": "resources/js/assets/images/bg/newsletter.jpg"
   },
   "resources/js/assets/images/bg/breadcrump-bg.jpg": {
     "file": "assets/breadcrump-bg.2c00a1af.jpg",
@@ -740,117 +740,121 @@
       "assets/Modal.66acd9c7.css"
     ]
   },
-  "resources/js/Pages/Admin/Promotion/PromotionEdit.css": {
-    "file": "assets/PromotionEdit.44581de1.css",
-    "src": "resources/js/Pages/Admin/Promotion/PromotionEdit.css"
-  },
-  "PreLoader.css": {
-    "file": "assets/PreLoader.7f579433.css",
-    "src": "PreLoader.css"
-  },
-  "resources/js/Pages/Admin/Product/ProductCreate.css": {
-    "file": "assets/ProductCreate.cd1f7d8a.css",
-    "src": "resources/js/Pages/Admin/Product/ProductCreate.css"
-  },
-  "resources/js/Pages/Product/ProductsPage.css": {
-    "file": "assets/ProductsPage.600b411b.css",
-    "src": "resources/js/Pages/Product/ProductsPage.css"
-  },
-  "resources/js/Pages/Admin/Subcategory/SubcategoryEdit.css": {
-    "file": "assets/SubcategoryEdit.e9cae2d6.css",
-    "src": "resources/js/Pages/Admin/Subcategory/SubcategoryEdit.css"
-  },
-  "resources/js/Pages/Auth/ForgotPassword.css": {
-    "file": "assets/ForgotPassword.0b984785.css",
-    "src": "resources/js/Pages/Auth/ForgotPassword.css"
-  },
-  "Pagination.css": {
-    "file": "assets/Pagination.bbf84918.css",
-    "src": "Pagination.css"
-  },
-  "ProductComponent.css": {
-    "file": "assets/ProductComponent.d1d5847d.css",
-    "src": "ProductComponent.css"
-  },
-  "resources/js/Pages/Admin/Category/CategoryEdit.css": {
-    "file": "assets/CategoryEdit.b9bd26ba.css",
-    "src": "resources/js/Pages/Admin/Category/CategoryEdit.css"
-  },
-  "resources/js/Pages/Auth/VerifyEmail.css": {
-    "file": "assets/VerifyEmail.0b984785.css",
-    "src": "resources/js/Pages/Auth/VerifyEmail.css"
-  },
-  "DashboardBreadcrump.css": {
-    "file": "assets/DashboardBreadcrump.aade6aa9.css",
-    "src": "DashboardBreadcrump.css"
-  },
-  "BreadCrump.css": {
-    "file": "assets/BreadCrump.e7ca97f8.css",
-    "src": "BreadCrump.css"
-  },
-  "resources/js/Pages/Auth/Register.css": {
-    "file": "assets/Register.0b984785.css",
-    "src": "resources/js/Pages/Auth/Register.css"
-  },
-  "resources/js/Pages/HomePage.css": {
-    "file": "assets/HomePage.e7577ccb.css",
-    "src": "resources/js/Pages/HomePage.css"
-  },
-  "Modal.css": {
-    "file": "assets/Modal.66acd9c7.css",
-    "src": "Modal.css"
-  },
-  "resources/js/Pages/Product/ProductDetailsPage.css": {
-    "file": "assets/ProductDetailsPage.b10e31c1.css",
-    "src": "resources/js/Pages/Product/ProductDetailsPage.css"
+  "resources/js/app.css": {
+    "file": "assets/app.8fc614e1.css",
+    "src": "resources/js/app.css"
   },
   "resources/js/Pages/Admin/AdminIndex.css": {
     "file": "assets/AdminIndex.dfd63268.css",
     "src": "resources/js/Pages/Admin/AdminIndex.css"
   },
-  "resources/js/Pages/Admin/Category/CategoryIndex.css": {
-    "file": "assets/CategoryIndex.5b2b2b02.css",
-    "src": "resources/js/Pages/Admin/Category/CategoryIndex.css"
-  },
-  "resources/js/Pages/Auth/ResetPassword.css": {
-    "file": "assets/ResetPassword.0b984785.css",
-    "src": "resources/js/Pages/Auth/ResetPassword.css"
-  },
-  "Side.css": {
-    "file": "assets/Side.1923bc5c.css",
-    "src": "Side.css"
-  },
-  "resources/js/Pages/User/UserIndex.css": {
-    "file": "assets/UserIndex.d2333e86.css",
-    "src": "resources/js/Pages/User/UserIndex.css"
-  },
-  "resources/js/Pages/Admin/Subcategory/SubcategoryIndex.css": {
-    "file": "assets/SubcategoryIndex.1e1d3693.css",
-    "src": "resources/js/Pages/Admin/Subcategory/SubcategoryIndex.css"
-  },
-  "resources/js/Pages/Admin/Profile/ProfileIndex.css": {
-    "file": "assets/ProfileIndex.a8701f90.css",
-    "src": "resources/js/Pages/Admin/Profile/ProfileIndex.css"
-  },
   "resources/js/Pages/Admin/Product/ProductEdit.css": {
     "file": "assets/ProductEdit.7d893f8d.css",
     "src": "resources/js/Pages/Admin/Product/ProductEdit.css"
   },
-  "resources/js/Pages/Admin/Promotion/PromotionIndex.css": {
-    "file": "assets/PromotionIndex.e571f6fa.css",
-    "src": "resources/js/Pages/Admin/Promotion/PromotionIndex.css"
+  "resources/js/Pages/Admin/Product/ProductCreate.css": {
+    "file": "assets/ProductCreate.cd1f7d8a.css",
+    "src": "resources/js/Pages/Admin/Product/ProductCreate.css"
   },
-  "resources/js/Pages/Auth/Login.css": {
-    "file": "assets/Login.0b984785.css",
-    "src": "resources/js/Pages/Auth/Login.css"
+  "GuestLayout.css": {
+    "file": "assets/GuestLayout.277e2b63.css",
+    "src": "GuestLayout.css"
   },
   "resources/js/Pages/User/UserProfileIndex.css": {
     "file": "assets/UserProfileIndex.6964fdcf.css",
     "src": "resources/js/Pages/User/UserProfileIndex.css"
   },
-  "GuestLayout.css": {
-    "file": "assets/GuestLayout.277e2b63.css",
-    "src": "GuestLayout.css"
+  "PreLoader.css": {
+    "file": "assets/PreLoader.7f579433.css",
+    "src": "PreLoader.css"
+  },
+  "resources/js/Pages/Admin/Profile/ProfileIndex.css": {
+    "file": "assets/ProfileIndex.a8701f90.css",
+    "src": "resources/js/Pages/Admin/Profile/ProfileIndex.css"
+  },
+  "resources/js/Pages/Auth/ForgotPassword.css": {
+    "file": "assets/ForgotPassword.0b984785.css",
+    "src": "resources/js/Pages/Auth/ForgotPassword.css"
+  },
+  "resources/js/Pages/Admin/Category/CategoryEdit.css": {
+    "file": "assets/CategoryEdit.b9bd26ba.css",
+    "src": "resources/js/Pages/Admin/Category/CategoryEdit.css"
+  },
+  "resources/js/Pages/Admin/Category/CategoryIndex.css": {
+    "file": "assets/CategoryIndex.5b2b2b02.css",
+    "src": "resources/js/Pages/Admin/Category/CategoryIndex.css"
+  },
+  "Pagination.css": {
+    "file": "assets/Pagination.bbf84918.css",
+    "src": "Pagination.css"
+  },
+  "resources/js/Pages/Admin/Promotion/PromotionEdit.css": {
+    "file": "assets/PromotionEdit.44581de1.css",
+    "src": "resources/js/Pages/Admin/Promotion/PromotionEdit.css"
+  },
+  "resources/js/Pages/User/UserIndex.css": {
+    "file": "assets/UserIndex.d2333e86.css",
+    "src": "resources/js/Pages/User/UserIndex.css"
+  },
+  "ProductComponent.css": {
+    "file": "assets/ProductComponent.d1d5847d.css",
+    "src": "ProductComponent.css"
+  },
+  "resources/js/Pages/Auth/Login.css": {
+    "file": "assets/Login.0b984785.css",
+    "src": "resources/js/Pages/Auth/Login.css"
+  },
+  "resources/js/Pages/Admin/Subcategory/SubcategoryIndex.css": {
+    "file": "assets/SubcategoryIndex.1e1d3693.css",
+    "src": "resources/js/Pages/Admin/Subcategory/SubcategoryIndex.css"
+  },
+  "resources/js/Pages/Admin/Promotion/PromotionIndex.css": {
+    "file": "assets/PromotionIndex.e571f6fa.css",
+    "src": "resources/js/Pages/Admin/Promotion/PromotionIndex.css"
+  },
+  "BreadCrump.css": {
+    "file": "assets/BreadCrump.e7ca97f8.css",
+    "src": "BreadCrump.css"
+  },
+  "resources/js/Pages/Auth/ResetPassword.css": {
+    "file": "assets/ResetPassword.0b984785.css",
+    "src": "resources/js/Pages/Auth/ResetPassword.css"
+  },
+  "resources/js/Pages/Admin/Subcategory/SubcategoryEdit.css": {
+    "file": "assets/SubcategoryEdit.e9cae2d6.css",
+    "src": "resources/js/Pages/Admin/Subcategory/SubcategoryEdit.css"
+  },
+  "DashboardBreadcrump.css": {
+    "file": "assets/DashboardBreadcrump.aade6aa9.css",
+    "src": "DashboardBreadcrump.css"
+  },
+  "resources/js/Pages/Product/ProductDetailsPage.css": {
+    "file": "assets/ProductDetailsPage.b10e31c1.css",
+    "src": "resources/js/Pages/Product/ProductDetailsPage.css"
+  },
+  "resources/js/Pages/Product/ProductsPage.css": {
+    "file": "assets/ProductsPage.600b411b.css",
+    "src": "resources/js/Pages/Product/ProductsPage.css"
+  },
+  "resources/js/Pages/Auth/Register.css": {
+    "file": "assets/Register.0b984785.css",
+    "src": "resources/js/Pages/Auth/Register.css"
+  },
+  "Side.css": {
+    "file": "assets/Side.1923bc5c.css",
+    "src": "Side.css"
+  },
+  "resources/js/Pages/HomePage.css": {
+    "file": "assets/HomePage.e7577ccb.css",
+    "src": "resources/js/Pages/HomePage.css"
+  },
+  "resources/js/Pages/Auth/VerifyEmail.css": {
+    "file": "assets/VerifyEmail.0b984785.css",
+    "src": "resources/js/Pages/Auth/VerifyEmail.css"
+  },
+  "Modal.css": {
+    "file": "assets/Modal.66acd9c7.css",
+    "src": "Modal.css"
   },
   "AdminLayout.css": {
     "file": "assets/AdminLayout.fc882582.css",
@@ -859,10 +863,6 @@
   "UserLayout.css": {
     "file": "assets/UserLayout.4046ae24.css",
     "src": "UserLayout.css"
-  },
-  "resources/js/app.css": {
-    "file": "assets/app.8fc614e1.css",
-    "src": "resources/js/app.css"
   },
   "resources/js/assets/images/logo/logo.png": {
     "file": "assets/logo.5460c46c.png",
