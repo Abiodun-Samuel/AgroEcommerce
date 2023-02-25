@@ -1,11 +1,11 @@
 {
-  "resources/js/assets/images/icons/subcategory.png": {
-    "file": "assets/subcategory.b4e641d1.png",
-    "src": "resources/js/assets/images/icons/subcategory.png"
-  },
   "resources/js/assets/images/icons/users.png": {
     "file": "assets/users.26a6afab.png",
     "src": "resources/js/assets/images/icons/users.png"
+  },
+  "resources/js/assets/images/icons/subcategory.png": {
+    "file": "assets/subcategory.b4e641d1.png",
+    "src": "resources/js/assets/images/icons/subcategory.png"
   },
   "resources/js/assets/images/icons/orders.png": {
     "file": "assets/orders.93976ea9.png",
@@ -15,13 +15,13 @@
     "file": "assets/product.9c3afb69.png",
     "src": "resources/js/assets/images/icons/product.png"
   },
-  "resources/js/assets/images/img/avatar.png": {
-    "file": "assets/avatar.f4995ef6.png",
-    "src": "resources/js/assets/images/img/avatar.png"
-  },
   "resources/images/logo/logo.png": {
     "file": "assets/logo.5460c46c.png",
     "src": "resources/images/logo/logo.png"
+  },
+  "resources/js/assets/images/img/avatar.png": {
+    "file": "assets/avatar.f4995ef6.png",
+    "src": "resources/js/assets/images/img/avatar.png"
   },
   "resources/js/assets/images/img/no-result.svg": {
     "file": "assets/no-result.6d12bd6a.svg",
@@ -64,11 +64,11 @@
     "src": "resources/images/bg/btn-brush-bg-2.png"
   },
   "resources/js/app.js": {
-    "file": "assets/app.2c3c0d29.js",
+    "file": "assets/app.67ac9755.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app.0518f69c.css"
+      "assets/app.95516344.css"
     ],
     "assets": [
       "assets/users.26a6afab.png",
@@ -90,7 +90,7 @@
     ]
   },
   "resources/js/app.css": {
-    "file": "assets/app.0518f69c.css",
+    "file": "assets/app.95516344.css",
     "src": "resources/js/app.css"
   },
   "resources/js/assets/images/logo/logo.png": {

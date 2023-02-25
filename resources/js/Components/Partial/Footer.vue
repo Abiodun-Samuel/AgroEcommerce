@@ -161,8 +161,8 @@
       <div class="footer-foot">
         <div class="container p-1">
           <small>
-            &copy; Copyright {{ new Date().getFullYear() }}, SuperoAgrobase
-            Limited. All Rights Reserved.
+            &copy; Copyright {{ date }}, SuperoAgrobase Limited. All Rights
+            Reserved.
             <br />
             Designed and Developed by
             <a target="_blank" href="https://abiodunsamuel.com/">
@@ -183,6 +183,7 @@ import { Icon } from "@iconify/vue";
 
 const email = ref("");
 const form_loading = ref(false);
+const date = ref(new Date().getFullYear());
 
 const subscribeToNewsletter = () => {
   form_loading.value = true;
