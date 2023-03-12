@@ -1,6 +1,7 @@
 <?php
 
 //Admin
+use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProductController;
@@ -21,13 +22,15 @@ Route::get('/', [HomePagesController::class, 'index'])->name('home');
 //Products
 Route::post('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
 Route::get('/products/{subcategory:slug?}', [HomePagesController::class, 'products'])->name('product-page');
-Route::get('/product/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
+Route::get('/products/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
 //newsletter
 Route::post('/subscribe-to-newsletter', [HomePagesController::class, 'subscribeToNewsletter'])->name('subscribe-to-newsletter');
 //pages 
 Route::get('/about', [PagesController::class, 'about'])->name('about');
-Route::get('/blogs', [PagesController::class, 'blogs'])->name('blogs');
 Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
+//blogs
+Route::get('/blogs', [PagesController::class, 'blogs'])->name('blog-page');
+Route::get('/blogs/{blog:slug}', [PagesController::class, 'blogsDetails'])->name('blog-details');
 //services
 Route::get('/service/agro-input', [PagesController::class, 'agroInput'])->name('agro-input');
 Route::get('/service/agricourt-ventures', [PagesController::class, 'agriCourt'])->name('agri-court');
@@ -83,7 +86,12 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::delete('/promotions/{promotion}', [AdminPromotionController::class, 'destroy'])->name('promotion.destroy');
     //Admin orders
     Route::get('/orders', [AdminPromotionController::class, 'index'])->name('order.index');
-    //Admin promotion
+    //Admin Blog 
+    Route::get('/blog', [AdminBlogController::class, 'index'])->name('blog.index');
+    Route::post('/blog', [AdminBlogController::class, 'store'])->name('blog.store');
+    Route::get('/blog/{promotion}', [AdminBlogController::class, 'edit'])->name('blog.edit');
+    Route::post('/blog/{promotion}', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{promotion}', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
 });
 
 // Users 

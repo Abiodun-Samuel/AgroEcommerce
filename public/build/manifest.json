@@ -27,6 +27,10 @@
     "file": "assets/no-result.6d12bd6a.svg",
     "src": "resources/js/assets/images/img/no-result.svg"
   },
+  "resources/images/category/category_one.jpg": {
+    "file": "assets/category_one.26ae32b3.jpg",
+    "src": "resources/images/category/category_one.jpg"
+  },
   "resources/images/img/hero-img2.png": {
     "file": "assets/hero-img2.c73e47a3.png",
     "src": "resources/images/img/hero-img2.png"
@@ -34,18 +38,6 @@
   "resources/images/img/hero-img1.png": {
     "file": "assets/hero-img1.994c7a9e.png",
     "src": "resources/images/img/hero-img1.png"
-  },
-  "resources/images/category/category_one.jpg": {
-    "file": "assets/category_one.26ae32b3.jpg",
-    "src": "resources/images/category/category_one.jpg"
-  },
-  "resources/js/assets/images/bg/newsletter.jpg": {
-    "file": "assets/newsletter.b06e1c82.jpg",
-    "src": "resources/js/assets/images/bg/newsletter.jpg"
-  },
-  "resources/js/assets/images/bg/bg.svg": {
-    "file": "assets/bg.fb497198.svg",
-    "src": "resources/js/assets/images/bg/bg.svg"
   },
   "resources/js/assets/images/bg/breadcrump-bg.jpg": {
     "file": "assets/breadcrump-bg.2c00a1af.jpg",
@@ -55,6 +47,10 @@
     "file": "assets/auth-bg.b58b7286.png",
     "src": "resources/js/assets/images/bg/auth-bg.png"
   },
+  "resources/js/assets/images/bg/product-bg.jpg": {
+    "file": "assets/product-bg.46af69c3.jpg",
+    "src": "resources/js/assets/images/bg/product-bg.jpg"
+  },
   "resources/images/bg/bg.png": {
     "file": "assets/bg.1d5322ca.png",
     "src": "resources/images/bg/bg.png"
@@ -63,34 +59,42 @@
     "file": "assets/btn-brush-bg-2.d6085fcd.png",
     "src": "resources/images/bg/btn-brush-bg-2.png"
   },
+  "resources/js/assets/images/bg/newsletter.jpg": {
+    "file": "assets/newsletter.b06e1c82.jpg",
+    "src": "resources/js/assets/images/bg/newsletter.jpg"
+  },
+  "resources/js/assets/images/bg/bg.svg": {
+    "file": "assets/bg.fb497198.svg",
+    "src": "resources/js/assets/images/bg/bg.svg"
+  },
   "resources/js/app.js": {
-    "file": "assets/app.67ac9755.js",
+    "file": "assets/app.c2d3d19b.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "css": [
-      "assets/app.95516344.css"
+      "assets/app.65deece5.css"
     ],
     "assets": [
+      "assets/logo.5460c46c.png",
+      "assets/no-result.6d12bd6a.svg",
       "assets/users.26a6afab.png",
       "assets/subcategory.b4e641d1.png",
       "assets/orders.93976ea9.png",
       "assets/product.9c3afb69.png",
-      "assets/logo.5460c46c.png",
-      "assets/no-result.6d12bd6a.svg",
       "assets/avatar.f4995ef6.png",
       "assets/hero-img1.994c7a9e.png",
-      "assets/hero-img2.c73e47a3.png",
       "assets/category_one.26ae32b3.jpg",
-      "assets/breadcrump-bg.2c00a1af.jpg",
-      "assets/auth-bg.b58b7286.png",
       "assets/newsletter.b06e1c82.jpg",
       "assets/bg.fb497198.svg",
+      "assets/breadcrump-bg.2c00a1af.jpg",
+      "assets/auth-bg.b58b7286.png",
       "assets/bg.1d5322ca.png",
-      "assets/btn-brush-bg-2.d6085fcd.png"
+      "assets/btn-brush-bg-2.d6085fcd.png",
+      "assets/product-bg.46af69c3.jpg"
     ]
   },
   "resources/js/app.css": {
-    "file": "assets/app.95516344.css",
+    "file": "assets/app.65deece5.css",
     "src": "resources/js/app.css"
   },
   "resources/js/assets/images/logo/logo.png": {

@@ -4,7 +4,7 @@
     <div class="container">
       <!-- subscribe to newsletter -->
       <div class="row d-flex justify-content-center">
-        <div class="col-lg-8 col-md-10 col-10">
+        <div class="col-lg-12">
           <div class="footer__newsletter rounded p-2 shadow">
             <div class="footer__newslettter-content text-center p-2 shadow">
               <h2 class="fw-bolder text-white">Subscribe our newsletter</h2>
@@ -46,7 +46,7 @@
         <div class="row pt-4">
           <div class="col-lg-4 col-md-6 mb-2">
             <div class="footer-box shadow">
-              <h5 class="text-secondary">SuperoAgrobase Ltd</h5>
+              <h5 class="text-light">SuperoAgrobase Ltd</h5>
               <hr class="text-black" />
               <p class="small text-secondary">
                 Supero Incorporation Limited is a fast-rising agribusiness
@@ -73,7 +73,7 @@
           </div>
 
           <div class="col-lg-4 col-md-6 mb-2 footer-box">
-            <h5 class="text-secondary">Services</h5>
+            <h5 class="text-light">Services</h5>
             <hr class="text-black" />
             <ul class="list-unstyled">
               <li class="my-1">
@@ -107,7 +107,7 @@
           </div>
 
           <div class="col-lg-4 col-md-6 mb-2 footer-box">
-            <h5 class="text-secondary">Quick links</h5>
+            <h5 class="text-light">Quick links</h5>
             <hr class="text-black" />
             <ul class="list-unstyled">
               <li style="margin: 7px 0">
@@ -140,7 +140,7 @@
               <li style="margin: 7px 0">
                 <Link
                   class="d-flex align-items-center gap-1"
-                  :href="route('blogs')"
+                  :href="route('blog-page')"
                 >
                   <Icon height="18" icon="cib:blogger-b" /> Blog
                 </Link>
@@ -159,7 +159,11 @@
       </div>
 
       <div class="footer-foot">
-        <div class="container p-1">
+        <div class="container p-1 d-flex flex-column align-items-center">
+          <small class="d-flex gap-1 my-1">
+            <Icon height="18" icon="fontisto:visa" />
+            <Icon height="18" icon="logos:mastercard" />
+          </small>
           <small>
             &copy; Copyright {{ date }}, SuperoAgrobase Limited. All Rights
             Reserved.

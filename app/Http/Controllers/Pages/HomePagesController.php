@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Product;
 use App\Models\Admin\Promotion;
 use App\Models\Admin\Subcategory;
+use App\Models\Blog;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -17,9 +18,10 @@ class HomePagesController extends Controller
     //Home Page
     public function index()
     {
-        $promotions = Promotion::get();
-        $products = Product::with('reviews.user')->latest()->paginate(15);
-        return Inertia::render('HomePage', compact('products', 'promotions'));
+        $promotions = Promotion::orderBy('created_at', 'desc')->take(4)->get();
+        $blogs = Blog::orderBy('created_at', 'desc')->take(4)->get();
+        $products = Product::with('reviews.user')->latest()->paginate(12);
+        return Inertia::render('HomePage', compact('products', 'promotions', 'blogs'));
     }
     /**
      * Search products
@@ -71,7 +73,7 @@ class HomePagesController extends Controller
     }
     public function productDetails(Product $product)
     {
-        $product->update(["product_views" => $product->product_views++]);
+        $product->update(["product_views" => ++$product->product_views]);
         $relatedProducts = $product->with('reviews.user')->where('subcategory_id', $product->subcategory->id)->whereNot('id', $product->id)->get();
         $productDetails = $product->with('subcategory.category', 'reviews.user')->where('id', $product->id)->latest()->first();
         return Inertia::render('Product/ProductDetailsPage', [
@@ -88,7 +90,7 @@ class HomePagesController extends Controller
             'product_id' => 'string',
         ]);
         $product->update([
-            'reviews_count' => $product->reviews_count++
+            'reviews_count' => ++$product->reviews_count
         ]);
         Review::create([
             'comment' => $data['comment'],
@@ -108,6 +110,13 @@ class HomePagesController extends Controller
             Newsletter::subscribe($request->email);
         }
         return response()->json(['status' => 'successful'], 201);
+    }
+
+    //pages 
+    public function blog()
+    {
+        $blogs = Blog::paginate();
+        return Inertia::render('BlogPage', compact('blogs'));
     }
 }
 

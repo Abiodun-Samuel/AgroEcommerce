@@ -4,8 +4,8 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="category__header">
-            <h2>Select your category</h2>
-            <h3>Featured Categories</h3>
+            <!-- <h2>Products of the Week</h2> -->
+            <h3>Products of the Week</h3>
           </div>
 
           <div class="category__body">
@@ -28,24 +28,19 @@
                   :wrapAround="true"
                 >
                   <!-- @click="subcategories = category.subcategory" -->
-                  <slide v-for="(category, index) in categories" :key="index">
-                    <div class="rounded me-2 mb-2 category__slider-body">
+                  <slide v-for="(product, index) in products.data" :key="index">
+                    <ProductComponent :product="product" />
+
+                    <!-- <div class="rounded me-2 mb-2 category__slider-body">
                       <img
-                        v-if="category.banner_img"
                         :src="JSON.parse(category.banner_img)?.img_url"
-                        alt="profile-img"
-                        class="rounded img-fluid"
-                      />
-                      <img
-                        v-else
-                        src="../../../images/category/category_one.jpg"
                         alt="profile-img"
                         class="rounded img-fluid"
                       />
                       <div class="category__slider-text">
                         <p>{{ category.title }}</p>
                       </div>
-                    </div>
+                    </div> -->
                   </slide>
 
                   <template #addons>
@@ -84,8 +79,10 @@
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
+import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import { Carousel, Slide } from "vue3-carousel";
 
+const props = defineProps(["products"]);
 const categories = computed(() => usePage().props.data.categories);
 const subcategories = ref([]);
 
@@ -100,7 +97,7 @@ const breakpoints = {
     snapAlign: "center",
   },
   1024: {
-    itemsToShow: 4.5,
+    itemsToShow: 4,
     snapAlign: "start",
   },
 };
@@ -116,7 +113,10 @@ const prev = () => {
 <style lang="css" scoped>
 .category {
   position: relative;
-  padding: 2rem 0;
+  padding: 4rem 0;
+  background: url("@/assets/images/bg/product-bg.jpg") no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 .category__header h2 {
   font-size: 1.3rem;
@@ -131,36 +131,18 @@ const prev = () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: var(--green-0);
   border-radius: 50%;
   height: 40px;
   width: 40px;
   padding: 3px;
-}
-.category__slider-button button:hover {
   background: var(--green);
   color: #ffffff;
 }
-.category__slider-body {
-  transition: 500ms ease;
+.category__slider-button button:hover {
+  background: var(--green-5);
 }
-.category__slider-body:hover {
-  box-shadow: var(--shadow-1);
-  cursor: pointer;
-}
-.category__slider-text p {
-  color: var(--green-5);
-  font-weight: 600;
-  font-size: 1.1rem;
-  padding: 10px 0;
-  margin: 5px 0;
-}
-.category__slider-text {
-  background: url("../../../images/bg/btn-brush-bg-2.png") no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-a:hover {
-  border: 1.4px solid var(--green-0);
+
+.carousel__slide {
+  padding: 10px;
 }
 </style>

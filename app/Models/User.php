@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Cart;
+use App\Models\Blog;
 use App\Models\Review;
 
 
@@ -67,13 +68,17 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Cart::class);
     }
-    public function wishlist() 
+    public function wishlist()
     {
         return $this->hasMany(WishList::class);
     }
     public function review()
     {
         return $this->hasMany(Review::class);
+    }
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
     }
 
 }

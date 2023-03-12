@@ -23,8 +23,14 @@
           </div>
         </div>
         <div class="col-lg-6">
-          <div class="hero__image shadow rounded-pill">
-            <carousel
+          <div class="hero__image">
+            <img
+              loading="lazy"
+              :src="hero_img1"
+              alt="hero_imgs"
+              class="img-fluid"
+            />
+            <!-- <carousel
               :breakpoints="breakpoints"
               ref="myCarousel"
               autoplay="3000"
@@ -34,12 +40,12 @@
               <slide v-for="(hero_img, index) in hero_imgs" :key="index">
                 <img
                   loading="lazy"
-                  :src="hero_img"
+                  :src="hero_img2"
                   alt="hero_imgs"
                   class="bg-light"
                 />
               </slide>
-            </carousel>
+            </carousel> -->
           </div>
         </div>
       </div>
@@ -64,7 +70,7 @@ const hero_imgs = [hero_img1, hero_img2];
 }
 .hero__image {
   margin-top: 4rem;
-  border: 6px solid white;
+  /* border: 6px solid white; */
   overflow: hidden !important;
 }
 .hero__text {

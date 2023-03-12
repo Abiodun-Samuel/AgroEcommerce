@@ -11,7 +11,7 @@
         <div class="col-lg-12 my-2">
           <div class="products__section__header-button">
             <Link
-              :href="route('product-page')"
+              :href="route('product-page', { all_products: true })"
               class="btn btn-md btn-outline-success rounded-pill"
             >
               All Products
@@ -80,7 +80,7 @@ defineProps(["products"]);
 <style lang="css" scoped>
 .products__section {
   position: relative;
-  padding: 4rem 0;
+  padding: 2rem 0;
 }
 .products__section__header h2 {
   font-size: 1.3rem;

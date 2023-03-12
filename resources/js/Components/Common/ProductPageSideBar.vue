@@ -15,9 +15,9 @@
             <div class="position-relative d-flex">
               <span style="margin-left: 8px">{{ category.title }}</span>
 
-              <span class="dropdown-trigger-highlight bg-danger rounded-circle">
+              <!-- <span class="dropdown-trigger-highlight bg-danger rounded-circle">
                 {{ category.subcategory.length }}
-              </span>
+              </span> -->
             </div>
           </div>
         </template>

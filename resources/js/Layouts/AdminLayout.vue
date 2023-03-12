@@ -36,12 +36,7 @@ onMounted(() => {
     >
       <div class="container-fluid">
         <div
-          class="
-            navbar-brand-wrapper
-            d-flex
-            align-items-center
-            justify-content-start
-          "
+          class="navbar-brand-wrapper d-flex align-items-center justify-content-start"
         >
           <!-- logo  -->
           <Link
@@ -102,11 +97,7 @@ onMounted(() => {
                 </div>
               </a>
               <div
-                class="
-                  dropdown-menu dropdown-menu-right
-                  navbar-dropdown
-                  preview-list
-                "
+                class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
                 aria-labelledby="messageDropdown"
               >
                 <h5 class="p-3 fw-bolder text-black">Notifications</h5>
@@ -116,13 +107,7 @@ onMounted(() => {
                     <Icon icon="mdi:user-circle-outline" />
                   </div>
                   <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
+                    class="preview-item-content d-flex align-items-start flex-column justify-content-center"
                   >
                     <h6
                       class="preview-subject ellipsis mb-1 font-weight-normal"
@@ -138,13 +123,7 @@ onMounted(() => {
                     <Icon icon="mdi:user-circle-outline" />
                   </div>
                   <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
+                    class="preview-item-content d-flex align-items-start flex-column justify-content-center"
                   >
                     <h6
                       class="preview-subject ellipsis mb-1 font-weight-normal"
@@ -160,13 +139,7 @@ onMounted(() => {
                     <Icon icon="mdi:user-circle-outline" />
                   </div>
                   <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
+                    class="preview-item-content d-flex align-items-start flex-column justify-content-center"
                   >
                     <h6
                       class="preview-subject ellipsis mb-1 font-weight-normal"
@@ -223,11 +196,7 @@ onMounted(() => {
             </li>
           </ul>
           <button
-            class="
-              navbar-toggler navbar-toggler-right
-              d-lg-none
-              align-self-center
-            "
+            class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
             type="button"
             data-toggle="offcanvas"
           >
@@ -349,12 +318,9 @@ onMounted(() => {
             </Link>
           </li>
           <li class="nav-item">
-            <Link class="nav-link" :href="route('admin.subcategory.index')">
-              <Icon
-                icon="icon-park-outline:weixin-cards-offers"
-                class="menu-icon"
-              />
-              <span class="menu-title">Promotions</span>
+            <Link class="nav-link" :href="route('admin.blog.index')">
+              <Icon icon="jam:blogger" class="menu-icon" />
+              <span class="menu-title">Blogs</span>
             </Link>
           </li>
           <li class="nav-item">

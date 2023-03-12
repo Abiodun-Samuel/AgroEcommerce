@@ -52,32 +52,27 @@
               </div>
 
               <div id="myDropdown" class="dropdown-content shadow rounded">
-                <Link
-                  v-for="products_result in products_results"
-                  :key="products_result.id"
-                  class="d-flex align-items-center"
-                  :href="route('product-details-page', products_result.slug)"
-                >
-                  <Icon
-                    class="search__icon"
-                    icon="ic:twotone-search"
-                    height="20"
-                  />
-                  <span class="ms-2">{{ products_result.title }}</span>
-                </Link>
+                <template v-if="products_results.length">
+                  <Link
+                    v-for="products_result in products_results"
+                    :key="products_result.id"
+                    class="d-flex align-items-center"
+                    :href="route('product-details-page', products_result.slug)"
+                  >
+                    <Icon
+                      class="search__icon"
+                      icon="ic:twotone-search"
+                      height="20"
+                    />
+                    <span class="ms-2">{{ products_result.title }}</span>
+                  </Link>
+                </template>
               </div>
             </div>
           </div>
           <!-- cart and wish list  -->
           <div
-            class="
-              col-6 col-lg-5
-              header__cart
-              d-flex
-              align-items-center
-              gap-2
-              justify-content-end
-            "
+            class="col-6 col-lg-5 header__cart d-flex align-items-center gap-2 justify-content-end"
           >
             <div class="box">
               <button
@@ -147,14 +142,7 @@
                   <li class="mb-1 rounded">
                     <Link
                       :href="route('login')"
-                      class="
-                        btn btn-success
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      class="btn btn-success dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon class="me-1" icon="mdi:logout" />
                       <span>Login</span></Link
@@ -163,14 +151,7 @@
                   <li class="rounded">
                     <Link
                       :href="route('register')"
-                      class="
-                        btn btn-success
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      class="btn btn-success dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon class="me-1" icon="mdi:register-outline" />
                       <span>Register</span></Link
@@ -261,14 +242,7 @@
                       :href="route('logout')"
                       method="post"
                       as="button"
-                      class="
-                        btn btn-danger
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      class="btn btn-danger dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon
                         height="20"
@@ -298,19 +272,14 @@
         <div class="row">
           <div class="col-lg-12">
             <nav
-              class="
-                header__links
-                d-flex
-                justify-content-between
-                align-items-center
-              "
+              class="header__links d-flex justify-content-between align-items-center"
             >
               <Link :href="route('home')" class="d-flex align-items-center">
                 <Icon height="14" icon="carbon:home" />
                 <span style="margin-left: 5px">Home</span>
               </Link>
               <Link
-                :href="route('home')"
+                :href="route('about')"
                 class="d-none d-lg-flex align-items-center"
               >
                 <Icon icon="mdi:about-circle-outline" />
@@ -331,15 +300,8 @@
                 <ul class="dropdown-menu shadow p-1 bg-white">
                   <li class="mb-1 rounded">
                     <Link
-                      :href="route('login')"
-                      class="
-                        text-black
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      :href="route('agro-input')"
+                      class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon icon="mdi:button-pointer" />
                       <span style="margin-left: 5px">Agro-Input</span>
@@ -347,15 +309,8 @@
                   </li>
                   <li class="mb-1 rounded">
                     <Link
-                      :href="route('login')"
-                      class="
-                        text-black
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      :href="route('agri-court')"
+                      class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon icon="mdi:button-pointer" />
                       <span style="margin-left: 5px">AgriCourt Ventures</span>
@@ -363,15 +318,8 @@
                   </li>
                   <li class="mb-1 rounded">
                     <Link
-                      :href="route('login')"
-                      class="
-                        text-black
-                        dropdown-item
-                        w-100
-                        dropdown-item
-                        d-flex
-                        align-items-center
-                      "
+                      :href="route('harvest-yield')"
+                      class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                     >
                       <Icon icon="mdi:button-pointer" />
                       <span style="margin-left: 5px">HarvestYield Farm</span>
@@ -381,14 +329,14 @@
               </div>
 
               <Link
-                :href="route('home')"
+                :href="route('blog-page')"
                 class="d-none d-lg-flex align-items-center"
               >
                 <Icon icon="cib:blogger-b" />
                 <span style="margin-left: 5px">Blog</span>
               </Link>
               <Link
-                :href="route('home')"
+                :href="route('contact')"
                 class="d-none d-lg-flex align-items-center"
               >
                 <Icon icon="fluent-mdl2:contact-list" />
@@ -442,13 +390,43 @@
           class="form-control"
           aria-label="Search for Products"
           placeholder="Search for products..."
+          v-model="form.query"
+          @focus="add_searchbox"
         />
         <button
+          @click="search"
+          :disabled="form.processing"
           class="btn btn-success d-flex align-items-center py-0 px-1"
           type="button"
         >
-          <Icon icon="ic:twotone-search" height="20" />
+          <span
+            v-if="form.processing"
+            class="spinner-border spinner-border-sm"
+            role="status"
+            aria-hidden="true"
+          ></span>
+          <Icon v-else icon="ic:twotone-search" height="20" />
         </button>
+      </div>
+
+      <div id="myDropdown" class="bg-white shadow rounded">
+        <div v-if="products_results.length" class="p-1">
+          <Link
+            v-for="products_result in products_results"
+            :key="products_result.id"
+            class="d-flex align-items-center"
+            :href="route('product-details-page', products_result.slug)"
+          >
+            <span class="d-flex">
+              <Icon
+                icon="ic:twotone-search"
+                height="20"
+                style="margin-right: 5px"
+              />
+              {{ products_result.title }}
+            </span>
+          </Link>
+        </div>
       </div>
 
       <hr />
@@ -459,7 +437,7 @@
             <Icon height="14" icon="carbon:home" />
             <span style="margin-left: 5px">Home</span>
           </Link>
-          <Link :href="route('home')" class="d-flex align-items-center">
+          <Link :href="route('about')" class="d-flex align-items-center">
             <Icon icon="mdi:about-circle-outline" />
             <span style="margin-left: 5px">About</span>
           </Link>
@@ -477,15 +455,8 @@
             <ul class="dropdown-menu shadow p-1 bg-white">
               <li class="mb-1 rounded">
                 <Link
-                  :href="route('login')"
-                  class="
-                    text-black
-                    dropdown-item
-                    w-100
-                    dropdown-item
-                    d-flex
-                    align-items-center
-                  "
+                  :href="route('agro-input')"
+                  class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                 >
                   <Icon icon="mdi:button-pointer" />
                   <span style="margin-left: 5px">Agro-Input</span>
@@ -493,15 +464,8 @@
               </li>
               <li class="mb-1 rounded">
                 <Link
-                  :href="route('login')"
-                  class="
-                    text-black
-                    dropdown-item
-                    w-100
-                    dropdown-item
-                    d-flex
-                    align-items-center
-                  "
+                  :href="route('agri-court')"
+                  class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                 >
                   <Icon icon="mdi:button-pointer" />
                   <span style="margin-left: 5px">AgriCourt Ventures</span>
@@ -509,15 +473,8 @@
               </li>
               <li class="mb-1 rounded">
                 <Link
-                  :href="route('login')"
-                  class="
-                    text-black
-                    dropdown-item
-                    w-100
-                    dropdown-item
-                    d-flex
-                    align-items-center
-                  "
+                  :href="route('harvest-yield')"
+                  class="text-black dropdown-item w-100 dropdown-item d-flex align-items-center"
                 >
                   <Icon icon="mdi:button-pointer" />
                   <span style="margin-left: 5px">HarvestYield Farm</span>
@@ -525,7 +482,7 @@
               </li>
             </ul>
           </div>
-          <Link :href="route('home')" class="d-flex align-items-center">
+          <Link :href="route('blog-page')" class="d-flex align-items-center">
             <Icon icon="cib:blogger-b" />
             <span style="margin-left: 5px">Blog</span>
           </Link>
@@ -533,7 +490,7 @@
             <Icon icon="ri:shopping-basket-2-line" />
             <span style="margin-left: 5px">Products</span>
           </Link>
-          <Link :href="route('home')" class="d-flex align-items-center">
+          <Link :href="route('contact')" class="d-flex align-items-center">
             <Icon icon="fluent-mdl2:contact-list" />
             <span style="margin-left: 5px">Contact</span>
           </Link>
@@ -685,13 +642,7 @@
             :href="route('logout')"
             method="post"
             as="button"
-            class="
-              btn btn-danger
-              justify-content-center
-              d-flex
-              align-items-center
-              w-100
-            "
+            class="btn btn-danger justify-content-center d-flex align-items-center w-100"
           >
             <Icon height="20" width="20" icon="mdi:logout" class="me-1" />
             <span>Log Out</span></Link
@@ -794,7 +745,7 @@ const remove_searchbox = () => {
 };
 
 const search = (e) => {
-  if (e.target.value.length > 3 || form.query.length > 3) {
+  if (e.target?.value?.length > 3 || form.query.length > 3) {
     axios.post(route("product.search", { query: form.query })).then((res) => {
       products_results.value = res.data;
     });
