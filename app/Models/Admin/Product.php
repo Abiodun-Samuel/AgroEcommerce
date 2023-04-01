@@ -30,7 +30,10 @@ class Product extends Model
         'reviews_count',
         'sales_count'
     ];
-
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
     public function subcategory()
     {
         return $this->belongsTo(Subcategory::class);

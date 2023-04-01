@@ -22,7 +22,7 @@ Route::get('/', [HomePagesController::class, 'index'])->name('home');
 //Products
 Route::post('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
 Route::get('/products/{subcategory:slug?}', [HomePagesController::class, 'products'])->name('product-page');
-Route::get('/products/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
+Route::get('/product/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
 //newsletter
 Route::post('/subscribe-to-newsletter', [HomePagesController::class, 'subscribeToNewsletter'])->name('subscribe-to-newsletter');
 //pages 

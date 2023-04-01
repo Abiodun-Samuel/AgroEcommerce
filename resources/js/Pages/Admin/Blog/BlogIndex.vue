@@ -247,7 +247,6 @@ import { toast } from "@/utils/helper";
 import { Icon } from "@iconify/vue";
 
 const props = defineProps(["blogs"]);
-
 let fileSrc = ref(null);
 const showDeleteblogModal = ref(false);
 const form = useForm({
