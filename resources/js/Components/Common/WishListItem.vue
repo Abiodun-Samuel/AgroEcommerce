@@ -2,7 +2,7 @@
   <div class="d-flex justify-content-between align-items-start">
     <div>
       <img
-        :style="item.stock <= 0 ? 'filter: grayscale(100%)' : ''"
+        :style="Number(item.stock) > 0 ? '' : 'filter: grayscale(100%)'"
         width="55"
         height="55"
         class="rounded"
@@ -10,7 +10,7 @@
         :alt="item.title"
       />
       <small class="text-danger small">{{
-        item.stock <= 0 ? "Out of Stock" : "In Stock"
+        Number(item.stock) > 0 ? "In Stock" : "Out of Stock"
       }}</small>
     </div>
     <div>
@@ -31,6 +31,7 @@
         <Icon height="15" icon="material-symbols:delete-outline-rounded" />
       </button>
       <button
+        v-if="item.stock > 0"
         :disabled="product.processing || item.stock <= 0"
         @click="addToCart(item)"
         class="shadow btn-sm btn-success"

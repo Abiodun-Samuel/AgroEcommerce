@@ -51,7 +51,13 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     // Route::get('/dashboard/edit', [AdminDashboardController::class, 'edit'])->name('dashboard.edit');
     // Route::patch('/dashboard', [AdminDashboardController::class, 'update'])->name('dashboard.update');
     // Route::delete('/dashboard', [AdminDashboardController::class, 'destroy'])->name('dashboard.destroy');
-
+    //Admin Products
+    Route::get('/products', [AdminProductController::class, 'index'])->name('product.index');
+    Route::get('/product-create', [AdminProductController::class, 'create'])->name('product.create');
+    Route::get('/product/{product}', [AdminProductController::class, 'edit'])->name('product.edit');
+    Route::post('/product/{product}', [AdminProductController::class, 'update'])->name('product.update');
+    Route::post('/product', [AdminProductController::class, 'store'])->name('product.store');
+    Route::delete('/product/{product}', [AdminProductController::class, 'destroy'])->name('product.destroy');
     //Admin dashbord
     Route::get('/profile', [AdminProfileController::class, 'index'])->name('index');
     Route::post('/update-avatar/{user}', [AdminProfileController::class, 'updateAvatar'])->name('update-avatar');
@@ -70,14 +76,6 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::post('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'update'])->name('subcategory.update');
     Route::post('/subcategory', [AdminSubcategoryController::class, 'store'])->name('subcategory.store');
     Route::delete('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategory.destroy');
-
-    //Admin Products
-    Route::get('/products', [AdminProductController::class, 'index'])->name('product.index');
-    Route::get('/product-create', [AdminProductController::class, 'create'])->name('product.create');
-    Route::get('/product/{product}', [AdminProductController::class, 'edit'])->name('product.edit');
-    Route::post('/product/{product}', [AdminProductController::class, 'update'])->name('product.update');
-    Route::post('/product', [AdminProductController::class, 'store'])->name('product.store');
-    Route::delete('/product/{product}', [AdminProductController::class, 'destroy'])->name('product.destroy');
     //Admin Promotion 
     Route::get('/promotions', [AdminPromotionController::class, 'index'])->name('promotion.index');
     Route::post('/promotions', [AdminPromotionController::class, 'store'])->name('promotion.store');
@@ -116,22 +114,22 @@ Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     Route::post('/update-profile/{user}', [UserDashboardController::class, 'updateProfile'])->name('update-profile');
 
 
-    Route::get('/category', [AdminCategoryController::class, 'index'])->name('category.index');
-    Route::get('/category/{category}', [AdminCategoryController::class, 'edit'])->name('category.edit');
-    Route::post('/category/{category}', [AdminCategoryController::class, 'update'])->name('category.update');
-    Route::post('/category', [AdminCategoryController::class, 'store'])->name('category.store');
-    Route::delete('/category/{category}', [AdminCategoryController::class, 'destroy'])->name('category.destroy');
+    // Route::get('/category', [AdminCategoryController::class, 'index'])->name('category.index');
+    // Route::get('/category/{category}', [AdminCategoryController::class, 'edit'])->name('category.edit');
+    // Route::post('/category/{category}', [AdminCategoryController::class, 'update'])->name('category.update');
+    // Route::post('/category', [AdminCategoryController::class, 'store'])->name('category.store');
+    // Route::delete('/category/{category}', [AdminCategoryController::class, 'destroy'])->name('category.destroy');
 
     //Admin Sub Category
-    Route::get('/subcategory', [AdminSubcategoryController::class, 'index'])->name('subcategory.index');
-    Route::post('/subcategory', [AdminSubcategoryController::class, 'store'])->name('subcategory.store');
-    Route::delete('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategory.destroy');
+    // Route::get('/subcategory', [AdminSubcategoryController::class, 'index'])->name('subcategory.index');
+    // Route::post('/subcategory', [AdminSubcategoryController::class, 'store'])->name('subcategory.store');
+    // Route::delete('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategory.destroy');
 
     //Admin Dashboard Products
-    Route::get('/products', [AdminProductController::class, 'index'])->name('product.index');
-    Route::get('/product-create', [AdminProductController::class, 'create'])->name('product.create');
-    Route::post('/product', [AdminProductController::class, 'store'])->name('product.store');
-    Route::delete('/product/{product}', [AdminProductController::class, 'destroy'])->name('product.destroy');
+    // Route::get('/products', [AdminProductController::class, 'index'])->name('product.index');
+    // Route::get('/product-create', [AdminProductController::class, 'create'])->name('product.create');
+    // Route::post('/product', [AdminProductController::class, 'store'])->name('product.store');
+    // Route::delete('/product/{product}', [AdminProductController::class, 'destroy'])->name('product.destroy');
 });
 
 //Authenticated User Routes

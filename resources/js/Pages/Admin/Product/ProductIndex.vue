@@ -46,12 +46,7 @@
                     </td>
 
                     <td
-                      class="
-                        d-flex
-                        gap-2
-                        justify-content-start
-                        align-items-center
-                      "
+                      class="d-flex gap-2 justify-content-start align-items-center"
                     >
                       <Link
                         target="_blank"
@@ -100,14 +95,7 @@
   >
     <template #header>
       <h4
-        class="
-          modal-title
-          text-warning
-          d-flex
-          align-items-center
-          gap-1
-          fw-bolder
-        "
+        class="modal-title text-warning d-flex align-items-center gap-1 fw-bolder"
       >
         <Icon icon="icon-park-outline:caution" />
         Caution

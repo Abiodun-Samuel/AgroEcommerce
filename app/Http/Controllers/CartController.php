@@ -10,12 +10,12 @@ class CartController extends Controller
 {
     public function cartList()
     {
-       
-        // $cartCollection = \Cart::getContent();
-        // $cartCount = $cartCollection->count();
-        // $cartItems = $cartCollection->sort();
-        // $cartTotal = \Cart::getTotal();
-        // return Inertia::render('CartPage', compact('cartItems', 'cartTotal', 'cartCount'));
+
+        $cartCollection = \Cart::getContent();
+        $cartCount = $cartCollection->count();
+        $cartItems = $cartCollection->sort();
+        $cartTotal = \Cart::getTotal();
+        return Inertia::render('CartPage', compact('cartItems', 'cartTotal', 'cartCount'));
     }
     public function addToCart(Request $request)
     {
