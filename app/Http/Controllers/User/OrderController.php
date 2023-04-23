@@ -92,8 +92,8 @@ class OrderController extends Controller
                     'email' => $order->email,
                     'url' => route('admin.order.show', $order->id)
                 ];
-                Mail::to('abiodunsamyemi@gmail.com')->send(new NewOrderMail($orderData));
-                // Mail::to('contact@superoagrobase.com')->send(new NewOrderMail($orderData));
+                // Mail::to('abiodunsamyemi@gmail.com')->send(new NewOrderMail($orderData));
+                Mail::to('contact@superoagrobase.com')->send(new NewOrderMail($orderData));
                 // return redirect()->route('user.order.show', $order->id);
             });
         } catch (\Exception $exception) {
