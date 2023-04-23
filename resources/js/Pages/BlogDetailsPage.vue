@@ -87,8 +87,10 @@ const formatDate = (data) => {
               </div>
               <p class="lead my-1">{{ blog.description }}</p>
 
-              <a :href="route('blog-page')" class="btn btn-outline-success mt-4"
-                >Back to blog page</a
+              <Link
+                :href="route('blog-page')"
+                class="btn btn-outline-success mt-4"
+                >Back to blog page</Link
               >
             </div>
           </div>

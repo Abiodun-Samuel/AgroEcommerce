@@ -36,12 +36,7 @@ onMounted(() => {
     >
       <div class="container-fluid">
         <div
-          class="
-            navbar-brand-wrapper
-            d-flex
-            align-items-center
-            justify-content-start
-          "
+          class="navbar-brand-wrapper d-flex align-items-center justify-content-start"
         >
           <!-- logo  -->
           <Link
@@ -71,115 +66,9 @@ onMounted(() => {
             <Icon class="navbar-icon" icon="mdi:home-account" />
           </Link>
 
-          <div class="ms-5 search-field d-none d-md-block">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search..."
-                aria-label="Search..."
-                aria-describedby="button-addon2"
-              />
-              <button class="btn btn-success" type="button" id="button-addon2">
-                Search
-              </button>
-            </div>
-          </div>
           <!-- nav dropdowns  -->
           <ul class="navbar-nav navbar-nav-right">
             <!--  notification  -->
-            <li class="nav-item dropdown">
-              <a
-                class="nav-link count-indicator dropdown-toggle"
-                id="messageDropdown"
-                href="#"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                <Icon class="navbar-icon" icon="zondicons:notification" />
-                <div class="count-symbol bg-danger">
-                  <p class="p-0 m-0 fw-bolder">9+</p>
-                </div>
-              </a>
-              <div
-                class="
-                  dropdown-menu dropdown-menu-right
-                  navbar-dropdown
-                  preview-list
-                "
-                aria-labelledby="messageDropdown"
-              >
-                <h5 class="p-3 fw-bolder text-black">Notifications</h5>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <Icon icon="mdi:user-circle-outline" />
-                  </div>
-                  <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
-                  >
-                    <h6
-                      class="preview-subject ellipsis mb-1 font-weight-normal"
-                    >
-                      Mark send you a message
-                    </h6>
-                    <p class="text-gray mb-0">1 Minutes ago</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <Icon icon="mdi:user-circle-outline" />
-                  </div>
-                  <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
-                  >
-                    <h6
-                      class="preview-subject ellipsis mb-1 font-weight-normal"
-                    >
-                      Cregh send you a message
-                    </h6>
-                    <p class="text-gray mb-0">15 Minutes ago</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item preview-item">
-                  <div class="preview-thumbnail">
-                    <Icon icon="mdi:user-circle-outline" />
-                  </div>
-                  <div
-                    class="
-                      preview-item-content
-                      d-flex
-                      align-items-start
-                      flex-column
-                      justify-content-center
-                    "
-                  >
-                    <h6
-                      class="preview-subject ellipsis mb-1 font-weight-normal"
-                    >
-                      Profile picture updated
-                    </h6>
-                    <p class="text-gray mb-0">18 Minutes ago</p>
-                  </div>
-                </a>
-                <div class="dropdown-divider"></div>
-                <h6 class="p-3 mb-0 text-center">4 new messages</h6>
-              </div>
-            </li>
             <!-- profile  -->
             <li class="nav-item nav-profile dropdown">
               <a
@@ -190,7 +79,11 @@ onMounted(() => {
                 aria-expanded="false"
               >
                 <div class="nav-profile-img">
-                  <Icon class="navbar-icon" icon="mdi:user-circle-outline" />
+                  <Icon
+                    height="25"
+                    class="navbar-icon"
+                    icon="mdi:user-circle-outline"
+                  />
                   <span
                     :class="
                       user.status == 'online'
@@ -209,25 +102,23 @@ onMounted(() => {
                 </div>
               </a>
               <div
-                class="dropdown-menu navbar-dropdown"
+                class="dropdown-menu navbar-dropdown p-1"
                 aria-labelledby="profileDropdown"
               >
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-cached me-2 text-success"></i> Activity Log
-                </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-logout me-2 text-primary"></i> Signout
-                </a>
+                <Link
+                  :href="route('logout')"
+                  method="post"
+                  as="button"
+                  class="dropdown-item btn btn-danger w-100 text-center"
+                >
+                  Logout
+                </Link>
               </div>
             </li>
           </ul>
           <button
-            class="
-              navbar-toggler navbar-toggler-right
-              d-lg-none
-              align-self-center
-            "
+            class="navbar-toggler navbar-toggler-right d-lg-none align-self-center"
             type="button"
             data-toggle="offcanvas"
           >

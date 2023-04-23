@@ -9,7 +9,7 @@ import NoResult from "@/Components/Common/NoResult.vue";
 import { Country, State } from "country-state-city";
 import Modal from "@/Components/Common/Modal.vue";
 import FormError from "@/Components/Common/FormError.vue";
-import paystack from "vue3-paystack";
+// import paystack from "vue3-paystack";
 
 const props = defineProps(["cartItems", "cartTotal"]);
 const step_one = {
@@ -17,39 +17,36 @@ const step_one = {
   link: false,
   route_name: "",
 };
+
 const showUpdateModal = ref(false);
-const delivery__option = ref(false);
-const payment__option = ref(false);
+const cartItemsLength = ref([]);
 const user = computed(() => usePage().props.auth.user);
 const countries = ref(Country.getAllCountries());
 const states = ref([]);
 const getCountryCode = (value) => {
-  states.value = State.getStatesOfCountry(value.isoCode);
+  states.value = State.getStatesOfCountry(value?.isoCode);
 };
 const publicKey = ref(import.meta.env.VITE_PAYSTACK_PUBLIC_KEY);
 const email = ref(user.value.email);
-const amount = ref(props.cartTotal * 100);
-const reference = ref("ndmjkn");
+// const amount = ref(props.cartTotal * 100);
+// const reference = ref("ndmjkn");
 
-const onSuccessfulPayment = () => {
-  console.log("object");
-};
-const onCancelledPayment = () => {
-  console.log("object");
-};
+// const onSuccessfulPayment = () => {
+//   console.log("object");
+// };
+// const onCancelledPayment = () => {
+//   console.log("object");
+// };
 
 const orderForm = useForm({
-  first_name: user.value.first_name,
-  last_name: user.value.last_name,
+  name: user.value.first_name + " " + user.value.last_name,
   phone: user.value.phone,
-  address: user.value.address,
-  city: user.value.city,
-  state: user.value.state,
-  country: user.value.country,
-  gender: user.value.gender,
   email: user.value.email,
-  dob: user.value.dob,
-  save_as_my_address: false,
+  address: `${user.value.address}, ${user.value.city}, ${user.value.state}, ${user.value.country}.`,
+  payment_option: "",
+  delivery_option: "",
+  order_status: "Pending",
+  payment_status: "Not Paid",
 });
 
 const formClear = useForm({});
@@ -67,7 +64,30 @@ const clearCart = () => {
   });
 };
 
+const userProfileUpdate = useForm({
+  phone: user.value.phone,
+  address: user.value.address,
+  city: user.value.city,
+  state: user.value.state,
+  country: user.value.country,
+});
+
+const updateUserProfile = () => {
+  userProfileUpdate.clearErrors();
+  userProfileUpdate.post(route("user.update-user", user.value.id), {
+    preserveScroll: true,
+    onSuccess: () => {
+      toast.success("Profile has been updated successfully");
+      showUpdateModal.value = false;
+    },
+    onError: () => {
+      toast.error(`Unable to update profile.`);
+    },
+  });
+};
+
 const createOrder = () => {
+  if (Number(props.cartTotal) <= 0) return;
   orderForm.clearErrors();
   orderForm.post(route("user.order.create", user.value.id), {
     preserveScroll: true,
@@ -86,7 +106,7 @@ const createOrder = () => {
   <Head title="CheckOut" />
   <GuestLayout>
     <BreadCrump :step_one="step_one" />
-    <div class="container">
+    <div v-if="Number(cartTotal) > 0" class="container">
       <div class="row">
         <div class="col-lg-8 col-md-7 my-2">
           <!-- address  -->
@@ -114,16 +134,16 @@ const createOrder = () => {
             <div class="row">
               <template v-if="user.is_completed == true">
                 <div class="col-12 px-4 py-1">
-                  <h5>{{ orderForm.first_name }} {{ orderForm.last_name }}</h5>
+                  <h5>{{ user.first_name }} {{ user.last_name }}</h5>
                   <p class="fw-light my-0 py-0">
-                    {{ orderForm.email }}
+                    {{ user.email }}
                   </p>
                   <p class="fw-light my-0 py-0">
-                    {{ orderForm.phone }}
+                    {{ user.phone }}
                   </p>
                   <p class="fw-light my-0 py-0">
-                    {{ orderForm.address }}, {{ orderForm.city }},
-                    {{ orderForm.state }}, {{ orderForm.country?.name }}.
+                    {{ user.address }}, {{ user.city }}, {{ user.state }},
+                    {{ user.country }}.
                   </p>
                 </div>
               </template>
@@ -141,7 +161,7 @@ const createOrder = () => {
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-1">
                 <Icon
-                  :class="delivery__option ? 'text-success' : ''"
+                  :class="orderForm.delivery_option ? 'text-success' : ''"
                   height="20"
                   icon="mdi:checkbox-marked-circle"
                 />
@@ -162,7 +182,7 @@ const createOrder = () => {
                     type="radio"
                     name="flexRadioDefault"
                     id="flexRadioDefault1"
-                    v-model="delivery__option"
+                    v-model="orderForm.delivery_option"
                     value="office_pickup"
                   />
                   <label class="form-check-label" for="flexRadioDefault1">
@@ -188,7 +208,7 @@ const createOrder = () => {
                     type="radio"
                     name="flexRadioDefault"
                     id="flexRadioDefault2"
-                    v-model="delivery__option"
+                    v-model="orderForm.delivery_option"
                     value="door_delivery"
                   />
                   <label class="form-check-label" for="flexRadioDefault2">
@@ -210,12 +230,12 @@ const createOrder = () => {
             <div class="d-flex justify-content-between align-items-center">
               <div class="d-flex align-items-center gap-1">
                 <Icon
-                  :class="payment__option ? 'text-success' : ''"
+                  :class="orderForm.payment_option ? 'text-success' : ''"
                   height="20"
                   icon="mdi:checkbox-marked-circle"
                 />
                 <h5 class="fw-bolder my-0 py-0" style="color: var(--green-5)">
-                  3. Payment Mode
+                  3. Payment Options
                 </h5>
               </div>
             </div>
@@ -225,15 +245,28 @@ const createOrder = () => {
                 <h5 class="fw-light">How do you want to pay for your order?</h5>
                 <div class="form-check my-1">
                   <input
-                    v-model="payment__option"
-                    value="pay_now"
+                    v-model="orderForm.payment_option"
+                    value="Bank"
+                    class="form-check-input"
+                    type="radio"
+                    name="payment_method"
+                    id="payment_method1"
+                  />
+                  <label class="form-check-label" for="payment_method1">
+                    Pay with Cards or Bank Transfer
+                  </label>
+                </div>
+                <div class="form-check my-1">
+                  <input
+                    v-model="orderForm.payment_option"
+                    value="Cash"
                     class="form-check-input"
                     type="radio"
                     name="payment_method"
                     id="payment_method2"
                   />
                   <label class="form-check-label" for="payment_method2">
-                    Pay with Cards, Bank Transfer or USSD
+                    Pay with Cash
                   </label>
                 </div>
                 <small class="text-danger fst-italic"
@@ -244,7 +277,7 @@ const createOrder = () => {
           </div>
           <!-- place order  -->
           <div class="bg-white rounded shadow-sm p-1 mb-1">
-            <paystack
+            <!-- <paystack
               buttonClass="'btn btn-primary'"
               buttonText="Pay Online"
               :publicKey="publicKey"
@@ -253,23 +286,18 @@ const createOrder = () => {
               :reference="reference"
               :onSuccess="onSuccessfulPayment"
               :onCanel="onCancelledPayment"
-            ></paystack>
+            ></paystack> -->
 
             <button
               @click="createOrder"
               :disabled="
                 orderForm.processing ||
-                !payment__option ||
-                !delivery__option ||
-                user.is_completed == false
+                !orderForm.payment_option ||
+                !orderForm.delivery_option ||
+                user.is_completed == false ||
+                Number(cartTotal) <= 0
               "
-              class="
-                btn btn-success
-                w-100
-                d-flex
-                align-items-center
-                justify-content-center
-              "
+              class="btn btn-success w-100 d-flex align-items-center justify-content-center"
             >
               <span
                 v-if="orderForm.processing"
@@ -297,20 +325,12 @@ const createOrder = () => {
                 height="20"
                 icon="material-symbols:order-approve-outline-sharp"
               />
-              <span>Order Summary</span>
+              <span>Edit Cart</span>
             </h5>
             <hr />
             <Link
               :href="route('cart')"
-              class="
-                btn btn-outline-primary
-                rounded
-                w-100
-                d-flex
-                gap-1
-                align-items-center
-                justify-content-center
-              "
+              class="btn btn-success rounded w-100 d-flex gap-1 align-items-center justify-content-center"
             >
               <Icon icon="ic:outline-shopping-cart" height="15" /> Modify Cart
             </Link>
@@ -321,23 +341,32 @@ const createOrder = () => {
               style="color: var(--green-5)"
             >
               <Icon height="20" icon="mdi:account-help" />
-              <span>Need help?</span>
+              <span>Need help? </span>
             </h5>
             <hr />
-            <button
-              class="
-                btn btn-outline-primary
-                rounded
-                w-100
-                d-flex
-                gap-1
-                align-items-center
-                justify-content-center
-              "
+            <a
+              href="https://wa.link/20q7u6"
+              target="_blank"
+              class="btn btn-primary rounded w-100 d-flex gap-1 align-items-center justify-content-center"
             >
               <Icon icon="clarity:chat-bubble-outline-badged" height="15" />
               Live Chat
-            </button>
+            </a>
+            <small class="text-danger small italics mt-1"
+              >You can also send a message after placing your order</small
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div v-else class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="alert alert-danger p-2 text-center mt-4">
+            You have no items in your cart <br />
+            <Link :href="route('product-page')" class="btn btn-danger mt-1"
+              >Products</Link
+            >
           </div>
         </div>
       </div>
@@ -351,23 +380,16 @@ const createOrder = () => {
   >
     <template #header>
       <h4
-        class="
-          modal-title
-          text-warning
-          d-flex
-          align-items-center
-          gap-1
-          fw-bolder
-        "
+        class="modal-title text-warning d-flex align-items-center gap-1 fw-bolder"
       >
-        Save details
+        Address Details
       </h4>
     </template>
 
     <template #body>
-      <FormError :errors="orderForm.errors" />
+      <FormError :errors="userProfileUpdate.errors" />
       <div class="row">
-        <div class="col-lg-6 col-md-6 col-6 my-1">
+        <div class="col-lg-6 col-md-6 col-6 mb-1">
           <label for="phone" class="form-label">Phone</label>
           <input
             type="tel"
@@ -375,17 +397,17 @@ const createOrder = () => {
             id="phone"
             class="form-control"
             placeholder="Phone number"
-            v-model="orderForm.phone"
+            v-model="userProfileUpdate.phone"
           />
         </div>
         <!-- country, state, city -->
-        <div class="col-lg-6 col-md-6 col-6 my-1">
+        <div class="col-lg-6 col-md-6 col-6 mb-1">
           <label for="country" class="form-label">Country</label>
           <select
             class="form-select"
             aria-label="Default select example"
-            v-model="orderForm.country"
-            @change="getCountryCode(orderForm.country)"
+            v-model="userProfileUpdate.country"
+            @change="getCountryCode(userProfileUpdate.country)"
           >
             <option
               v-for="country in countries"
@@ -401,7 +423,7 @@ const createOrder = () => {
           <select
             class="form-select"
             aria-label="Default select example"
-            v-model="orderForm.state"
+            v-model="userProfileUpdate.state"
           >
             <option v-for="state in states" :key="state" :value="state.name">
               {{ state.name }}
@@ -415,42 +437,46 @@ const createOrder = () => {
             class="form-control"
             id="city"
             placeholder="City"
-            v-model="orderForm.city"
+            v-model="userProfileUpdate.city"
           />
         </div>
         <!-- address  -->
         <div class="col-12 my-1">
           <label for="address" class="form-label">Address</label>
-          <textarea
+          <input
             id="address"
             rows="3"
             class="form-control"
-            v-model="orderForm.address"
-          ></textarea>
+            v-model="userProfileUpdate.address"
+          />
         </div>
         <!-- save as adress  -->
-        <div class="col-12">
+        <!-- <div class="col-12">
           <div class="form-check">
             <input
               class="form-check-input"
               type="checkbox"
-              v-model="orderForm.save_as_my_address"
+              v-model="userProfileUpdate.save_as_my_address"
               id="saveasmyaddress"
             />
             <label class="form-check-label small" for="saveasmyaddress">
               Save as my address
             </label>
           </div>
-        </div>
+        </div> -->
       </div>
     </template>
 
     <template #footer>
-      <button @click="showUpdateModal = false" class="btn btn-success w-100">
-        <!-- <span
-          v-show="orderForm.processing"
+      <button
+        @click="updateUserProfile"
+        :disabled="userProfileUpdate.processing"
+        class="btn btn-success w-100"
+      >
+        <span
+          v-show="userProfileUpdate.processing"
           class="spinner-border spinner-border-sm mx-1"
-        ></span> -->
+        ></span>
         Save
       </button>
     </template>

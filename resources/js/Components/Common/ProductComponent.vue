@@ -32,20 +32,21 @@
         </p>
       </div>
 
-      <div class="my-1">
-        <Rating
-          :value="averageRating"
-          :text="`${product.reviews.length} review${
+      <div class="my-1 d-flex gap-1">
+        <Rating :value="averageRating" />
+        <small :class="product.stock <= 0 ? 'text-danger' : 'text-dark'">
+          {{ product.stock <= 0 ? "(Out of Stock)" : "(In Stock)" }}
+        </small>
+        <!-- :text="`${product.reviews.length} review${
             product.reviews.length > 1 ? 's' : ''
-          }`"
-        />
+          }`" -->
       </div>
 
       <div class="d-flex align-items-center">
         <button
           @click="addToCart(product)"
           class="shadow btn-sm btn-success w-100"
-          :disabled="loading"
+          :disabled="loading || product.stock <= 0"
         >
           <span
             v-if="loading"
@@ -136,22 +137,6 @@ const addToCart = (params) => {
       );
     },
   });
-
-  // product
-  //   .post(route("add-to-cart"), product)
-  //   .then((res) => {
-  //     loading.value = false;
-  //     toast.success(
-  //       firstLetterUpperCase(props.product.title) +
-  //         " has been added to your cart."
-  //     );
-  //   })
-  //   .catch((err) => {
-  //     loading.value = false;
-  //     toast.error(
-  //       `${firstLetterUpperCase(props.product.title)} is already in your cart.`
-  //     );
-  //   });
 };
 </script>
 

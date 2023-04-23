@@ -5,49 +5,22 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use App\Models\Admin\Category;
-use App\Models\Admin\Product;
-use App\Models\Admin\SubCategory;
-use App\Models\User;
+use Illuminate\Support\Carbon;
 use Inertia\Inertia;
 
-class AdminDashboardController extends Controller
+class AdminOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     *  ** @return \Inertia\Response
      */
     public function index()
     {
-        $users = User::paginate(10);
-        $products = Product::count();
-        $categories = Category::count();
-        $subcategories = SubCategory::count();
-        $order_count = Order::count();
-        return Inertia::render('Admin/AdminIndex', [
-            'users' => $users,
-            'order_count' => $order_count,
-            'products_count' => $products,
-            'categories_count' => $categories,
-            'subcategories_count' => $subcategories,
+        $orders = Order::latest()->get();
+        return Inertia::render('Admin/Order/OrderIndex', [
+            'orders' => $orders,
         ]);
-    }
-
-    public function userDelete(User $user)
-    {
-        $user->delete();
-        return redirect()->back();
-    }
-    public function updateRole(Request $request, User $user)
-    {
-        $request->validate([
-            'role' => 'required|string',
-        ]);
-        $user->update([
-            'role' => $request->role,
-            'is_admin' => $request->role == 'Admin' ? true : false,
-        ]);
-        return redirect()->back();
     }
 
     /**
@@ -64,22 +37,48 @@ class AdminDashboardController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     ** @return \Inertia\Response
      */
     public function store(Request $request)
     {
-        //
+
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
-    public function show($id)
+    public function show(Order $order)
     {
-        //
+        return Inertia::render('Admin/Order/OrderDetails', [
+            'order' => $order,
+        ]);
+    }
+    public function updateOrder(Request $request, Order $order)
+    {
+        $request->validate([
+            'order_status' => 'required|string',
+        ]);
+
+        $order->update([
+            'order_status' => $request->order_status,
+            'delivery_date' => Carbon::now()->timezone('Africa/Lagos'),
+        ]);
+        return redirect()->back();
+    }
+    public function updatePayment(Request $request, Order $order)
+    {
+        $request->validate([
+            'payment_status' => 'required|string',
+        ]);
+
+        $order->update([
+            'payment_status' => $request->payment_status,
+            'payment_date' => Carbon::now()->timezone('Africa/Lagos'),
+        ]);
+        return redirect()->back();
     }
 
     /**

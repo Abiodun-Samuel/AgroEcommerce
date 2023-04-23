@@ -1,34 +1,7 @@
-<script setup>
-import UserLayout from "@/Layouts/UserLayout.vue";
-import { Head, useForm, Link, usePage } from "@inertiajs/vue3";
-import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
-import FormError from "@/Components/Common/FormError.vue";
-import NoResult from "@/Components/Common/NoResult.vue";
-import category_img from "@/assets/images/icons/subcategory.png";
-import Modal from "@/Components/Common/Modal.vue";
-import { computed, ref } from "vue";
-import { toast, formatTime } from "@/utils/helper";
-import { Icon } from "@iconify/vue";
-import avatar from "@/assets/images/img/avatar.png";
-import { Country, State } from "country-state-city";
-
-const props = defineProps(["orders"]);
-
-const user = computed(() => usePage().props.auth.user);
-const form = useForm({
-  //   avatar: fileSrc.value,
-});
-const step_one = {
-  slug: "My Orders",
-  link: false,
-  route_name: null,
-};
-</script>
-
 <template>
-  <Head title="User" />
+  <Head title="All Orders" />
 
-  <UserLayout>
+  <AdminLayout>
     <DashboardBreadcrump :step_one="step_one" />
     <hr />
 
@@ -94,21 +67,38 @@ const step_one = {
             </div>
             <hr />
             <Link
-              :href="route('user.order.show', order.id)"
+              :href="route('admin.order.show', order.id)"
               class="btn btn-primary w-100"
               >View Details</Link
             >
           </div>
         </div>
       </div>
+
       <div v-else class="row">
         <div class="text-center">
           <NoResult text="You have no orders" :link="false" />
         </div>
       </div>
     </div>
-  </UserLayout>
+  </AdminLayout>
 </template>
 
-<style scoped>
-</style>
+<script setup>
+import AdminLayout from "@/Layouts/AdminLayout.vue";
+import { Head, Link, useForm } from "@inertiajs/vue3";
+import DashboardBreadcrump from "@/Components/Dashboard/DashboardBreadcrump.vue";
+import { ref } from "vue";
+import { Icon } from "@iconify/vue";
+import NoResult from "@/Components/Common/NoResult.vue";
+import Modal from "@/Components/Common/Modal.vue";
+import { toast, formatTime } from "@/utils/helper";
+
+const props = defineProps(["orders"]);
+const showDeleteProductModal = ref(false);
+const step_one = {
+  slug: "Orders",
+  link: false,
+  route_name: null,
+};
+</script>

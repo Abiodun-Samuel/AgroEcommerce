@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Order;
 use App\Traits\CloudinaryUpload;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class UserDashboardController extends Controller
     use CloudinaryUpload;
     public function index(Request $request)
     {
-        $orders = [];
+        $orders = Order::get();
         return Inertia::render('User/UserIndex', [
             'orders' => $orders,
         ]);
@@ -26,7 +27,6 @@ class UserDashboardController extends Controller
     public function myProfile()
     {
         return Inertia::render('User/UserProfileIndex', [
-            // 'orders' => $orders,
         ]);
     }
     public function updateAvatar(Request $request, User $user)
@@ -67,9 +67,30 @@ class UserDashboardController extends Controller
         ]);
         return redirect()->back();
     }
+    public function updateUserProfileForOrders(Request $request, User $user)
+    {
+        $request->validate([
+            'phone' => 'required|string',
+            'address' => 'required|string',
+            'country' => 'required',
+            'state' => 'required|string',
+            'city' => 'required|string',
+        ]);
+
+        $user->update([
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'country' => gettype($request->country) == 'array' ? $request->country['name'] : $request->country,
+            'state' => $request->state,
+            'city' => $request->city,
+            'is_completed' => true
+        ]);
+        return redirect()->back();
+    }
+
     public function myOrders()
     {
-        $orders = [];
+        $orders = Order::where('user_id', auth()->id())->latest()->get();
         return Inertia::render('User/UserOrderIndex', [
             'orders' => $orders,
         ]);

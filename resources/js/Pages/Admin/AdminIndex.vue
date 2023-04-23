@@ -15,6 +15,7 @@ const props = defineProps([
   "categories_count",
   "products_count",
   "subcategories_count",
+  "order_count",
 ]);
 const openUserDeleteModal = ref(false);
 const openUserDetailsModal = ref(false);
@@ -142,7 +143,7 @@ const deleteAction = () => {
             <div class="counter__text">
               <h4 class="pb-0 text-success fw-bolder">Orders</h4>
               <h6 class="lead pb-0 text-dark fw-bolder">
-                {{ products_count }}
+                {{ order_count }}
               </h6>
             </div>
             <div class="counter__icon">
@@ -200,9 +201,9 @@ const deleteAction = () => {
                         style="padding: 3px"
                         :class="
                           user.role == 'Super Admin'
-                            ? 'fw-bolder text-danger'
+                            ? 'bg-warning text-light fw-bolder'
                             : user.role == 'Admin'
-                            ? 'bg-warning text-dark'
+                            ? 'bg-warning text-light'
                             : 'bg-warning text-light'
                         "
                         class="small rounded"
@@ -212,13 +213,7 @@ const deleteAction = () => {
                     <td>
                       <span
                         style="padding: 2px"
-                        class="
-                          d-flex
-                          align-items-center
-                          text-light
-                          rounded
-                          small
-                        "
+                        class="d-flex align-items-center text-light rounded small"
                         :class="
                           user.email_verified_at ? 'bg-success' : 'bg-danger'
                         "
@@ -232,8 +227,12 @@ const deleteAction = () => {
                       </span>
                     </td>
                     <td>
+                      <span v-if="user.email === auth_user.email">---</span>
                       <button
-                        v-if="auth_user.role === 'Super Admin'"
+                        v-else-if="
+                          auth_user.role === 'Super Admin' &&
+                          user.email !== auth_user.email
+                        "
                         @click="
                           openUserAssignRoleModal = true;
                           formAssign.user_id = user.id;
@@ -260,21 +259,22 @@ const deleteAction = () => {
                       </button>
                     </td>
                     <td>
+                      <span v-if="user.email === auth_user.email">---</span>
                       <button
-                        v-if="auth_user.role === 'Super Admin'"
+                        v-else-if="
+                          auth_user.role === 'Super Admin' &&
+                          user.email !== auth_user.email
+                        "
                         @click="
                           openUserDeleteModal = true;
                           formDelete.id = user.id;
                         "
                         class="btn btn-danger btn-sm"
                       >
-                        <Icon
-                          icon="material-symbols:lock-person-outline-sharp"
-                          height="15"
-                        />
+                        <Icon icon="material-symbols:auto-delete" height="15" />
                       </button>
                       <Icon
-                        v-else
+                        v-if="auth_user.role !== 'Super Admin'"
                         icon="material-symbols:lock-person-outline-sharp"
                         height="15"
                       />
@@ -370,14 +370,7 @@ const deleteAction = () => {
   >
     <template #header>
       <h4
-        class="
-          modal-title
-          text-warning
-          d-flex
-          align-items-center
-          gap-1
-          fw-bolder
-        "
+        class="modal-title text-warning d-flex align-items-center gap-1 fw-bolder"
       >
         <Icon icon="icon-park-outline:caution" />
         Caution
@@ -386,7 +379,9 @@ const deleteAction = () => {
 
     <template #body>
       <h5 class="fw-bold text-secondary">Do you want to delete this user?</h5>
-      <p>The user's account will be deleted completely</p>
+      <em class="text-danger small"
+        >(The user's account will be deleted completely)</em
+      >
     </template>
 
     <template #footer>
@@ -419,14 +414,7 @@ const deleteAction = () => {
   >
     <template #header>
       <h4
-        class="
-          modal-title
-          text-warning
-          d-flex
-          align-items-center
-          gap-1
-          fw-bolder
-        "
+        class="modal-title text-warning d-flex align-items-center gap-1 fw-bolder"
       >
         <Icon icon="icon-park-outline:caution" />
         Caution

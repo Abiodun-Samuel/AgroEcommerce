@@ -66,24 +66,11 @@ onMounted(() => {
             <Icon class="navbar-icon" icon="mdi:home-account" />
           </Link>
 
-          <div class="ms-5 search-field d-none d-md-block">
-            <div class="input-group">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Search..."
-                aria-label="Search..."
-                aria-describedby="button-addon2"
-              />
-              <button class="btn btn-success" type="button" id="button-addon2">
-                Search
-              </button>
-            </div>
-          </div>
+          <!--  -->
           <!-- nav dropdowns  -->
           <ul class="navbar-nav navbar-nav-right">
             <!--  notification  -->
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
               <a
                 class="nav-link count-indicator dropdown-toggle"
                 id="messageDropdown"
@@ -152,7 +139,7 @@ onMounted(() => {
                 <div class="dropdown-divider"></div>
                 <h6 class="p-3 mb-0 text-center">4 new messages</h6>
               </div>
-            </li>
+            </li> -->
             <!-- profile  -->
             <li class="nav-item nav-profile dropdown">
               <a
@@ -163,7 +150,11 @@ onMounted(() => {
                 aria-expanded="false"
               >
                 <div class="nav-profile-img">
-                  <Icon class="navbar-icon" icon="mdi:user-circle-outline" />
+                  <Icon
+                    height="25"
+                    class="navbar-icon"
+                    icon="mdi:user-circle-outline"
+                  />
                   <span
                     :class="
                       user.status == 'online'
@@ -174,6 +165,7 @@ onMounted(() => {
                     "
                   ></span>
                 </div>
+
                 <div class="nav-profile-text">
                   <p class="lead fw-bolder text-dark m-0 p-0 d-flex">
                     <span>Admin</span>
@@ -182,16 +174,18 @@ onMounted(() => {
                 </div>
               </a>
               <div
-                class="dropdown-menu navbar-dropdown"
+                class="dropdown-menu navbar-dropdown p-1"
                 aria-labelledby="profileDropdown"
               >
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-cached me-2 text-success"></i> Activity Log
-                </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
-                  <i class="mdi mdi-logout me-2 text-primary"></i> Signout
-                </a>
+                <Link
+                  :href="route('logout')"
+                  method="post"
+                  as="button"
+                  class="dropdown-item btn btn-danger w-100 text-center"
+                >
+                  Logout
+                </Link>
               </div>
             </li>
           </ul>
@@ -207,7 +201,11 @@ onMounted(() => {
     </nav>
     <!-- sidebar  -->
     <div class="container-fluid page-body-wrapper">
-      <nav class="sidebar sidebar-offcanvas shadow" id="sidebar">
+      <nav
+        class="sidebar sidebar-offcanvas shadow"
+        id="sidebar"
+        style="overflow-y: scroll"
+      >
         <ul class="nav">
           <li class="nav-item nav-profile">
             <a href="#" class="nav-link">
@@ -309,6 +307,16 @@ onMounted(() => {
                 </li>
               </ul>
             </div>
+          </li>
+
+          <li class="nav-item">
+            <Link class="nav-link" :href="route('admin.order.index')">
+              <Icon
+                icon="material-symbols:order-approve-outline-rounded"
+                class="menu-icon"
+              />
+              <span class="menu-title">Orders</span>
+            </Link>
           </li>
 
           <li class="nav-item">
