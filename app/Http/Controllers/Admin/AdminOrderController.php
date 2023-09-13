@@ -61,7 +61,6 @@ class AdminOrderController extends Controller
         $request->validate([
             'order_status' => 'required|string',
         ]);
-
         $order->update([
             'order_status' => $request->order_status,
             'delivery_date' => Carbon::now()->timezone('Africa/Lagos'),

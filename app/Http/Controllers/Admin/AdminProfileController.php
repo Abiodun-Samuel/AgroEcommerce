@@ -31,8 +31,6 @@ class AdminProfileController extends Controller
     }
     public function updateProfile(Request $request, User $user)
     {
-        // dd($request->country['name']);
-        // dd($request->all());
         $request->validate([
             'email' => 'required|email',
             'gender' => 'required|string',

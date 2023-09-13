@@ -38,7 +38,6 @@ const formUpdate = useForm({
   city: user.value.city,
   state: user.value.state,
   country: user.value.country,
-  email: user.value.email,
   dob: user.value.dob,
 });
 const step_one = {
@@ -167,13 +166,7 @@ const updateProfile = () => {
         <div class="row">
           <div class="col-lg-3 col-md-6 col-6 my-1">
             <label for="email" class="form-label">Email</label>
-            <input
-              type="email"
-              id="email"
-              class="form-control"
-              placeholder="Email address"
-              v-model="formUpdate.email"
-            />
+            <p class="form-control disabled bg-secondary text-light">{{ user.email }}</p>
           </div>
           <div class="col-lg-3 col-md-6 col-6 my-1">
             <label for="Gender" class="form-label">Gender</label>

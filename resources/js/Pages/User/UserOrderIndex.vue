@@ -16,99 +16,126 @@ const props = defineProps(["orders"]);
 
 const user = computed(() => usePage().props.auth.user);
 const form = useForm({
-  //   avatar: fileSrc.value,
+    //   avatar: fileSrc.value,
 });
 const step_one = {
-  slug: "My Orders",
-  link: false,
-  route_name: null,
+    slug: "My Orders",
+    link: false,
+    route_name: null,
 };
 </script>
 
 <template>
-  <Head title="User" />
+    <Head title="User" />
 
-  <UserLayout>
-    <DashboardBreadcrump :step_one="step_one" />
-    <hr />
+    <UserLayout>
+        <DashboardBreadcrump :step_one="step_one" />
+        <hr />
 
-    <div class="container">
-      <div v-if="orders.length" class="row">
-        <div
-          v-for="(order, index) in orders"
-          :key="order + index"
-          class="col-lg-6 col-md-6 col-12"
-        >
-          <div class="order__container my-1 shadow-sm rounded bg-white p-1">
-            <h4 class="text-primary fw-bolder"><b>Order</b> - {{ ++index }}</h4>
-            <hr />
-            <p><b>Ref:</b> {{ order.id }}</p>
-            <p><b>Date Ordered:</b> {{ formatTime(order.created_at) }}</p>
-            <hr />
-            <p><b>Order Status</b></p>
-            <div class="d-flex gap-1 flex-wrap">
-              <div
-                class="alert p-1"
-                :class="
-                  order.order_status == 'Processing'
-                    ? 'alert-primary'
-                    : order.order_status == 'In Progress'
-                    ? 'alert-info'
-                    : order.order_status == 'Delivered'
-                    ? 'alert-success'
-                    : order.order_status == 'Cancelled'
-                    ? 'alert-danger'
-                    : 'alert-warning'
-                "
-                role="alert"
-              >
-                {{ order.order_status }}
-              </div>
-              <div
-                v-if="order.order_status == 'Delivered'"
-                class="alert alert-success p-1"
-                role="alert"
-              >
-                Delivered on {{ formatTime(order.delivery_date) }}
-              </div>
+        <div class="">
+            <div v-if="orders.length" class="table-responsive">
+                <table class="table table-hover table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">S/N</th>
+                            <th scope="col">Reference (Ref)</th>
+                            <th scope="col">Order Status</th>
+                            <th scope="col">Date Ordered</th>
+                            <th scope="col">Delivery Date</th>
+                            <th scope="col">Payment Status</th>
+                            <th scope="col">Payment Date</th>
+                            <th scope="col">Order Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr
+                            v-for="(order, index) in orders"
+                            :key="order + index"
+                        >
+                            <th scope="row">{{ index + 1 }}</th>
+
+                            <td>
+                                <p class="lead"><b>Ref:</b> {{ order.id }}</p>
+                            </td>
+                            <td>
+                                <p
+                                    class="lead alert p-1"
+                                    :class="
+                                        order.order_status == 'Processing'
+                                            ? 'alert-primary'
+                                            : order.order_status ==
+                                              'In Progress'
+                                            ? 'alert-info'
+                                            : order.order_status == 'Delivered'
+                                            ? 'alert-success'
+                                            : order.order_status == 'Cancelled'
+                                            ? 'alert-danger'
+                                            : 'alert-warning'
+                                    "
+                                    role="alert"
+                                >
+                                    {{ order.order_status }}
+                                </p>
+                            </td>
+                            <td>
+                                <p class="lead">
+                                    {{ formatTime(order.created_at) }}
+                                </p>
+                            </td>
+                            <td>
+                                <p
+                                    v-if="order.order_status == 'Delivered'"
+                                    class="alert alert-success p-1 lead"
+                                    role="alert"
+                                >
+                                    {{ formatTime(order.delivery_date) }}
+                                </p>
+                                <p v-else class="p-1 lead" role="alert">---</p>
+                            </td>
+                            <td>
+                                <p
+                                    v-if="order.payment_status == 'Paid'"
+                                    class="alert alert-success p-1"
+                                    role="alert"
+                                >
+                                    Paid
+                                </p>
+                                <p
+                                    v-else
+                                    class="alert alert-danger p-1"
+                                    role="alert"
+                                >
+                                    Not Paid
+                                </p>
+                            </td>
+                            <td>
+                                <p
+                                    v-if="order.payment_status == 'Paid'"
+                                    class="alert alert-success p-1"
+                                    role="alert"
+                                >
+                                    Paid on {{ formatTime(order.payment_date) }}
+                                </p>
+                                <p v-else>---</p>
+                            </td>
+                            <td>
+                                <Link
+                                    :href="route('user.order.show', order.id)"
+                                    class="btn btn-sm btn-primary w-100"
+                                    >View Details</Link
+                                >
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="d-flex gap-1 flex-wrap">
-              <div
-                v-if="order.payment_status == 'Paid'"
-                class="alert alert-success p-1"
-                role="alert"
-              >
-                Paid
-              </div>
-              <div v-else class="alert alert-danger p-1" role="alert">
-                Not Paid
-              </div>
-
-              <div
-                v-if="order.payment_status == 'Paid'"
-                class="alert alert-success p-1"
-                role="alert"
-              >
-                Paid on {{ formatTime(order.payment_date) }}
-              </div>
+            <div v-else class="row">
+                <div class="text-center">
+                    <NoResult text="You have no orders" :link="false" />
+                </div>
             </div>
-            <hr />
-            <Link
-              :href="route('user.order.show', order.id)"
-              class="btn btn-primary w-100"
-              >View Details</Link
-            >
-          </div>
         </div>
-      </div>
-      <div v-else class="row">
-        <div class="text-center">
-          <NoResult text="You have no orders" :link="false" />
-        </div>
-      </div>
-    </div>
-  </UserLayout>
+    </UserLayout>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

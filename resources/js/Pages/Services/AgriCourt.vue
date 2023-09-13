@@ -21,7 +21,7 @@ const step_one = {
           <h3 class="my-1 text-success fw-bolder">AgriCourt Ventures</h3>
           <h4 class="my-1 fw-bold">Sales of Agro-Input Products</h4>
         </div>
-        <p class="lead">
+        <p class="lead lh-base">
           Through in-depth research and development, we’ve focused on serving
           the needs of farmers through provision of quality inputs(AgriCourt
           Ventures) such as high quality seeds, granular and water soluble

@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\AdminPromotionController;
 use App\Http\Controllers\Admin\AdminSubcategoryController;
+use App\Http\Controllers\Admin\AdminTransactionController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Pages\HomePagesController;
 // users 
@@ -43,10 +44,12 @@ Route::post('/add-to-cart', [CartController::class, 'addToCart'])->name('add-to-
 Route::put('/update-cart', [CartController::class, 'updateCart'])->name('update-cart');
 Route::put('/remove-cart', [CartController::class, 'removeCart'])->name('remove-cart');
 Route::delete('/clear-cart', [CartController::class, 'clearAllCart'])->name('clear-cart');
+//download receipt
+Route::get('/order/{order}/receipt', [OrderController::class, 'showOrderReceipt'])->name('order.receipt');
 
 //Admin routes
 Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin'])->group(function () {
-    // Dashboard Routes 
+    // Dashboard Routes
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard.index');
     Route::delete('/user-delete/{user}', [AdminDashboardController::class, 'userDelete'])->name('user-delete');
     Route::post('/update-role/{user}', [AdminDashboardController::class, 'updateRole'])->name('update-role');
@@ -93,18 +96,24 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::get('/blog/{promotion}', [AdminBlogController::class, 'edit'])->name('blog.edit');
     Route::post('/blog/{promotion}', [AdminBlogController::class, 'update'])->name('blog.update');
     Route::delete('/blog/{promotion}', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
+    //Transaction
+    Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transaction.index');
 });
 
-// Users 
+// Users
 // Authenticated and verified routes 
 Route::name('user.')->prefix('user')->middleware(['auth'])->group(function () {
     // Dashboard Routes 
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/my-orders', [UserDashboardController::class, 'myOrders'])->name('order.index');
     // create orders from cart
-    Route::get('/check-out', [OrderController::class, 'checkOut'])->name('check-out');
     Route::get('/order/{order}', [OrderController::class, 'showOrder'])->name('order.show');
     Route::post('/order', [OrderController::class, 'createOrder'])->name('order.create');
+    // update order
+    Route::put('/order-paid/{order}', [OrderController::class, 'updateOrderPaid'])->name('order.update-paid');
+
+    //checkout
+    Route::get('/check-out', [OrderController::class, 'checkOut'])->name('check-out');
 
     //User Dashboard
     Route::get('/profile', [UserDashboardController::class, 'myProfile'])->name('profile.index');

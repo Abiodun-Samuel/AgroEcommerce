@@ -56,6 +56,9 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'order' => [
+                'myOrderId' => fn () => $request->session()->get('myOrderId'),
+            ],
         ]);
     }
 }

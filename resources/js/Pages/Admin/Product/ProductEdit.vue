@@ -234,7 +234,6 @@ import PreLoader from "@/Components/Common/PreLoader.vue";
 import { firstLetterUpperCase } from "@/utils/helper";
 
 const props = defineProps(["product", "categories"]);
-console.log(props.product);
 
 const selectedCategory = ref([]);
 const fileSrc = ref(JSON.parse(props.product.image)?.img_url);

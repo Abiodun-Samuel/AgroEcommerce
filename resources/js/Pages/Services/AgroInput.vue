@@ -22,7 +22,7 @@ const step_one = {
           <h4 class="my-1 fw-bold">Products Claim(s), Research & Promotion</h4>
         </div>
 
-        <p class="lead">
+        <p class="lead lh-base">
           The rate at which small-scale farmers and commercial farmers lose
           their farm produce to the negative impacts of adulterated and low
           quality input is enormous. We stand out and authenticate manufacturer

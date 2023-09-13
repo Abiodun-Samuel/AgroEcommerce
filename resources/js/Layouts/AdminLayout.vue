@@ -320,6 +320,16 @@ onMounted(() => {
           </li>
 
           <li class="nav-item">
+            <Link class="nav-link" :href="route('admin.transaction.index')">
+              <Icon
+                icon="ant-design:transaction-outlined"
+                class="menu-icon"
+              />
+              <span class="menu-title">Transactions</span>
+            </Link>
+          </li>
+
+          <li class="nav-item">
             <Link class="nav-link" :href="route('admin.promotion.index')">
               <Icon icon="ps:promo" class="menu-icon" />
               <span class="menu-title">Promotions</span>

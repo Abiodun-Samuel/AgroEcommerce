@@ -21,7 +21,7 @@ const step_one = {
           <h3 class="my-1 text-success fw-bolder">HarvestYield Farm</h3>
           <h4 class="my-1 fw-bold">Production of Vegetable Crops</h4>
         </div>
-        <p class="lead">
+        <p class="lead lh-base">
           Through our 10Ha Farmland focused on vegetable crop production i,e
           Tomato, Cucumber, Sweetcorn, Special Watermelon and Pepper, we provide
           farm management and consultancy services and partner with other

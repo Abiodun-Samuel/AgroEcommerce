@@ -17,6 +17,7 @@ class Order extends Model
         'name',
         'email',
         'phone',
+        'country',
         'address',
         'order_items',
         'payment_option',

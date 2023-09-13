@@ -44,7 +44,6 @@ class UserDashboardController extends Controller
     public function updateProfile(Request $request, User $user)
     {
         $request->validate([
-            'email' => 'required|email',
             'gender' => 'required|string',
             'phone' => 'required|string',
             'address' => 'required|string',
@@ -55,7 +54,6 @@ class UserDashboardController extends Controller
         ]);
 
         $user->update([
-            'email' => $request->email,
             'gender' => $request->gender,
             'phone' => $request->phone,
             'address' => $request->address,

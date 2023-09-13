@@ -6,12 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Mail\NewOrderMail;
 use App\Models\Admin\Product;
 use App\Models\Order;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
-use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use PhpParser\Node\Stmt\TryCatch;
+use \Carbon\Carbon;
 
 
 class OrderController extends Controller
@@ -25,7 +25,6 @@ class OrderController extends Controller
             'cartItems' => $cartItems,
             "cartTotal" => $cartTotal
         ]);
-
     }
     public function createOrder(Request $request)
     {
@@ -34,12 +33,12 @@ class OrderController extends Controller
             'email' => 'required|email',
             'phone' => 'required|string',
             'address' => 'required|string',
+            'country' => 'string',
             'payment_option' => 'required|string',
             'delivery_option' => 'required|string',
             'order_status' => 'required|string',
             'payment_status' => 'required|string',
         ]);
-
         $cartCollection = \Cart::getContent()->toArray();
         $orderItems = array();
         $products = Product::select('id', 'stock')
@@ -59,7 +58,6 @@ class OrderController extends Controller
             );
             array_push($orderItems, $orderItem);
         }
-        $id = '';
         try {
             DB::transaction(function () use ($cartCollection, $request, $orderItems) {
                 $order = Order::create([
@@ -68,6 +66,7 @@ class OrderController extends Controller
                     'name' => $request->name,
                     'email' => $request->email,
                     'phone' => $request->phone,
+                    'country' => $request->country,
                     'address' => $request->address,
                     'order_items' => json_encode($orderItems),
                     'payment_option' => $request->payment_option,
@@ -83,28 +82,68 @@ class OrderController extends Controller
                     $order->increment('total_price', $cart['quantity'] * $cart['price']);
                     Product::find($cart['id'])->decrement('stock', $cart['quantity']);
                 }
-                $id = $order->id;
                 //empty the cart
                 \Cart::clear();
+                $id = $order->id;
                 $orderData = [
-                    'id' => $order->id,
+                    'id' => $id,
                     'name' => $order->name,
                     'email' => $order->email,
-                    'url' => route('admin.order.show', $order->id)
+                    'url' => route('admin.order.show', $id)
                 ];
-                // Mail::to('abiodunsamyemi@gmail.com')->send(new NewOrderMail($orderData));
                 Mail::to('contact@superoagrobase.com')->send(new NewOrderMail($orderData));
-                // return redirect()->route('user.order.show', $order->id);
+                return redirect()->back()->with([
+                    'myOrderId' => $id
+                ]);
             });
         } catch (\Exception $exception) {
-            // redirect()->route('user.order.index');
             return redirect()->back();
         }
-        return redirect()->route('user.order.index');
     }
     public function showOrder(Order $order)
     {
         return Inertia::render('User/UserOrderShow', [
+            'order' => $order,
+        ]);
+    }
+    public function updateOrderPaid(Request $request, Order $order)
+    {
+        $request->validate([
+            'message' => 'required|string',
+            'reference' => 'required|string',
+            'status' => 'required|string',
+            'trans' => 'required|string',
+            'transaction' => 'required|string',
+            'trxref' => 'required|string',
+        ]);
+        try {
+            DB::transaction(function () use ($request, $order) {
+                $date = Carbon::now();
+                $order->update([
+                    'payment_status' => 'Paid',
+                    'payment_option' => 'Online',
+                    'payment_date' =>  $date,
+                    'order_status' => "Processing",
+                ]);
+                $transaction = Transaction::create([
+                    'user_id' => auth()->id(),
+                    'order_id' => $order->id,
+                    'message' => $request->message,
+                    'reference' => $request->reference,
+                    'status' => $request->status,
+                    'trans' => $request->trans,
+                    'transaction' => $request->transaction,
+                    'trxref' => $request->trxref,
+                ]);
+                return redirect()->back();
+            });
+        } catch (\Exception $exception) {
+            return redirect()->back();
+        }
+    }
+    public function showOrderReceipt(Order $order)
+    {
+        return Inertia::render('OrderReceipt', [
             'order' => $order,
         ]);
     }

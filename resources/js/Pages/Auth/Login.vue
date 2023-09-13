@@ -12,143 +12,148 @@ import { toast } from "@/utils/helper";
 import { decodeCredential } from "vue3-google-login";
 
 defineProps({
-  canResetPassword: Boolean,
-  status: String,
+    canResetPassword: Boolean,
+    status: String,
 });
 
 const type = ref("password");
 const type_two = ref("password");
 const form = useForm({
-  email: "",
-  password: "",
-  remember: false,
+    email: "",
+    password: "",
+    remember: false,
 });
 
 const submit = () => {
-  form.post(route("login"), {
-    onFinish: (value) => {
-      form.reset("password");
-    },
-    onSuccess: () => {
-      toast.success("Login was successful");
-      form.reset();
-    },
-    onError: (value) => {
-      if (value.email) return toast.error(value.email);
-      if (value.password) return toast.error(value.password);
-    },
-  });
+    form.post(route("login"), {
+        onFinish: (value) => {
+            form.reset("password");
+        },
+        onSuccess: () => {
+            toast.success("Login was successful");
+            form.reset();
+        },
+        onError: (value) => {
+            if (value.email) return toast.error(value.email);
+            if (value.password) return toast.error(value.password);
+        },
+    });
 };
 
 const RevealPassword_two = () => {
-  type_two.value === "password"
-    ? (type_two.value = "text")
-    : (type_two.value = "password");
+    type_two.value === "password"
+        ? (type_two.value = "text")
+        : (type_two.value = "password");
 };
 const RevealPassword = () => {
-  type.value === "password" ? (type.value = "text") : (type.value = "password");
+    type.value === "password"
+        ? (type.value = "text")
+        : (type.value = "password");
 };
 
 const loginWithGoogle = (response) => {
-  const userData = decodeCredential(response.credential);
-  router.post(route("google.login.callback"), userData);
+    const userData = decodeCredential(response.credential);
+    router.post(route("google.login.callback"), userData);
 };
 </script>
 
 <template>
-  <Head title="Sign In" />
+    <Head title="Sign In" />
 
-  <div id="auth" class="row">
-    <div class="col-lg-6 login__details mb-2">
-      <div class="login__form">
-        <Link href="/">
-          <img
-            src="../../../images/logo/logo.png"
-            alt="logo"
-            class="m-auto d-block mb-2"
-            width="98"
-          />
-        </Link>
+    <div id="auth" class="row">
+        <div class="col-lg-6 login__details mb-2">
+            <div class="login__form">
+                <Link href="/">
+                    <img
+                        src="../../../images/logo/logo.png"
+                        alt="logo"
+                        class="m-auto d-block mb-2"
+                        width="98"
+                    />
+                </Link>
 
-        <div class="my-2">
-          <h3 class="fw-bolder text-success">Welcome to SuperoAgrobase Ltd.</h3>
-          <p class="p">Login to your account. 👌</p>
-        </div>
-        <hr />
+                <div class="my-2">
+                    <h3 class="fw-bolder text-success">
+                        Welcome to SuperoAgrobase Ltd.
+                    </h3>
+                    <p class="p">Login to your account. 👌</p>
+                </div>
+                <hr />
 
-        <div v-if="status" class="alert alert-success my-1 p-1">
-          {{ status }}
-        </div>
+                <div v-if="status" class="alert alert-success my-1 p-1">
+                    {{ status }}
+                </div>
 
-        <form @submit.prevent="submit">
-          <div class="my-2">
-            <InputLabel for="email" value="Email" />
-            <TextInput
-              id="email"
-              type="email"
-              class="form-control"
-              v-model="form.email"
-              required
-              autofocus
-            />
-            <!-- <InputError class="mt-1" :message="form.errors.email" /> -->
-          </div>
+                <form @submit.prevent="submit">
+                    <div class="my-2">
+                        <InputLabel for="email" value="Email" />
+                        <TextInput
+                            id="email"
+                            type="email"
+                            class="form-control"
+                            v-model="form.email"
+                            required
+                            autofocus
+                        />
+                        <!-- <InputError class="mt-1" :message="form.errors.email" /> -->
+                    </div>
 
-          <div class="my-2">
-            <InputLabel for="password" value="Password" />
+                    <div class="my-2">
+                        <InputLabel for="password" value="Password" />
 
-            <TextInput
-              id="password"
-              type="password"
-              class="form-control"
-              v-model="form.password"
-              required
-              autocomplete="current-password"
-            />
+                        <TextInput
+                            id="password"
+                            type="password"
+                            class="form-control"
+                            v-model="form.password"
+                            required
+                            autocomplete="current-password"
+                        />
 
-            <InputError class="mt-1" :message="form.errors.password" />
-          </div>
+                        <InputError
+                            class="mt-1"
+                            :message="form.errors.password"
+                        />
+                    </div>
 
-          <div
-            class="block my-1 d-flex align-items-center justify-content-between"
-          >
-            <label class="d-flex align-items-center">
-              <Checkbox name="remember" v-model:checked="form.remember" />
-              <span class="ml-2 text-sm text-gray-600">Remember me</span>
-            </label>
-            <Link
-              v-if="canResetPassword"
-              :href="route('password.request')"
-              class="
-                underline
-                text-danger
-                small
-                text-gray-600
-                hover:text-gray-900
-                focus:outline-none
-              "
-            >
-              Forgot your password?
-            </Link>
-          </div>
+                    <div
+                        class="block my-1 d-flex align-items-center justify-content-between"
+                    >
+                        <label class="d-flex align-items-center">
+                            <Checkbox
+                                name="remember"
+                                v-model:checked="form.remember"
+                            />
+                            <span class="ml-2 text-sm text-gray-600"
+                                >Remember me</span
+                            >
+                        </label>
+                        <Link
+                            v-if="canResetPassword"
+                            :href="route('password.request')"
+                            class="underline text-danger small text-gray-600 hover:text-gray-900 focus:outline-none"
+                        >
+                            Forgot your password?
+                        </Link>
+                    </div>
 
-          <div class="my-2">
-            <button
-              class="btn btn-gradient-success w-100"
-              :disabled="form.processing"
-            >
-              <span
-                v-if="form.processing"
-                class="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Log in
-            </button>
-          </div>
-        </form>
+                    <div class="my-2">
+                        <button
+                            class="btn btn-gradient-success w-100"
+                            :disabled="form.processing"
+                        >
+                            <span
+                                v-if="form.processing"
+                                class="spinner-border spinner-border-sm"
+                                role="status"
+                                aria-hidden="true"
+                            ></span>
+                            Log in
+                        </button>
+                    </div>
+                </form>
 
-        <!-- <form class="my-2" @submit.prevent="LoginHandler">
+                <!-- <form class="my-2" @submit.prevent="LoginHandler">
             <div
               class="position-relative d-flex align-items-center small"
               :class="validEmail && emailFocus && 'text-success'"
@@ -286,20 +291,20 @@ const loginWithGoogle = (response) => {
             </button>
           </form> -->
 
-        <hr />
+                <hr />
 
-        <GoogleLogin :callback="loginWithGoogle" />
+                <GoogleLogin :callback="loginWithGoogle" />
 
-        <div class="my-1 text-center">
-          <Link href="/register" class="text-danger small"
-            >Don't have account? SignUp</Link
-          >
+                <div class="my-1 text-center">
+                    <Link href="/register" class="text-danger small"
+                        >Don't have account? SignUp</Link
+                    >
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
 
-    <SideView />
-  </div>
+        <SideView />
+    </div>
 </template>
 
 <style lang="css">

@@ -12,7 +12,7 @@
                     auth_user.role === 'Admin' ||
                     auth_user.role === 'Super Admin'
                       ? route('admin.dashboard.index')
-                      : route('user.dashboard.index')
+                      : route('user.profile.index')
                   "
                   class="d-flex align-items-center text-white"
                 >

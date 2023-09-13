@@ -1,5 +1,20 @@
 import { useToast } from "vue-toastification";
 import moment from "moment";
+import { numberToWords } from "amount-to-words";
+
+export const amountToWords = (amount) => {
+    let amountInWords = numberToWords(amount);
+    amountInWords = amountInWords.replace("Lakh", "Hundred Thousand,");
+    return `${amountInWords} Naira Only.`;
+};
+export const intlPhone = (phone, countryCode) => {
+    if (phone[0] == 0) {
+        let array = phone.substring(1);
+        return countryCode + array;
+    } else {
+        return phone;
+    }
+};
 
 export const toast = useToast();
 
@@ -51,8 +66,10 @@ export const formatCurrency = (amount) => {
 };
 
 export const formatTime = (time) => {
-    let display = moment(time).utc(time).format("DD MMM YYYY hh:mma");
-    return display;
+    if (time) {
+        let display = moment(time).utc(time).format("DD MMM YYYY hh:mma");
+        return display;
+    }
 };
 
 export const slugify = (string) => {
@@ -68,11 +85,16 @@ export const slugify = (string) => {
 export const unslugify = (slug) => {
     if (!slug) return null;
     let words = slug.split("-");
-    for (var i = 0; i < words.length; i++) {
-        var word = words[i];
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
         words[i] = word.charAt(0).toUpperCase() + word.slice(1);
     }
     return words.join(" ");
+};
+export const unslugifyTwo = (slug) => {
+    if (!slug) return null;
+    let words = slug.split("-");
+    return words.join("");
 };
 const filterResultCount = () => {
     if (result_count.value == "default")
@@ -95,11 +117,11 @@ export const randomId = (leng) => {
     if (!leng) {
         return;
     }
-    var result = "";
-    var characters =
+    let result = "";
+    let characters =
         "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    var charactersLength = characters.length;
-    for (var i = 0; i < leng; i++) {
+    let charactersLength = characters.length;
+    for (let i = 0; i < leng; i++) {
         result += characters.charAt(
             Math.floor(Math.random() * charactersLength)
         );
