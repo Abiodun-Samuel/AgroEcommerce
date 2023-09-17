@@ -1,24 +1,37 @@
 <template>
-    <div class="card mb-2 rounded border-0 bg-white" id="product_component">
+    <div
+        class="position-relative card mb-2 rounded border-1 bg-white shadow-sm"
+        id="product_component"
+    >
+        <div class="form-check select_multiple">
+            <input
+                class="form-check-input border-2 border-primary"
+                type="checkbox"
+                @change="selectedProductEvent(selectedProduct, product)"
+                v-model="selectedProduct"
+                :id="product.slug"
+            />
+        </div>
         <div v-if="product.discount_price" class="discount_percentage">
             <p>
                 {{ discountPercentage(product.price, product.discount_price) }}
             </p>
         </div>
-        <Link :href="route('product-details-page', product.slug)">
+        <!-- <Link :href="route('product-details-page', product.slug)"> -->
+        <label :for="product.slug">
             <img
                 :src="JSON.parse(product.image)?.img_url"
                 class="img-fluid rounded"
                 alt="product image"
             />
-        </Link>
+        </label>
+
+        <!-- </Link> -->
         <div class="card-body">
             <Link :href="route('product-details-page', product.slug)">
                 <h6 class="card-title product_name fw-bolder text-truncate">
                     {{ firstLetterUpperCase(product.title) }}
-                    <span class="fw-normal small">
-                        ({{ product.pack_size }})</span
-                    >
+                    <span class="fw-normal"> ({{ product.pack_size }})</span>
                 </h6>
             </Link>
 
@@ -42,7 +55,9 @@
             <div
                 class="my-1 d-flex gap-1 justify-content-between align-items-center"
             >
-                <div class="d-flex gap-1 justify-content-between align-items-center">
+                <div
+                    class="d-flex gap-1 justify-content-between align-items-center"
+                >
                     <Rating :value="averageRating" />
                     <small
                         :class="
@@ -100,7 +115,25 @@ import {
     formatCurrency,
 } from "@/utils/helper.js";
 
-const props = defineProps(["product"]);
+const props = defineProps(["product", "addAllToCartDone"]);
+const emit = defineEmits(["selectProduct"]);
+const selectedProduct = ref(false);
+
+const selectedProductEvent = (data, product) => {
+    const _product = {
+        selectedProduct: data,
+        id: product.id,
+        name: product.title,
+        image: product.image,
+        slug: product.slug,
+        stock: product.stock,
+        price: Number(product.discount_price)
+            ? Number(product.discount_price)
+            : Number(product.price),
+        quantity: 1,
+    };
+    emit("selectProduct", _product);
+};
 
 const loading = ref(false);
 const averageRating = computed(() => {
@@ -166,13 +199,22 @@ const addToCart = (params) => {
     box-shadow: none;
 }
 #product_component.card:hover {
-    box-shadow: var(--shadow-1);
-    transform: scale(1.02);
+    /* box-shadow: var(--shadow-3); */
 }
 #product_component .discount_percentage {
     position: absolute;
     top: 3px;
     right: 3px;
+}
+#product_component .select_multiple {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+}
+#product_component .select_multiple input {
+    height: 25px;
+    width: 25px;
+    cursor: pointer;
 }
 #product_component .discount_percentage p {
     background-color: var(--red-1);
@@ -190,7 +232,7 @@ const addToCart = (params) => {
     font-weight: 500;
     font-size: 1rem;
     margin: 2px 0;
-    color: var(--black);
+    color: var(--primary);
 }
 #product_component a .card-title.product_name:hover {
     text-decoration: underline;

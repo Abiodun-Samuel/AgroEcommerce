@@ -62,7 +62,7 @@ const clearCart = () => {
                     </div>
                     <div class="cart">
                         <div
-                            class="cart__box mb-1 rounded shadow-sm bg-white p-1"
+                            class="cart__box mb-1 rounded shadow border-1 bg-white p-1"
                             v-for="(cartItem, index) in cartItems"
                             :key="cartItem + index"
                         >
@@ -93,9 +93,10 @@ const clearCart = () => {
                         <Link
                             :href="route('user.check-out')"
                             class="btn btn-primary w-100"
-                            >CheckOut (&#8358;
-                            {{ formatCurrency(cartTotal) }})</Link
                         >
+                            <p class="my-0 py-0">Proceed to Invoice</p>
+                            <p class="my-0 py-0" style="color: rgb(215, 215, 215);">(&#8358; {{ formatCurrency(cartTotal) }})</p>
+                        </Link>
                     </div>
                 </div>
             </div>

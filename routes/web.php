@@ -22,12 +22,12 @@ use Illuminate\Support\Facades\Route;
 // HomePages Controller
 Route::get('/', [HomePagesController::class, 'index'])->name('home');
 //Products
-Route::post('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
+Route::get('/search-product', [HomePagesController::class, 'searchProducts'])->name('product.search');
 Route::get('/products/{subcategory:slug?}', [HomePagesController::class, 'products'])->name('product-page');
 Route::get('/product/{product:slug}', [HomePagesController::class, 'productDetails'])->name('product-details-page');
 //newsletter
 Route::post('/subscribe-to-newsletter', [HomePagesController::class, 'subscribeToNewsletter'])->name('subscribe-to-newsletter');
-//pages 
+//pages
 Route::get('/about', [PagesController::class, 'about'])->name('about');
 Route::get('/contact', [PagesController::class, 'contact'])->name('contact');
 Route::post('/send-messsge', [PagesController::class, 'sendMessage'])->name('sendMessage');

@@ -23,60 +23,40 @@
                         </Link>
                     </div>
                     <!-- seacrh box  class="" -->
-                    <!-- <div class="col-lg-5 header__searchbox d-none d-lg-flex">
-            <div class="dropdown w-100">
-              <div class="d-lg-flex position-relative align-items-center">
-                <input
-                  type="text"
-                  style="width: 365px !important"
-                  class="ps-3 form-control me-1 w-100"
-                  aria-label="Search for Products"
-                  placeholder="Search for products..."
-                  v-model="form.query"
-                  @focus="add_searchbox"
-                  @input="search"
-                />
-                <Icon
-                  class="search__icon"
-                  icon="ic:twotone-search"
-                  height="20"
-                />
-                <button
-                  class="btn btn-success d-flex align-items-center fw-bolder"
-                  type="button"
-                  @click="search"
-                  :disabled="form.processing"
-                >
-                  <span
-                    v-if="form.processing"
-                    class="spinner-border spinner-border-sm"
-                    role="status"
-                    aria-hidden="true"
-                  ></span>
-
-                  Search
-                </button>
-              </div>
-
-              <div id="myDropdown" class="dropdown-content shadow rounded">
-                <template v-if="products_results.length">
-                  <Link
-                    v-for="products_result in products_results"
-                    :key="products_result.id"
-                    class="d-flex align-items-center"
-                    :href="route('product-details-page', products_result.slug)"
-                  >
-                    <Icon
-                      class="search__icon"
-                      icon="ic:twotone-search"
-                      height="20"
-                    />
-                    <span class="ms-2">{{ products_result.title }}</span>
-                  </Link>
-                </template>
-              </div>
-            </div>
-          </div> -->
+                    <div class="col-lg-5 header__searchbox d-none d-lg-flex">
+                        <div class="dropdown w-100">
+                            <div class="input-group">
+                                <input
+                                    type="text"
+                                    aria-describedby="button-addon2"
+                                    class="px-1 form-control"
+                                    aria-label="Search for Products"
+                                    @change="search"
+                                    placeholder="Search for products..."
+                                    v-model="searchForm.search"
+                                />
+                                <button
+                                    class="btn btn-success d-flex align-items-center fw-bolder"
+                                    type="button"
+                                    @click="search"
+                                    id="button-addon2"
+                                    :disabled="searchForm.processing"
+                                >
+                                    <span
+                                        v-if="searchForm.processing"
+                                        class="spinner-border spinner-border-sm"
+                                        role="status"
+                                        aria-hidden="true"
+                                    ></span>
+                                    <Icon
+                                        v-else
+                                        icon="ic:twotone-search"
+                                        height="20"
+                                    />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <!-- cart and wish list  -->
                     <div
                         class="col-6 col-lg-5 header__cart d-flex align-items-center gap-2 justify-content-end"
@@ -451,52 +431,29 @@
             </div>
             <hr />
 
-            <!-- <div class="my-2 mobile__search d-flex align-items-stretch">
-        <input
-          type="text"
-          style="margin-right: 5px"
-          class="form-control"
-          aria-label="Search for Products"
-          placeholder="Search for products..."
-          v-model="form.query"
-          @focus="add_searchbox"
-        />
-        <button
-          @click="search"
-          :disabled="form.processing"
-          class="btn btn-success d-flex align-items-center py-0 px-1"
-          type="button"
-        >
-          <span
-            v-if="form.processing"
-            class="spinner-border spinner-border-sm"
-            role="status"
-            aria-hidden="true"
-          ></span>
-          <Icon v-else icon="ic:twotone-search" height="20" />
-        </button>
-      </div> -->
-
-            <div id="myDropdown" class="bg-white shadow rounded">
-                <div v-if="products_results.length" class="p-1">
-                    <Link
-                        v-for="products_result in products_results"
-                        :key="products_result.id"
-                        class="d-flex align-items-center"
-                        :href="
-                            route('product-details-page', products_result.slug)
-                        "
-                    >
-                        <span class="d-flex">
-                            <Icon
-                                icon="ic:twotone-search"
-                                height="20"
-                                style="margin-right: 5px"
-                            />
-                            {{ products_result.title }}
-                        </span>
-                    </Link>
-                </div>
+            <div class="my-2 mobile__search d-flex align-items-stretch">
+                <input
+                    type="text"
+                    style="margin-right: 5px"
+                    class="form-control"
+                    aria-label="Search for Products"
+                    placeholder="Search for products..."
+                    v-model="searchForm.search"
+                />
+                <button
+                    @click="search"
+                    :disabled="searchForm.processing"
+                    class="btn btn-success d-flex align-items-center py-0 px-1"
+                    type="button"
+                >
+                    <span
+                        v-if="searchForm.processing"
+                        class="spinner-border spinner-border-sm"
+                        role="status"
+                        aria-hidden="true"
+                    ></span>
+                    <Icon v-else icon="ic:twotone-search" height="20" />
+                </button>
             </div>
 
             <hr />
@@ -820,7 +777,7 @@
 import WishListItem from "@/Components/Common/WishListItem.vue";
 import { Icon } from "@iconify/vue";
 import { computed, onMounted, reactive, ref } from "vue";
-import { Link, usePage } from "@inertiajs/vue3";
+import { Link, usePage, useForm } from "@inertiajs/vue3";
 import store from "@/store";
 import NoResult from "@/Components/Common/NoResult.vue";
 import { toast } from "@/utils/helper.js";
@@ -833,9 +790,8 @@ const mobileNavShow = ref(false);
 const wishlistShow = ref(false);
 const body__overlay = ref(false);
 
-const products_results = ref([]);
-const form = reactive({
-    query: "",
+const searchForm = useForm({
+    search: "",
 });
 
 const clearWishList = (params) => {
@@ -861,16 +817,15 @@ const remove_searchbox = () => {
     document.getElementById("myDropdown").classList.remove("show");
 };
 
-const search = (e) => {
-    if (e.target?.value?.length > 3 || form.query.length > 3) {
-        axios
-            .post(route("product.search", { query: form.query }))
-            .then((res) => {
-                products_results.value = res.data;
-            });
-    } else {
-        products_results.value = [];
-    }
+const search = () => {
+    if (!searchForm.search.length) return null;
+    searchForm.get(route("product.search"), {
+        preserveScroll: true,
+        onSuccess: (val) => {
+            searchForm.reset();
+        },
+        onError: (err) => {},
+    });
 };
 
 onMounted(() => {
@@ -894,7 +849,7 @@ onMounted(() => {
 }
 .search__icon {
     position: absolute;
-    left: 7px;
+    right: 7px;
 }
 .dropdown {
     position: relative;

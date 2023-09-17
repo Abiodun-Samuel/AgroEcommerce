@@ -30,14 +30,18 @@ class HomePagesController extends Controller
     public function searchProducts(Request $request)
     {
         $data = $request->validate([
-            'query' => 'string'
+            'search' => 'string'
         ]);
 
-        $products = Product::where('title', 'like', '%' . $data['query'] . '%')
-            ->orWhere('sub_title', 'like', '%' . $data['query'] . '%')
-            ->orWhere('description', 'like', '%' . $data['query'] . '%')->get();
-
-        return $products;
+        if (isset($data['search'])) {
+            $products = Product::with('reviews')->where('title', 'like', '%' . $data['search'] . '%')
+                ->orWhere('sub_title', 'like', '%' . $data['search'] . '%')
+                ->orWhere('description', 'like', '%' . $data['search'] . '%')->get();
+            return Inertia::render('Product/ProductsPage', compact('products'));
+        } else {
+            $products = Product::with('reviews')->latest()->get();
+            return Inertia::render('Product/ProductsPage', compact('products'));
+        }
     }
 
     /**
@@ -69,8 +73,8 @@ class HomePagesController extends Controller
         }
         $products = Product::with('reviews')->latest()->paginate(15);
         return Inertia::render('Product/ProductsPage', compact('products'));
-
     }
+
     public function productDetails(Product $product)
     {
         $product->update(["product_views" => ++$product->product_views]);

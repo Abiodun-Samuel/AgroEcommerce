@@ -129,9 +129,9 @@ const createOrder = () => {
                             </div>
                             <button
                                 @click="showUpdateModal = true"
-                                class="text-warning alert alert-warning m-0 p-0"
+                                class="btn btn-sm btn-outline-warning"
                             >
-                                <span style="padding: 3px">Change</span>
+                                Change
                             </button>
                         </div>
 
@@ -147,13 +147,19 @@ const createOrder = () => {
                                         {{ user.email }}
                                     </p>
                                     <p class="fw-light my-0 py-0">
-                                        {{ user.phone }}  <small class="text-danger mx-1 fs-italics">(Your receipt will be sent to this number, therefore make sure this is your whatsapp number.)</small>
+                                        {{ user.phone }}
+                                        <small
+                                            class="text-danger mx-1 fs-italics"
+                                            >(Your receipt and invoice will be
+                                            sent to this number, therefore make
+                                            sure this is your whatsapp
+                                            number.)</small
+                                        >
                                     </p>
                                     <p class="fw-light my-0 py-0">
                                         {{ user.address }}, {{ user.city }},
                                         {{ user.state }}, {{ user.country }}.
                                     </p>
-                                   
                                 </div>
                             </template>
                             <template v-else>
@@ -244,7 +250,7 @@ const createOrder = () => {
                                         <p
                                             class="fw-light mb-0 small text-danger"
                                         >
-                                            Please note that the checkout total
+                                            Please note that the invoice
                                             amount (&#8358;
                                             {{ formatCurrency(cartTotal) }})
                                             <b>does not</b>
@@ -300,7 +306,13 @@ const createOrder = () => {
                                         Pay Online
                                     </label>
                                 </div>
-                                <div v-if="orderForm.delivery_option !== 'door_delivery'" class="form-check my-1">
+                                <div
+                                    v-if="
+                                        orderForm.delivery_option !==
+                                        'door_delivery'
+                                    "
+                                    class="form-check my-1"
+                                >
                                     <input
                                         v-model="orderForm.payment_option"
                                         value="Cash"
@@ -437,7 +449,9 @@ const createOrder = () => {
             <FormError :errors="userProfileUpdate.errors" />
             <div class="row">
                 <div class="col-lg-6 col-md-6 col-6 mb-1">
-                    <label for="phone" class="form-label">Phone (WhatsApp No)</label>
+                    <label for="phone" class="form-label"
+                        >Phone (WhatsApp No)</label
+                    >
                     <input
                         type="tel"
                         name="phone"
