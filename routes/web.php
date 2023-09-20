@@ -85,7 +85,7 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::post('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'update'])->name('subcategory.update');
     Route::post('/subcategory', [AdminSubcategoryController::class, 'store'])->name('subcategory.store');
     Route::delete('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategory.destroy');
-    //Admin Promotion
+    //Promotion
     Route::get('/promotions', [AdminPromotionController::class, 'index'])->name('promotion.index');
     Route::post('/promotions', [AdminPromotionController::class, 'store'])->name('promotion.store');
     Route::get('/promotions/{promotion}', [AdminPromotionController::class, 'edit'])->name('promotion.edit');
@@ -100,9 +100,9 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     //Blog
     Route::get('/blog', [AdminBlogController::class, 'index'])->name('blog.index');
     Route::post('/blog', [AdminBlogController::class, 'store'])->name('blog.store');
-    Route::get('/blog/{promotion}', [AdminBlogController::class, 'edit'])->name('blog.edit');
-    Route::post('/blog/{promotion}', [AdminBlogController::class, 'update'])->name('blog.update');
-    Route::delete('/blog/{promotion}', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
+    Route::get('/blog/{blog}', [AdminBlogController::class, 'edit'])->name('blog.edit');
+    Route::post('/blog/{blog}', [AdminBlogController::class, 'update'])->name('blog.update');
+    Route::delete('/blog/{blog}', [AdminBlogController::class, 'destroy'])->name('blog.destroy');
     //Transaction
     Route::get('/transactions', [AdminTransactionController::class, 'index'])->name('transaction.index');
 });

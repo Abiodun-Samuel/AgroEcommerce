@@ -205,10 +205,6 @@
     </template>
 
     <template #body>
-      <h5 class="fw-bold text-secondary">
-        All Subcategories and Products attached to this blog will also be
-        deleted.
-      </h5>
       <p class="text-danger">Are you sure you want to delete this blog?</p>
     </template>
 
