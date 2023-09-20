@@ -29,7 +29,7 @@
                 >
                   <!-- @click="subcategories = category.subcategory" -->
                   <slide v-for="(product, index) in products.data" :key="index">
-                    <ProductComponent :product="product" />
+                    <ProductComponent :displaySelectAll="false" :product="product" />
 
                     <!-- <div class="rounded me-2 mb-2 category__slider-body">
                       <img
@@ -85,6 +85,7 @@ import { Carousel, Slide } from "vue3-carousel";
 const props = defineProps(["products"]);
 const categories = computed(() => usePage().props.data.categories);
 const subcategories = ref([]);
+
 
 const myCarousel = ref(null);
 const breakpoints = {

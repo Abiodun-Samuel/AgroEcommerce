@@ -17,7 +17,6 @@ defineProps({
 });
 
 const type = ref("password");
-const type_two = ref("password");
 const form = useForm({
     email: "",
     password: "",
@@ -40,12 +39,7 @@ const submit = () => {
     });
 };
 
-const RevealPassword_two = () => {
-    type_two.value === "password"
-        ? (type_two.value = "text")
-        : (type_two.value = "password");
-};
-const RevealPassword = () => {
+const revealPassword = () => {
     type.value === "password"
         ? (type.value = "text")
         : (type.value = "password");
@@ -84,6 +78,9 @@ const loginWithGoogle = (response) => {
                     {{ status }}
                 </div>
 
+                <InputError class="mt-1" :message="form.errors.email" />
+                <InputError class="mt-1" :message="form.errors.password" />
+
                 <form @submit.prevent="submit">
                     <div class="my-2">
                         <InputLabel for="email" value="Email" />
@@ -92,28 +89,44 @@ const loginWithGoogle = (response) => {
                             type="email"
                             class="form-control"
                             v-model="form.email"
+                            placeholder="Email address"
                             required
                             autofocus
                         />
-                        <!-- <InputError class="mt-1" :message="form.errors.email" /> -->
                     </div>
 
-                    <div class="my-2">
+                    <div class="my-2 position-relative">
                         <InputLabel for="password" value="Password" />
-
-                        <TextInput
-                            id="password"
-                            type="password"
-                            class="form-control"
-                            v-model="form.password"
-                            required
-                            autocomplete="current-password"
-                        />
-
-                        <InputError
-                            class="mt-1"
-                            :message="form.errors.password"
-                        />
+                        <div
+                            class="position-relative d-flex align-items-center"
+                        >
+                            <input
+                                id="password"
+                                :type="type"
+                                class="form-control"
+                                v-model="form.password"
+                                required
+                                autocomplete="current-password"
+                            />
+                            <button
+                                type="button"
+                                class="position-absolute end-0 mx-1"
+                            >
+                                <Icon
+                                    class="text-success"
+                                    :icon="
+                                        type === 'password'
+                                            ? 'ant-design:eye-filled'
+                                            : type === 'text'
+                                            ? 'ant-design:eye-invisible-filled'
+                                            : 'ant-design:eye-filled'
+                                    "
+                                    :height="25"
+                                    :width="25"
+                                    @click="revealPassword"
+                                />
+                            </button>
+                        </div>
                     </div>
 
                     <div
@@ -153,150 +166,14 @@ const loginWithGoogle = (response) => {
                     </div>
                 </form>
 
-                <!-- <form class="my-2" @submit.prevent="LoginHandler">
-            <div
-              class="position-relative d-flex align-items-center small"
-              :class="validEmail && emailFocus && 'text-success'"
-            >
-              <label for="email" class="small"> Email </label>
-              <Icon
-                v-if="validEmail && emailFocus"
-                icon="codicon:pass-filled"
-                :height="15"
-                :width="15"
-              />
-            </div>
-            <div class="position-relative mb-3">
-              <input
-                type="email"
-                class="form-control w-100"
-                :style="!validEmail && emailFocus && { borderColor: 'red' }"
-                placeholder="Enter your email"
-                v-model="email"
-                @focus="emailFocus = true"
-                @blur="emailFocus = false"
-                autocomplete="off"
-              />
-              <div
-                v-if="!validEmail && emailFocus"
-                class="alert bg-black mt-0 px-1 position-absolute w-100"
-              >
-                <p class="d-flex align-items-center text-danger small">
-                  <Icon icon="ci:error" :height="15" :width="15" /> Please enter
-                  a valid email
-                </p>
-              </div>
-            </div>
-
-            <div
-              class="
-                position-relative
-                d-flex
-                align-items-center
-                small
-                justify-content-between
-              "
-              :class="validPassword && passwordFocus && 'text-success'"
-            >
-              <label for="email" class="small d-flex align-items-center">
-                Password
-                <Icon
-                  v-if="validPassword && passwordFocus"
-                  icon="codicon:pass-filled"
-                  :height="15"
-                  :width="15"
-              /></label>
-
-              <Link href="/forgot-password" class="text-danger small"
-                >Reset Password</Link
-              >
-            </div>
-
-            <div class="position-relative mb-2">
-              <div class="position-relative">
-                <input
-                  :type="type"
-                  class="form-control w-100"
-                  :style="
-                    !validPassword && passwordFocus && { borderColor: 'red' }
-                  "
-                  placeholder="Enter your password"
-                  v-model="password"
-                  @focus="passwordFocus = true"
-                  @blur="passwordFocus = false"
-                  autocomplete="off"
-                />
-                <Icon
-                  class="reveal__password"
-                  :icon="
-                    type === 'password'
-                      ? 'ant-design:eye-filled'
-                      : type === 'text'
-                      ? 'ant-design:eye-invisible-filled'
-                      : 'ant-design:eye-filled'
-                  "
-                  :height="25"
-                  :width="25"
-                  @click="RevealPassword"
-                />
-              </div>
-              <div
-                v-if="!validPassword && passwordFocus"
-                class="alert bg-black mt-0 p-1 position-absolute w-100"
-              >
-                <p
-                  class="d-flex align-items-center text-danger small my-0 py-0"
-                >
-                  <Icon icon="ci:error" :height="15" :width="15" />
-                  At least 1 number
-                </p>
-                <p
-                  class="d-flex align-items-center text-danger small my-0 py-0"
-                >
-                  <Icon icon="ci:error" :height="15" :width="15" />
-                  At least 8 characters
-                </p>
-                <p
-                  class="d-flex align-items-center text-danger small my-0 py-0"
-                >
-                  <Icon icon="ci:error" :height="15" :width="15" />
-                  At least 1 capital letter
-                </p>
-                <p
-                  class="d-flex align-items-center text-danger small my-0 py-0"
-                >
-                  <Icon icon="ci:error" :height="15" :width="15" />
-                  At least 1 small letter
-                </p>
-                <p
-                  class="d-flex align-items-center text-danger small my-0 py-0"
-                >
-                  <Icon icon="ci:error" :height="15" :width="15" />
-                  At least 1 special character
-                </p>
-              </div>
-            </div>
-
-            <button
-              :disabled="!validEmail || !validPassword"
-              class="btn w-100 btn-gradient-success btn-success mt-1"
-            >
-              <span
-                v-if="AuthLoader"
-                class="spinner-border spinner-border-sm"
-                role="status"
-                aria-hidden="true"
-              ></span>
-              Login
-            </button>
-          </form> -->
-
                 <hr />
 
                 <GoogleLogin :callback="loginWithGoogle" />
 
                 <div class="my-1 text-center">
-                    <Link href="/register" class="text-danger small"
+                    <Link
+                        href="/register"
+                        class="btn btn-sm btn-outline-danger small"
                         >Don't have account? SignUp</Link
                     >
                 </div>

@@ -44,7 +44,7 @@
                     >
                 </div>
 
-                <div class="col-lg-6 col-md-6 col-sm-6 col-6 my-1 d-flex gap-1">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-6 my-1 d-flex flex-wrap gap-1">
                     <button
                         :disabled="downloadingInvoice"
                         class="btn btn-sm btn-outline-primary d-flex align-items-center"
@@ -59,10 +59,20 @@
                         <span>Download Invoice</span>
                         <span
                             ><Icon
-                                height="25"
+                                height="20"
                                 icon="material-symbols:download-sharp"
                         /></span>
                     </button>
+                    <a
+                        target="_blank"
+                        :href="`https://wa.me/${whatsappNo}?text=${whatsappInvoiceText}`"
+                        class="btn btn-sm btn-outline-secondary d-flex align-items-center"
+                    >
+                        <span>Send Invoice</span>
+                        <span
+                            ><Icon height="20" icon="mingcute:mail-send-line"
+                        /></span>
+                    </a>
 
                     <button
                         v-if="order.payment_status == 'Paid'"
@@ -79,23 +89,19 @@
                         <span>Download Receipt</span>
                         <span
                             ><Icon
-                                height="25"
+                                height="20"
                                 icon="material-symbols:download-sharp"
                         /></span>
                     </button>
-
                     <a
+                        :href="`https://wa.me/${whatsappNo}?text=${whatsappReceiptText}`"
                         target="_blank"
                         v-if="order.payment_status == 'Paid'"
-                        :href="`https://wa.me/${whatsappNo}?text=${route(
-                            'order.receipt',
-                            order.id
-                        )}`"
                         class="btn btn-sm btn-outline-success d-flex align-items-center"
                     >
                         <span>Send Receipt</span>
                         <span
-                            ><Icon height="25" icon="mingcute:mail-send-line"
+                            ><Icon height="20" icon="mingcute:mail-send-line"
                         /></span>
                     </a>
                 </div>
@@ -612,6 +618,18 @@ const downloadingReceipt = ref(false);
 const props = defineProps(["order"]);
 let whatsappNo = intlPhone(props.order.phone, `+${countries?.phonecode}`);
 
+const whatsappInvoiceText = ref(
+    `SuperoAgrobase Ltd, Click this link to view your invoice. \n ${encodeURIComponent(
+        route("user.order.show", props.order.id)
+    )}`
+);
+
+const whatsappReceiptText = ref(
+    `SuperoAgrobase Ltd, Click this link to view and download your receipt. \n ${encodeURIComponent(
+        route("order.receipt", props.order.id)
+    )}`
+);
+
 const step_one = {
     slug: "Order",
     link: true,
@@ -670,7 +688,7 @@ const updateOrder = () => {
 </script>
 
 <style lang="css" scoped>
-@import url('https://fonts.googleapis.com/css2?family=Marck+Script&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Marck+Script&display=swap");
 .amount__words,
 .a {
     position: relative;
@@ -679,7 +697,7 @@ const updateOrder = () => {
     margin: 10px 0;
 }
 .amount__words span {
-    font-family: 'Marck Script', cursive;
+    font-family: "Marck Script", cursive;
     font-size: 1.8rem;
     margin-left: 15px;
 }
@@ -699,8 +717,8 @@ h4.a::before {
     bottom: -5px;
     background-color: rgb(149, 148, 148);
 }
-.a b{
-    font-family: 'Marck Script', cursive;
+.a b {
+    font-family: "Marck Script", cursive;
     font-size: 2rem;
     margin-left: 15px;
 }

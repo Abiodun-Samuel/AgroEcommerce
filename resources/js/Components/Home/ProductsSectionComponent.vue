@@ -17,7 +17,10 @@
                                         all_products: true,
                                     })
                                 "
-                                class="btn btn-md btn-outline-success"
+                                class="btn btn-outline-success"
+                                :class="
+                                    selectProducts.length ? 'btn-sm' : 'btn-md'
+                                "
                             >
                                 All Products
                             </Link>
@@ -27,7 +30,10 @@
                                         query: 'top_selling',
                                     })
                                 "
-                                class="btn btn-md btn-outline-success"
+                                class="btn btn-outline-success"
+                                :class="
+                                    selectProducts.length ? 'btn-sm' : 'btn-md'
+                                "
                             >
                                 Top Selling
                             </Link>
@@ -44,12 +50,12 @@
                         <button
                             v-if="selectProducts.length"
                             @click="addAllToCart"
-                            class="btn btn-outline-primary d-flex align-items-center shadow"
+                            class="btn btn-sm btn-outline-primary d-flex align-items-center shadow"
                         >
-                            <span>Add Selected Products</span>
+                            <span>Add to Cart</span>
                             <span
                                 v-if="loading"
-                                class="spinner-border spinner-border-sm mx-1"
+                                class="spinner-border spinner-border-sm ms-1"
                                 role="status"
                                 aria-hidden="true"
                             ></span>
@@ -57,7 +63,7 @@
                                 v-else
                                 height="18"
                                 icon="ic:outline-shopping-cart"
-                                class="mx-1"
+                                class="ms-1"
                             />
                         </button>
                     </div>
@@ -70,7 +76,7 @@
                         :key="product.id"
                         class="col-lg-3 col-md-6"
                     >
-                        <ProductComponent
+                        <ProductComponent :displaySelectAll="true"
                             @selectProduct="updateselectProducts"
                             :product="product"
                         />
@@ -109,10 +115,11 @@ import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
 import { ref } from "vue";
 import { toast } from "@/utils/helper";
-import { Link, useForm } from "@inertiajs/vue3";
+import { Link, router, useForm, usePage } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 
 defineProps(["products"]);
+
 
 const selectProducts = ref([]);
 const loading = ref(false);
@@ -146,6 +153,7 @@ const addAllToCart = () => {
                 item.checked = false;
             }
             selectProducts.value = [];
+            router.visit(route("cart"));
         },
         onError: (err) => {
             loading.value = false;

@@ -373,10 +373,10 @@
                             @click="addAllToCart"
                             class="btn btn-sm btn-outline-primary d-flex align-items-center shadow"
                         >
-                            <span>Add Selected Products</span>
+                            <span>Add to Cart</span>
                             <span
                                 v-if="loading"
-                                class="spinner-border spinner-border-sm mx-1"
+                                class="spinner-border spinner-border-sm ms-1"
                                 role="status"
                                 aria-hidden="true"
                             ></span>
@@ -384,7 +384,7 @@
                                 v-else
                                 height="18"
                                 icon="ic:outline-shopping-cart"
-                                class="mx-1"
+                                class="ms-1"
                             />
                         </button>
                     </div>
@@ -398,6 +398,7 @@
                         class="col-lg-3 col-md-6"
                     >
                         <ProductComponent
+                            :displaySelectAll="true"
                             @selectProduct="updateselectProducts"
                             :product="relatedProduct"
                         />
@@ -492,7 +493,7 @@ import FormError from "@/Components/Common/FormError.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { computed, ref } from "vue";
-import { Link, useForm, usePage, Head } from "@inertiajs/vue3";
+import { Link, useForm, usePage, Head, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
@@ -590,6 +591,7 @@ const addAllToCart = () => {
                 item.checked = false;
             }
             selectProducts.value = [];
+            router.visit(route("cart"));
         },
         onError: (err) => {
             loading.value = false;

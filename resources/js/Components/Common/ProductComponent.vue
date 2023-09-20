@@ -3,13 +3,17 @@
         class="position-relative card mb-2 rounded border-1 bg-white shadow-sm"
         id="product_component"
     >
-        <div class="form-check select_multiple">
+        <div
+            v-if="Number(product.stock) > 0 && displaySelectAll"
+            class="form-check select_multiple"
+        >
             <input
                 class="form-check-input border-2 border-primary"
                 type="checkbox"
                 @change="selectedProductEvent(selectedProduct, product)"
                 v-model="selectedProduct"
                 :id="product.slug"
+                :disabled="Number(product.stock) <= 0"
             />
         </div>
         <div v-if="product.discount_price" class="discount_percentage">
@@ -23,6 +27,7 @@
                 :src="JSON.parse(product.image)?.img_url"
                 class="img-fluid rounded"
                 alt="product image"
+                lazy="loading"
             />
         </label>
 
@@ -115,7 +120,7 @@ import {
     formatCurrency,
 } from "@/utils/helper.js";
 
-const props = defineProps(["product", "addAllToCartDone"]);
+const props = defineProps(["product", "addAllToCartDone", "displaySelectAll"]);
 const emit = defineEmits(["selectProduct"]);
 const selectedProduct = ref(false);
 

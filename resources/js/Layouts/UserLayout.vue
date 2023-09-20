@@ -41,13 +41,13 @@ onMounted(() => {
           <!-- logo  -->
           <Link
             class="navbar-brand brand-logo"
-            :href="route('user.dashboard.index')"
+            :href="route('user.profile.index')"
           >
             <img src="@/assets/images/logo/logo.png" alt="logo" />
           </Link>
           <Link
             class="navbar-brand brand-logo-mini"
-            :href="route('user.dashboard.index')"
+            :href="route('user.profile.index')"
           >
             <img src="@/assets/images/logo/logo.png" alt="logo" />
           </Link>

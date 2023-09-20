@@ -46,7 +46,7 @@ class OrderController extends Controller
             ->pluck('stock', 'id');
         foreach ($cartCollection as $cart) {
             if (!isset($products[$cart['id']]) || $products[$cart['id']] < $cart['quantity']) {
-                return dd('Error:' . $cart['name'] . '  product not found');
+                return  redirect()->back()->withErrors(['message' => $cart['name'] . ' product is out of stock']);
             }
             $orderItem = array(
                 "id" => $cart['id'],

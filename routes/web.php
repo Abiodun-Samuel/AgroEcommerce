@@ -4,6 +4,7 @@
 use App\Http\Controllers\Admin\AdminBlogController;
 use App\Http\Controllers\Admin\AdminCategoryController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminGalleryController;
 use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminProfileController;
@@ -84,13 +85,19 @@ Route::name('admin.')->prefix('admin')->middleware(['auth', 'verified', 'isAdmin
     Route::post('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'update'])->name('subcategory.update');
     Route::post('/subcategory', [AdminSubcategoryController::class, 'store'])->name('subcategory.store');
     Route::delete('/subcategory/{subcategory}', [AdminSubcategoryController::class, 'destroy'])->name('subcategory.destroy');
-    //Admin Promotion 
+    //Admin Promotion
     Route::get('/promotions', [AdminPromotionController::class, 'index'])->name('promotion.index');
     Route::post('/promotions', [AdminPromotionController::class, 'store'])->name('promotion.store');
     Route::get('/promotions/{promotion}', [AdminPromotionController::class, 'edit'])->name('promotion.edit');
     Route::post('/promotions/{promotion}', [AdminPromotionController::class, 'update'])->name('promotion.update');
     Route::delete('/promotions/{promotion}', [AdminPromotionController::class, 'destroy'])->name('promotion.destroy');
-    //Admin Blog 
+    //Gallery
+    Route::get('/gallery', [AdminGalleryController::class, 'index'])->name('gallery.index');
+    Route::post('/gallery', [AdminGalleryController::class, 'store'])->name('gallery.store');
+    Route::get('/gallery/{gallery}', [AdminGalleryController::class, 'edit'])->name('gallery.edit');
+    Route::post('/gallery/{gallery}', [AdminGalleryController::class, 'update'])->name('gallery.update');
+    Route::delete('/gallery/{gallery}', [AdminGalleryController::class, 'destroy'])->name('gallery.destroy');
+    //Blog
     Route::get('/blog', [AdminBlogController::class, 'index'])->name('blog.index');
     Route::post('/blog', [AdminBlogController::class, 'store'])->name('blog.store');
     Route::get('/blog/{promotion}', [AdminBlogController::class, 'edit'])->name('blog.edit');

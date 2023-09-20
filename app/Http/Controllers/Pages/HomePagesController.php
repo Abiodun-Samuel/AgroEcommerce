@@ -7,6 +7,7 @@ use App\Models\Admin\Product;
 use App\Models\Admin\Promotion;
 use App\Models\Admin\Subcategory;
 use App\Models\Blog;
+use App\Models\Gallery;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -21,7 +22,8 @@ class HomePagesController extends Controller
         $promotions = Promotion::orderBy('created_at', 'desc')->take(4)->get();
         $blogs = Blog::orderBy('created_at', 'desc')->take(4)->get();
         $products = Product::with('reviews.user')->latest()->paginate(12);
-        return Inertia::render('HomePage', compact('products', 'promotions', 'blogs'));
+        $galleries = Gallery::latest()->get();
+        return Inertia::render('HomePage', compact('products', 'promotions', 'blogs' , 'galleries'));
     }
     /**
      * Search products
@@ -32,7 +34,6 @@ class HomePagesController extends Controller
         $data = $request->validate([
             'search' => 'string'
         ]);
-
         if (isset($data['search'])) {
             $products = Product::with('reviews')->where('title', 'like', '%' . $data['search'] . '%')
                 ->orWhere('sub_title', 'like', '%' . $data['search'] . '%')

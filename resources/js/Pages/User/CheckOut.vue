@@ -5,7 +5,6 @@ import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { Icon } from "@iconify/vue";
 import { ref, computed } from "vue";
 import { toast, formatCurrency } from "@/utils/helper";
-import NoResult from "@/Components/Common/NoResult.vue";
 import { Country, State } from "country-state-city";
 import Modal from "@/Components/Common/Modal.vue";
 import FormError from "@/Components/Common/FormError.vue";
@@ -18,27 +17,32 @@ const step_one = {
 };
 
 const showUpdateModal = ref(false);
-const cartItemsLength = ref([]);
 const user = computed(() => usePage().props.auth.user);
 const countries = ref(Country.getAllCountries());
 const states = ref([]);
-const getCountryCode = (value) => {
-    states.value = State.getStatesOfCountry(value?.isoCode);
-};
+const selectedCountry = ref();
 
-const orderForm = useForm({
-    name: user.value.first_name + " " + user.value.last_name,
-    phone: user.value.phone,
+const displayType = ref(user.value.is_completed == true ? "default" : false);
+
+const defaultDeliveryDetails = ref({
+    name: `${user.value.first_name} ${user.value.last_name}`,
     email: user.value.email,
+    phone: user.value.phone,
+    address: user.value.address,
+    city: user.value.city,
+    state: user.value.state,
     country: user.value.country,
-    address: `${user.value.address}, ${user.value.city}, ${user.value.state}, ${user.value.country}.`,
-    payment_option: "",
-    delivery_option: "",
-    order_status: "Pending",
-    payment_status: "Not Paid",
 });
 
 const formClear = useForm({});
+
+const saveUpdatedDetails = () => {
+    displayType.value = "updated";
+    showUpdateModal.value = false;
+};
+const useDefaultAddress = () => {
+    displayType.value = "default";
+};
 
 const clearCart = () => {
     formClear.delete(route("clear-cart"), {
@@ -54,12 +58,20 @@ const clearCart = () => {
 };
 
 const userProfileUpdate = useForm({
-    phone: user.value.phone,
-    address: user.value.address,
-    city: user.value.city,
-    state: user.value.state,
-    country: user.value.country,
+    name: "",
+    phone: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
 });
+
+const getCountryCode = (value) => {
+    states.value = State.getStatesOfCountry(value?.isoCode);
+    userProfileUpdate.country = value?.name;
+};
 
 const updateUserProfile = () => {
     userProfileUpdate.clearErrors();
@@ -74,9 +86,49 @@ const updateUserProfile = () => {
         },
     });
 };
+const orderForm = useForm({
+    name: "",
+    phone: "",
+    email: "",
+    country: "",
+    address: "",
+    payment_option: "",
+    delivery_option: "",
+    order_status: "Pending",
+    payment_status: "Not Paid",
+});
 
 const createOrder = () => {
     if (Number(props.cartTotal) <= 0) return;
+    if (displayType.value == "updated") {
+        if (
+            !userProfileUpdate.name ||
+            !userProfileUpdate.email ||
+            !userProfileUpdate.phone ||
+            !userProfileUpdate.country ||
+            !userProfileUpdate.address ||
+            !userProfileUpdate.city ||
+            !userProfileUpdate.state
+        ) {
+            return toast.error(
+                "Please complete your delivery address details."
+            );
+        }
+    }
+
+    if (displayType.value == "default") {
+        orderForm.name = defaultDeliveryDetails.value.name;
+        orderForm.phone = defaultDeliveryDetails.value.phone;
+        orderForm.email = defaultDeliveryDetails.value.email;
+        orderForm.country = defaultDeliveryDetails.value.country;
+        orderForm.address = `${defaultDeliveryDetails.value.address}, ${defaultDeliveryDetails.value.city}, ${defaultDeliveryDetails.value.state}, ${defaultDeliveryDetails.value.country}.`;
+    } else {
+        orderForm.name = userProfileUpdate.name;
+        orderForm.phone = userProfileUpdate.phone;
+        orderForm.email = userProfileUpdate.email;
+        orderForm.country = userProfileUpdate.country;
+        orderForm.address = `${userProfileUpdate.address}, ${userProfileUpdate.city}, ${userProfileUpdate.state}, ${userProfileUpdate.country}.`;
+    }
     orderForm.clearErrors();
     orderForm.post(route("user.order.create"), {
         preserveScroll: true,
@@ -91,8 +143,8 @@ const createOrder = () => {
                 );
             }
         },
-        onError: () => {
-            toast.error(`Error, unable to create your order`);
+        onError: (err) => {
+            toast.error(err.message);
         },
     });
 };
@@ -107,10 +159,8 @@ const createOrder = () => {
                 <div class="col-lg-8 col-md-7 my-2">
                     <!-- address  -->
                     <div class="bg-white rounded shadow-sm p-1 mb-1">
-                        <div
-                            class="d-flex justify-content-between align-items-center"
-                        >
-                            <div class="d-flex align-items-center gap-1">
+                        <div class="">
+                            <div class="d-flex align-items-center gap-1 mb-1">
                                 <Icon
                                     :class="
                                         user.is_completed == true
@@ -124,30 +174,35 @@ const createOrder = () => {
                                     class="fw-bolder my-0 py-0"
                                     style="color: var(--green-5)"
                                 >
-                                    1. Address Details
+                                    1. Delivery Address
                                 </h5>
                             </div>
                             <button
                                 @click="showUpdateModal = true"
-                                class="btn btn-sm btn-outline-warning"
+                                class="btn btn-sm btn-outline-warning me-1"
                             >
-                                Change
+                                Change Address
+                            </button>
+                            <button
+                                @click="useDefaultAddress"
+                                class="btn btn-sm btn-outline-primary ms-1"
+                            >
+                                Use my address
                             </button>
                         </div>
 
                         <hr />
                         <div class="row">
-                            <template v-if="user.is_completed == true">
+                            <template v-if="displayType == 'default'">
                                 <div class="col-12 px-4 py-1">
                                     <h5>
-                                        {{ user.first_name }}
-                                        {{ user.last_name }}
+                                        {{ defaultDeliveryDetails.name }}
                                     </h5>
                                     <p class="fw-light my-0 py-0">
-                                        {{ user.email }}
+                                        {{ defaultDeliveryDetails.email }}
                                     </p>
                                     <p class="fw-light my-0 py-0">
-                                        {{ user.phone }}
+                                        {{ defaultDeliveryDetails.phone }}
                                         <small
                                             class="text-danger mx-1 fs-italics"
                                             >(Your receipt and invoice will be
@@ -157,8 +212,37 @@ const createOrder = () => {
                                         >
                                     </p>
                                     <p class="fw-light my-0 py-0">
-                                        {{ user.address }}, {{ user.city }},
-                                        {{ user.state }}, {{ user.country }}.
+                                        {{ defaultDeliveryDetails.address }},
+                                        {{ defaultDeliveryDetails.city }},
+                                        {{ defaultDeliveryDetails.state }},
+                                        {{ defaultDeliveryDetails.country }}.
+                                    </p>
+                                </div>
+                            </template>
+                            <template v-else-if="displayType == 'updated'">
+                                <div class="col-12 px-4 py-1">
+                                    <h5>
+                                        {{ userProfileUpdate.name }}
+                                    </h5>
+                                    <p class="fw-light my-0 py-0">
+                                        {{ userProfileUpdate.email }}
+                                    </p>
+                                    <p class="fw-light my-0 py-0">
+                                        {{ userProfileUpdate.phone }}
+                                        <small
+                                            v-if="userProfileUpdate.phone"
+                                            class="text-danger mx-1 fs-italics"
+                                            >(Your receipt and invoice will be
+                                            sent to this number, therefore make
+                                            sure this is your whatsapp
+                                            number.)</small
+                                        >
+                                    </p>
+                                    <p class="fw-light my-0 py-0">
+                                        {{ userProfileUpdate.address }}
+                                        {{ userProfileUpdate.city }}
+                                        {{ userProfileUpdate.state }}
+                                        {{ userProfileUpdate.country }}
                                     </p>
                                 </div>
                             </template>
@@ -250,8 +334,8 @@ const createOrder = () => {
                                         <p
                                             class="fw-light mb-0 small text-danger"
                                         >
-                                            Please note that the invoice
-                                            amount (&#8358;
+                                            Please note that the invoice amount
+                                            (&#8358;
                                             {{ formatCurrency(cartTotal) }})
                                             <b>does not</b>
                                             include the delivery fee.
@@ -448,6 +532,27 @@ const createOrder = () => {
         <template #body>
             <FormError :errors="userProfileUpdate.errors" />
             <div class="row">
+                <div class="col-lg-6 col-md-6 col-6 my-1">
+                    <label for="name" class="form-label">Fullname</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="name"
+                        placeholder="Full name"
+                        v-model="userProfileUpdate.name"
+                    />
+                </div>
+                <!-- email  -->
+                <div class="col-lg-6 col-md-6 col-6 my-1">
+                    <label for="address" class="form-label">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        class="form-control"
+                        placeholder="Email"
+                        v-model="userProfileUpdate.email"
+                    />
+                </div>
                 <div class="col-lg-6 col-md-6 col-6 mb-1">
                     <label for="phone" class="form-label"
                         >Phone (WhatsApp No)</label
@@ -464,11 +569,12 @@ const createOrder = () => {
                 <!-- country, state, city -->
                 <div class="col-lg-6 col-md-6 col-6 mb-1">
                     <label for="country" class="form-label">Country</label>
+                    <!--  -->
                     <select
                         class="form-select"
                         aria-label="Default select example"
-                        v-model="userProfileUpdate.country"
-                        @change="getCountryCode(userProfileUpdate.country)"
+                        v-model="selectedCountry"
+                        @change="getCountryCode(selectedCountry)"
                     >
                         <option
                             v-for="country in countries"
@@ -508,41 +614,35 @@ const createOrder = () => {
                 <!-- address  -->
                 <div class="col-12 my-1">
                     <label for="address" class="form-label">Address</label>
-                    <input
+                    <textarea
                         id="address"
                         rows="3"
                         class="form-control"
                         v-model="userProfileUpdate.address"
-                    />
+                    ></textarea>
                 </div>
-                <!-- save as adress  -->
-                <!-- <div class="col-12">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              v-model="userProfileUpdate.save_as_my_address"
-              id="saveasmyaddress"
-            />
-            <label class="form-check-label small" for="saveasmyaddress">
-              Save as my address
-            </label>
-          </div>
-        </div> -->
             </div>
         </template>
 
         <template #footer>
+            <!-- -->
+            <button
+                @click="saveUpdatedDetails"
+                class="btn btn-sm btn-outline-success"
+            >
+                Done
+            </button>
+
             <button
                 @click="updateUserProfile"
                 :disabled="userProfileUpdate.processing"
-                class="btn btn-success w-100"
+                class="btn btn-sm btn-outline-danger"
             >
                 <span
                     v-show="userProfileUpdate.processing"
                     class="spinner-border spinner-border-sm mx-1"
                 ></span>
-                Save
+                Set as my profile address
             </button>
         </template>
     </Modal>

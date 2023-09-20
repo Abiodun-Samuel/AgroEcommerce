@@ -97,7 +97,7 @@
                             </Link>
                         </div>
 
-                        <div v-if="auth_user" class="box">
+                        <!-- <div v-if="auth_user" class="box">
                             <Link
                                 :href="route('user.order.index')"
                                 class="d-flex align-items-center"
@@ -110,7 +110,7 @@
                                 </div>
                                 <span class="d-none d-lg-flex">Orders</span>
                             </Link>
-                        </div>
+                        </div> -->
                         <!-- auth data  -->
                         <div class="dropdown box">
                             <Link
@@ -261,7 +261,7 @@
                                                 class="me-1"
                                                 icon="mdi:order-bool-ascending-variant"
                                             />
-                                            <span>Track Order</span>
+                                            <span>My Orders</span>
                                         </Link>
                                     </li>
                                     <li>
@@ -438,6 +438,7 @@
                     class="form-control"
                     aria-label="Search for Products"
                     placeholder="Search for products..."
+                    @change="search"
                     v-model="searchForm.search"
                 />
                 <button
@@ -820,11 +821,7 @@ const remove_searchbox = () => {
 const search = () => {
     if (!searchForm.search.length) return null;
     searchForm.get(route("product.search"), {
-        preserveScroll: true,
-        onSuccess: (val) => {
-            searchForm.reset();
-        },
-        onError: (err) => {},
+        preserveScroll: false,
     });
 };
 
@@ -932,6 +929,7 @@ onMounted(() => {
 
 .header__two {
     height: 50px;
+    z-index: 100000;
 }
 .header__links {
     height: 50px;

@@ -10,6 +10,7 @@ import Pagination from "@/Components/Partial/Pagination.vue";
 
 const auth_user = computed(() => usePage().props.auth.user);
 const props = defineProps(["transactions"]);
+console.log(props.transactions);
 const transactions = computed(() => props.transactions);
 const step_one = {
     slug: "Transactions",
@@ -139,21 +140,21 @@ const step_one = {
                                             <p class="my-0">
                                                 <b>Name:</b
                                                 >{{
-                                                    `${transaction.user.first_name} ${transaction.user.last_name}`
+                                                    `${transaction.order.name} `
                                                 }}
                                             </p>
                                             <p class="my-0">
                                                 <b>Email:</b
-                                                >{{ transaction.user.email }}
+                                                >{{ transaction.order.email }}
                                             </p>
                                             <p class="my-0">
                                                 <b>Phone:</b
-                                                >{{ transaction.user.phone }}
+                                                >{{ transaction.order.phone }}
                                             </p>
                                             <p class="my-0">
                                                 <b>Address:</b
                                                 >{{
-                                                    `${transaction.user.state} ${transaction.user.country}`
+                                                    `${transaction.order.address}`
                                                 }}
                                             </p>
                                         </td>

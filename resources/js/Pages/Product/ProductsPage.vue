@@ -50,6 +50,7 @@
                                     class="col-lg-4 col-md-6"
                                 >
                                     <ProductComponent
+                                        :displaySelectAll="true"
                                         @selectProduct="updateselectProducts"
                                         :product="product"
                                     />
@@ -92,7 +93,7 @@
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import BreadCrump from "@/Components/Partial/BreadCrump.vue";
 import { computed, ref } from "vue";
-import { Link, usePage, Head, useForm } from "@inertiajs/vue3";
+import { Link, usePage, Head, useForm, router } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import Pagination from "@/Components/Partial/Pagination.vue";
@@ -158,6 +159,7 @@ const addAllToCart = () => {
                 item.checked = false;
             }
             selectProducts.value = [];
+            router.visit(route("cart"));
         },
         onError: (err) => {
             loading.value = false;
