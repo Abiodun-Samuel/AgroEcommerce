@@ -14,7 +14,7 @@
         <div
           v-for="blog in blogs"
           :key="blog.id"
-          class="col-lg-3 col-md-6 col-12"
+          class="col-lg-3 col-md-6 col-12 d-flex align-items-stretch"
         >
           <BlogComponent :blog="blog" />
         </div>

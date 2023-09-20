@@ -28,6 +28,6 @@ const settings = computed(() => usePage().props.data.settings);
             v-if="settings.promotion == true"
         />
         <ContactComp />
-        <!-- <BlogSectionComponent :blogs="blogs" /> -->
+        <BlogSectionComponent v-if="blogs.length" :blogs="blogs" />
     </GuestLayout>
 </template>
