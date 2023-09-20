@@ -22,7 +22,7 @@ class HomePagesController extends Controller
         $promotions = Promotion::orderBy('created_at', 'desc')->take(4)->get();
         $blogs = Blog::orderBy('created_at', 'desc')->take(4)->get();
         $products = Product::with('reviews.user')->latest()->paginate(12);
-        $galleries = Gallery::latest()->get();
+        $galleries = Gallery::latest()->take(10)->get();
         return Inertia::render('HomePage', compact('products', 'promotions', 'blogs' , 'galleries'));
     }
     /**

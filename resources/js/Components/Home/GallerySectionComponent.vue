@@ -23,11 +23,12 @@
                                             JSON.parse(gallery.gallery_img)
                                                 ?.img_url
                                         "
+                                        class="shadow-sm"
                                         :alt="gallery.title"
                                     />
-                                    <p class="text-success lead">
+                                    <!-- <p class="text-success lead">
                                         {{ gallery.title }}
-                                    </p>
+                                    </p> -->
                                 </div>
                                 <div class="overlay">
                                     <div class="inner-overlay"></div>
