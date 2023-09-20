@@ -17,6 +17,8 @@ const props = defineProps([
     "subcategories_count",
     "order_count",
     "transaction_count",
+    "promotion_count",
+    "gallery_count",
 ]);
 const openUserDeleteModal = ref(false);
 const openUserDetailsModal = ref(false);
@@ -179,6 +181,46 @@ const deleteAction = () => {
                                 width="40"
                                 src="@/assets/images/icons/transaction.png"
                                 alt="transaction icon"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-6 my-2">
+                    <div class="counters shadow rounded p-1">
+                        <div class="counter__text">
+                            <h4 class="pb-0 text-success fw-bolder">
+                                Promotions
+                            </h4>
+                            <h6 class="lead pb-0 text-dark fw-bolder">
+                                {{ promotion_count }}
+                            </h6>
+                        </div>
+                        <div class="counter__icon">
+                            <img
+                                loading="lazy"
+                                width="40"
+                                src="@/assets/images/icons/promotion.png"
+                                alt="promotion icon"
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 col-sm-6 col-6 my-2">
+                    <div class="counters shadow rounded p-1">
+                        <div class="counter__text">
+                            <h4 class="pb-0 text-success fw-bolder">
+                                Gallery
+                            </h4>
+                            <h6 class="lead pb-0 text-dark fw-bolder">
+                                {{ gallery_count }}
+                            </h6>
+                        </div>
+                        <div class="counter__icon">
+                            <img
+                                loading="lazy"
+                                width="40"
+                                src="@/assets/images/icons/gallery.png"
+                                alt="gallery icon"
                             />
                         </div>
                     </div>

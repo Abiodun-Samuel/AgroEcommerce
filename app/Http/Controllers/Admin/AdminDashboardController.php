@@ -7,7 +7,9 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Models\Admin\Category;
 use App\Models\Admin\Product;
+use App\Models\Admin\Promotion;
 use App\Models\Admin\SubCategory;
+use App\Models\Gallery;
 use App\Models\Transaction;
 use App\Models\User;
 use Inertia\Inertia;
@@ -26,6 +28,8 @@ class AdminDashboardController extends Controller
         $subcategories = SubCategory::count();
         $order_count = Order::count();
         $transaction_count = Transaction::count();
+        $gallery_count = Gallery::count();
+        $promotion_count = Promotion::count();
         return Inertia::render('Admin/AdminIndex', [
             'users' => $users,
             'order_count' => $order_count,
@@ -33,6 +37,8 @@ class AdminDashboardController extends Controller
             'categories_count' => $categories,
             'subcategories_count' => $subcategories,
             'transaction_count' => $transaction_count,
+            'gallery_count' => $gallery_count,
+            'promotion_count' => $promotion_count,
         ]);
     }
 
