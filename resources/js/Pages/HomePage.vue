@@ -25,7 +25,7 @@ const settings = computed(() => usePage().props.data.settings);
         <ProductsDayComponent :products="products" />
         <PromotionComponent
             :promotions="promotions"
-            v-if="settings.promotion == true"
+            v-if="settings.promotion == true && promotions.length"
         />
         <ContactComp />
         <BlogSectionComponent v-if="blogs.length" :blogs="blogs" />

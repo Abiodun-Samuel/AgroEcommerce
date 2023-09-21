@@ -18,6 +18,8 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@cloudinary/url-gen": "^1.11.2",
+        "@cloudinary/vue": "^1.11.2",
         "@inertiajs/vue3": "^1.0.0",
         "amount-to-words": "^5.0.0",
         "aos": "^2.3.4",

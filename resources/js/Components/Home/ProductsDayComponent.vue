@@ -81,6 +81,8 @@ import { computed, ref } from "vue";
 import { Link, usePage } from "@inertiajs/vue3";
 import ProductComponent from "@/Components/Common/ProductComponent.vue";
 import { Carousel, Slide } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
+
 
 const props = defineProps(["products"]);
 const categories = computed(() => usePage().props.data.categories);

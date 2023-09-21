@@ -23,12 +23,13 @@
         </div>
         <!-- <Link :href="route('product-details-page', product.slug)"> -->
         <label :for="product.slug">
-            <img
+            <ImageRender :imgData="product.image" :alt="product.title" />
+            <!-- <img
                 :src="JSON.parse(product.image)?.img_url"
                 class="img-fluid rounded"
                 alt="product image"
                 lazy="loading"
-            />
+            /> -->
         </label>
 
         <!-- </Link> -->
@@ -111,6 +112,7 @@
 import { Link, useForm } from "@inertiajs/vue3";
 import { Icon } from "@iconify/vue";
 import Rating from "@/Components/Common/Rating.vue";
+import ImageRender from "@/Components/Common/ImageRender.vue";
 import { ref, computed } from "vue";
 import store from "@/store";
 import {

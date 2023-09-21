@@ -18,17 +18,9 @@
                                 :key="gallery.id"
                             >
                                 <div class="image-mask">
-                                    <img
-                                        :src="
-                                            JSON.parse(gallery.gallery_img)
-                                                ?.img_url
-                                        "
-                                        class="shadow-sm"
-                                        :alt="gallery.title"
+                                    <ImageRender
+                                        :imgData="gallery.gallery_img"
                                     />
-                                    <!-- <p class="text-success lead">
-                                        {{ gallery.title }}
-                                    </p> -->
                                 </div>
                                 <div class="overlay">
                                     <div class="inner-overlay"></div>
@@ -43,6 +35,8 @@
 </template>
 
 <script setup>
+import ImageRender from "@/Components/Common/ImageRender.vue";
+
 const props = defineProps(["galleries"]);
 </script>
 

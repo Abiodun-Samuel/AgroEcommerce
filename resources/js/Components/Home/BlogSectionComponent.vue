@@ -19,16 +19,11 @@
           <BlogComponent :blog="blog" />
         </div>
       </div>
-
-      <!-- <div class="row mt-1">
-        <Pagination :links="blogs.links" />
-      </div> -->
     </div>
   </div>
 </template>
 
 <script setup>
-// import Pagination from "@/Components/Partial/Pagination.vue";
 import BlogComponent from "@/Components/Common/BlogComponent.vue";
 
 defineProps(["blogs"]);
@@ -38,7 +33,7 @@ defineProps(["blogs"]);
 #blog {
   position: relative;
   padding: 4rem 0;
-  background: url("@/assets/images/bg/product-bg.jpg") no-repeat;
+  /* background: url("@/assets/images/bg/product-bg.jpg") no-repeat; */
   background-position: center;
   background-size: cover;
 }

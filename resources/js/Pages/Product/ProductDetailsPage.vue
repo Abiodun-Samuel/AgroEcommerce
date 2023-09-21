@@ -8,11 +8,12 @@
                 <div class="row">
                     <div class="col-lg-5 col-md-6 mt-3 mb-1">
                         <div class="productdetials__image">
-                            <img
+                            <ImageRender :imgData="product.image" :alt="product.title"/>
+                            <!-- <img
                                 :src="JSON.parse(product.image).img_url"
                                 :alt="product.title"
                                 class="img-fluid rounded shadow-sm"
-                            />
+                            /> -->
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-6 mt-3 mb-1">
@@ -508,6 +509,7 @@ import {
     formatTime,
 } from "@/utils/helper.js";
 import store from "@/store";
+import ImageRender from "@/Components/Common/ImageRender.vue";
 
 const auth_user = computed(() => usePage().props.auth.user);
 const categories = computed(() => usePage().props.data.categories);

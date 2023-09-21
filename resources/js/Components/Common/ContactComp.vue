@@ -1,7 +1,7 @@
 <template>
-    <div class="container mt-2">
+    <div class="container my-5">
       <div class="row rounded">
-        <div class="productadvert p-3 shadow-sm">
+        <div class="productadvert p-3 shadow">
           <p class="lead">
            Do you have any enquiry about our products and services? You can contact us.
           </p>

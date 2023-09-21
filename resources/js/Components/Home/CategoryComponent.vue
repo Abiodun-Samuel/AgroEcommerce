@@ -50,15 +50,9 @@
                                             "
                                             class="rounded me-2 mb-2 category__slider-body"
                                         >
-                                            <img
+                                            <ImageRender
                                                 v-if="category.banner_img"
-                                                :src="
-                                                    JSON.parse(
-                                                        category.banner_img
-                                                    )?.img_url
-                                                "
-                                                alt="profile-img"
-                                                class="rounded img-fluid"
+                                                :imgData="category.banner_img"
                                             />
                                             <img
                                                 v-else
@@ -124,9 +118,12 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { computed, ref } from "vue";
-import { Link, usePage } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
 import { Carousel, Slide } from "vue3-carousel";
+import "vue3-carousel/dist/carousel.css";
 import Modal from "@/Components/Common/Modal.vue";
+import ImageRender from "@/Components/Common/ImageRender.vue";
+
 
 const categories = computed(() => usePage().props.data.categories);
 const subcategories = ref([]);
@@ -137,7 +134,6 @@ const setSubcategories = (cat, data) => {
     openDisplayModal.value = true;
     selectedCategory.value = data;
     subcategories.value = cat;
-    console.log(subcategories.value);
 };
 
 const myCarousel = ref(null);
