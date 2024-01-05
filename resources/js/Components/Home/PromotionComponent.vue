@@ -16,7 +16,6 @@
                     class="col-lg-3 col-md-6 mb-1"
                 >
                     <div class="promotion__box">
-                        <!-- <ImageRender :imgData="promotion.banner_img" /> -->
                         <img
                             class="img-fluid shadow-sm rounded"
                             loading="lazy"
@@ -39,7 +38,6 @@
 </template>
 
 <script setup>
-// import ImageRender from "@/Components/Common/ImageRender.vue";
 const props = defineProps(["promotions"]);
 
 </script>
