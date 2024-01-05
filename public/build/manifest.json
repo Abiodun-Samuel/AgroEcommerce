@@ -1,4 +1,24 @@
 {
+  "resources/js/assets/images/team/member3.jpg": {
+    "file": "assets/member3.c967fec6.jpg",
+    "src": "resources/js/assets/images/team/member3.jpg"
+  },
+  "resources/js/assets/images/team/member2.jpg": {
+    "file": "assets/member2.75412877.jpg",
+    "src": "resources/js/assets/images/team/member2.jpg"
+  },
+  "resources/js/assets/images/team/member4.jpg": {
+    "file": "assets/member4.df6a295e.jpg",
+    "src": "resources/js/assets/images/team/member4.jpg"
+  },
+  "resources/js/assets/images/team/member1.jpg": {
+    "file": "assets/member1.299eab3c.jpg",
+    "src": "resources/js/assets/images/team/member1.jpg"
+  },
+  "resources/js/assets/images/icons/orders.png": {
+    "file": "assets/orders.93976ea9.png",
+    "src": "resources/js/assets/images/icons/orders.png"
+  },
   "resources/js/assets/images/icons/users.png": {
     "file": "assets/users.26a6afab.png",
     "src": "resources/js/assets/images/icons/users.png"
@@ -6,10 +26,6 @@
   "resources/js/assets/images/icons/subcategory.png": {
     "file": "assets/subcategory.b4e641d1.png",
     "src": "resources/js/assets/images/icons/subcategory.png"
-  },
-  "resources/js/assets/images/icons/orders.png": {
-    "file": "assets/orders.93976ea9.png",
-    "src": "resources/js/assets/images/icons/orders.png"
   },
   "resources/js/assets/images/icons/product.png": {
     "file": "assets/product.9c3afb69.png",
@@ -26,22 +42,6 @@
   "resources/js/assets/images/icons/promotion.png": {
     "file": "assets/promotion.4f8cb597.png",
     "src": "resources/js/assets/images/icons/promotion.png"
-  },
-  "resources/js/assets/images/team/member2.jpg": {
-    "file": "assets/member2.75412877.jpg",
-    "src": "resources/js/assets/images/team/member2.jpg"
-  },
-  "resources/js/assets/images/team/member1.jpg": {
-    "file": "assets/member1.299eab3c.jpg",
-    "src": "resources/js/assets/images/team/member1.jpg"
-  },
-  "resources/js/assets/images/team/member3.jpg": {
-    "file": "assets/member3.c967fec6.jpg",
-    "src": "resources/js/assets/images/team/member3.jpg"
-  },
-  "resources/js/assets/images/team/member4.jpg": {
-    "file": "assets/member4.df6a295e.jpg",
-    "src": "resources/js/assets/images/team/member4.jpg"
   },
   "resources/js/assets/images/img/avatar.png": {
     "file": "assets/avatar.f4995ef6.png",
@@ -63,13 +63,13 @@
     "file": "assets/category_one.26ae32b3.jpg",
     "src": "resources/images/category/category_one.jpg"
   },
-  "resources/js/assets/images/bg/bg.svg": {
-    "file": "assets/bg.fb497198.svg",
-    "src": "resources/js/assets/images/bg/bg.svg"
-  },
   "resources/js/assets/images/bg/product-bg.jpg": {
     "file": "assets/product-bg.46af69c3.jpg",
     "src": "resources/js/assets/images/bg/product-bg.jpg"
+  },
+  "resources/js/assets/images/bg/bg.svg": {
+    "file": "assets/bg.fb497198.svg",
+    "src": "resources/js/assets/images/bg/bg.svg"
   },
   "resources/js/assets/images/bg/newsletter.jpg": {
     "file": "assets/newsletter.b06e1c82.jpg",
@@ -79,29 +79,29 @@
     "file": "assets/breadcrump-bg.2c00a1af.jpg",
     "src": "resources/js/assets/images/bg/breadcrump-bg.jpg"
   },
-  "resources/images/bg/btn-brush-bg-2.png": {
-    "file": "assets/btn-brush-bg-2.d6085fcd.png",
-    "src": "resources/images/bg/btn-brush-bg-2.png"
-  },
   "resources/images/bg/bg.png": {
     "file": "assets/bg.1d5322ca.png",
     "src": "resources/images/bg/bg.png"
+  },
+  "resources/images/bg/btn-brush-bg-2.png": {
+    "file": "assets/btn-brush-bg-2.d6085fcd.png",
+    "src": "resources/images/bg/btn-brush-bg-2.png"
   },
   "resources/js/assets/images/bg/auth-bg.png": {
     "file": "assets/auth-bg.b58b7286.png",
     "src": "resources/js/assets/images/bg/auth-bg.png"
   },
   "resources/js/app.js": {
-    "file": "assets/app.52f4997b.js",
+    "file": "assets/app.86f67b17.js",
     "src": "resources/js/app.js",
     "isEntry": true,
     "dynamicImports": [
-      "_html2canvas.89ea9812.js",
+      "_html2canvas.5df97e6c.js",
       "node_modules/dompurify/dist/purify.es.js",
       "node_modules/canvg/lib/index.es.js"
     ],
     "css": [
-      "assets/app.2a768b93.css"
+      "assets/app.f04d4320.css"
     ],
     "assets": [
       "assets/member3.c967fec6.jpg",
@@ -129,8 +129,8 @@
       "assets/btn-brush-bg-2.d6085fcd.png"
     ]
   },
-  "_html2canvas.89ea9812.js": {
-    "file": "assets/html2canvas.89ea9812.js",
+  "_html2canvas.5df97e6c.js": {
+    "file": "assets/html2canvas.5df97e6c.js",
     "isDynamicEntry": true,
     "imports": [
       "resources/js/app.js"
@@ -142,7 +142,7 @@
     "isDynamicEntry": true
   },
   "node_modules/canvg/lib/index.es.js": {
-    "file": "assets/index.es.2812e051.js",
+    "file": "assets/index.es.cf862543.js",
     "src": "node_modules/canvg/lib/index.es.js",
     "isDynamicEntry": true,
     "imports": [
@@ -150,7 +150,7 @@
     ]
   },
   "resources/js/app.css": {
-    "file": "assets/app.2a768b93.css",
+    "file": "assets/app.f04d4320.css",
     "src": "resources/js/app.css"
   },
   "resources/js/assets/images/logo/logo.png": {
