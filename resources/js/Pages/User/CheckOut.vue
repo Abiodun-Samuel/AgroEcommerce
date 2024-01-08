@@ -22,27 +22,29 @@ const countries = ref(Country.getAllCountries());
 const states = ref([]);
 const selectedCountry = ref();
 
-const displayType = ref(user.value.is_completed == true ? "default" : false);
-
-const defaultDeliveryDetails = ref({
-    name: `${user.value.first_name} ${user.value.last_name}`,
-    email: user.value.email,
-    phone: user.value.phone,
-    address: user.value.address,
-    city: user.value.city,
-    state: user.value.state,
-    country: user.value.country,
-});
-
 const formClear = useForm({});
 
-const saveUpdatedDetails = () => {
-    displayType.value = "updated";
-    showUpdateModal.value = false;
-};
 const useDefaultAddress = () => {
-    displayType.value = "default";
+    orderForm.name = `${user.value.first_name} ${user.value.last_name}`;
+    orderForm.email = `${user.value.email}`;
+    orderForm.phone = `${user.value.phone}`;
+    orderForm.city = `${user.value.city}`;
+    orderForm.state = `${user.value.state}`;
+    orderForm.country = user.value.country;
+    orderForm.address = `${user.value.address}, ${user.value.city}, ${user.value.state}, ${user.value.country}`;
 };
+
+const addressCompleted = computed(() => {
+    return orderForm.name &&
+        orderForm.phone &&
+        orderForm.email &&
+        orderForm.address &&
+        orderForm.country &&
+        orderForm.city &&
+        orderForm.state
+        ? true
+        : false;
+});
 
 const clearCart = () => {
     formClear.delete(route("clear-cart"), {
@@ -58,9 +60,6 @@ const clearCart = () => {
 };
 
 const userProfileUpdate = useForm({
-    name: "",
-    phone: "",
-    email: "",
     phone: "",
     address: "",
     city: "",
@@ -87,11 +86,11 @@ const updateUserProfile = () => {
     });
 };
 const orderForm = useForm({
-    name: "",
-    phone: "",
-    email: "",
-    country: "",
-    address: "",
+    name: null,
+    phone: null,
+    email: null,
+    country: null,
+    address: null,
     payment_option: "",
     delivery_option: "",
     order_status: "Pending",
@@ -100,35 +99,6 @@ const orderForm = useForm({
 
 const createOrder = () => {
     if (Number(props.cartTotal) <= 0) return;
-    if (displayType.value == "updated") {
-        if (
-            !userProfileUpdate.name ||
-            !userProfileUpdate.email ||
-            !userProfileUpdate.phone ||
-            !userProfileUpdate.country ||
-            !userProfileUpdate.address ||
-            !userProfileUpdate.city ||
-            !userProfileUpdate.state
-        ) {
-            return toast.error(
-                "Please complete your delivery address details."
-            );
-        }
-    }
-
-    if (displayType.value == "default") {
-        orderForm.name = defaultDeliveryDetails.value.name;
-        orderForm.phone = defaultDeliveryDetails.value.phone;
-        orderForm.email = defaultDeliveryDetails.value.email;
-        orderForm.country = defaultDeliveryDetails.value.country;
-        orderForm.address = `${defaultDeliveryDetails.value.address}, ${defaultDeliveryDetails.value.city}, ${defaultDeliveryDetails.value.state}, ${defaultDeliveryDetails.value.country}.`;
-    } else {
-        orderForm.name = userProfileUpdate.name;
-        orderForm.phone = userProfileUpdate.phone;
-        orderForm.email = userProfileUpdate.email;
-        orderForm.country = userProfileUpdate.country;
-        orderForm.address = `${userProfileUpdate.address}, ${userProfileUpdate.city}, ${userProfileUpdate.state}, ${userProfileUpdate.country}.`;
-    }
     orderForm.clearErrors();
     orderForm.post(route("user.order.create"), {
         preserveScroll: true,
@@ -163,9 +133,7 @@ const createOrder = () => {
                             <div class="d-flex align-items-center gap-1 mb-1">
                                 <Icon
                                     :class="
-                                        user.is_completed == true
-                                            ? 'text-success'
-                                            : ''
+                                        addressCompleted ? 'text-success' : ''
                                     "
                                     height="20"
                                     icon="mdi:checkbox-marked-circle"
@@ -181,78 +149,89 @@ const createOrder = () => {
                                 @click="showUpdateModal = true"
                                 class="btn btn-sm btn-outline-warning me-1"
                             >
-                                Change Address
+                                Change My Details
                             </button>
                             <button
+                                v-if="user.is_completed == true"
                                 @click="useDefaultAddress"
-                                class="btn btn-sm btn-outline-primary ms-1"
+                                class="btn btn-sm btn-outline-primary"
                             >
-                                Use my address
+                                Use My Details
                             </button>
                         </div>
 
                         <hr />
                         <div class="row">
-                            <template v-if="displayType == 'default'">
-                                <div class="col-12 px-4 py-1">
-                                    <h5>
-                                        {{ defaultDeliveryDetails.name }}
-                                    </h5>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ defaultDeliveryDetails.email }}
-                                    </p>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ defaultDeliveryDetails.phone }}
-                                        <small
-                                            class="text-danger mx-1 fs-italics"
-                                            >(Your receipt and invoice will be
-                                            sent to this number, therefore make
-                                            sure this is your whatsapp
-                                            number.)</small
-                                        >
-                                    </p>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ defaultDeliveryDetails.address }},
-                                        {{ defaultDeliveryDetails.city }},
-                                        {{ defaultDeliveryDetails.state }},
-                                        {{ defaultDeliveryDetails.country }}.
-                                    </p>
+                            <div class="col-12 px-4 py-1">
+                                <FormError :errors="orderForm.errors" />
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="text"
+                                            placeholder="Name"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.name"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="tel"
+                                            placeholder="Phone"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.phone"
+                                        />
+                                    </div>
                                 </div>
-                            </template>
-                            <template v-else-if="displayType == 'updated'">
-                                <div class="col-12 px-4 py-1">
-                                    <h5>
-                                        {{ userProfileUpdate.name }}
-                                    </h5>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ userProfileUpdate.email }}
-                                    </p>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ userProfileUpdate.phone }}
-                                        <small
-                                            v-if="userProfileUpdate.phone"
-                                            class="text-danger mx-1 fs-italics"
-                                            >(Your receipt and invoice will be
-                                            sent to this number, therefore make
-                                            sure this is your whatsapp
-                                            number.)</small
-                                        >
-                                    </p>
-                                    <p class="fw-light my-0 py-0">
-                                        {{ userProfileUpdate.address }}
-                                        {{ userProfileUpdate.city }}
-                                        {{ userProfileUpdate.state }}
-                                        {{ userProfileUpdate.country }}
-                                    </p>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="email"
+                                            placeholder="Email"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.email"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="text"
+                                            placeholder="City"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.city"
+                                        />
+                                    </div>
                                 </div>
-                            </template>
-                            <template v-else>
-                                <div class="col-12 px-4 py-1">
-                                    <p class="text-danger fw-bold">
-                                        Please enter your delivery address
-                                    </p>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="text"
+                                            placeholder="State"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.state"
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <input
+                                            type="text"
+                                            placeholder="Country"
+                                            class="form-control mt-1"
+                                            v-model="orderForm.country"
+                                        />
+                                    </div>
                                 </div>
-                            </template>
+                                <div class="col-lg-12">
+                                    <input
+                                        type="text"
+                                        placeholder="Address"
+                                        class="form-control mt-1"
+                                        v-model="orderForm.address"
+                                    />
+                                </div>
+                                <small class="text-danger fs-italics fw-light"
+                                    >(Your receipt and invoice will be sent to
+                                    this number via whatsapp.)</small
+                                >
+                            </div>
                         </div>
                     </div>
                     <!-- delivery  -->
@@ -426,7 +405,7 @@ const createOrder = () => {
                                 orderForm.processing ||
                                 !orderForm.payment_option ||
                                 !orderForm.delivery_option ||
-                                user.is_completed == false ||
+                                !addressCompleted ||
                                 Number(cartTotal) <= 0
                             "
                             class="btn btn-success w-100 d-flex align-items-center justify-content-center"
@@ -492,7 +471,7 @@ const createOrder = () => {
                             />
                             Live Chat
                         </a>
-                        <small class="text-danger small italics mt-1"
+                        <small class="text-danger small fw-light italics mt-1"
                             >You can also send a message after placing your
                             order</small
                         >
@@ -532,27 +511,6 @@ const createOrder = () => {
         <template #body>
             <FormError :errors="userProfileUpdate.errors" />
             <div class="row">
-                <div class="col-lg-6 col-md-6 col-6 my-1">
-                    <label for="name" class="form-label">Fullname</label>
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="name"
-                        placeholder="Full name"
-                        v-model="userProfileUpdate.name"
-                    />
-                </div>
-                <!-- email  -->
-                <div class="col-lg-6 col-md-6 col-6 my-1">
-                    <label for="address" class="form-label">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        class="form-control"
-                        placeholder="Email"
-                        v-model="userProfileUpdate.email"
-                    />
-                </div>
                 <div class="col-lg-6 col-md-6 col-6 mb-1">
                     <label for="phone" class="form-label"
                         >Phone (WhatsApp No)</label
@@ -569,7 +527,6 @@ const createOrder = () => {
                 <!-- country, state, city -->
                 <div class="col-lg-6 col-md-6 col-6 mb-1">
                     <label for="country" class="form-label">Country</label>
-                    <!--  -->
                     <select
                         class="form-select"
                         aria-label="Default select example"
@@ -625,18 +582,10 @@ const createOrder = () => {
         </template>
 
         <template #footer>
-            <!-- -->
-            <button
-                @click="saveUpdatedDetails"
-                class="btn btn-sm btn-outline-success"
-            >
-                Done
-            </button>
-
             <button
                 @click="updateUserProfile"
                 :disabled="userProfileUpdate.processing"
-                class="btn btn-sm btn-outline-danger"
+                class="btn btn-sm btn-outline-success"
             >
                 <span
                     v-show="userProfileUpdate.processing"
