@@ -1,19 +1,19 @@
 {
-  "resources/js/assets/images/team/member1.jpg": {
-    "file": "assets/member1.299eab3c.jpg",
-    "src": "resources/js/assets/images/team/member1.jpg"
-  },
   "resources/js/assets/images/team/member3.jpg": {
     "file": "assets/member3.c967fec6.jpg",
     "src": "resources/js/assets/images/team/member3.jpg"
   },
-  "resources/js/assets/images/team/member4.jpg": {
-    "file": "assets/member4.df6a295e.jpg",
-    "src": "resources/js/assets/images/team/member4.jpg"
+  "resources/js/assets/images/team/member1.jpg": {
+    "file": "assets/member1.299eab3c.jpg",
+    "src": "resources/js/assets/images/team/member1.jpg"
   },
   "resources/js/assets/images/team/member2.jpg": {
     "file": "assets/member2.75412877.jpg",
     "src": "resources/js/assets/images/team/member2.jpg"
+  },
+  "resources/js/assets/images/team/member4.jpg": {
+    "file": "assets/member4.df6a295e.jpg",
+    "src": "resources/js/assets/images/team/member4.jpg"
   },
   "resources/js/assets/images/icons/subcategory.png": {
     "file": "assets/subcategory.b4e641d1.png",
@@ -23,21 +23,21 @@
     "file": "assets/users.26a6afab.png",
     "src": "resources/js/assets/images/icons/users.png"
   },
-  "resources/js/assets/images/icons/promotion.png": {
-    "file": "assets/promotion.4f8cb597.png",
-    "src": "resources/js/assets/images/icons/promotion.png"
-  },
   "resources/js/assets/images/icons/orders.png": {
     "file": "assets/orders.93976ea9.png",
     "src": "resources/js/assets/images/icons/orders.png"
+  },
+  "resources/js/assets/images/icons/product.png": {
+    "file": "assets/product.9c3afb69.png",
+    "src": "resources/js/assets/images/icons/product.png"
   },
   "resources/js/assets/images/icons/transaction.png": {
     "file": "assets/transaction.688b8449.png",
     "src": "resources/js/assets/images/icons/transaction.png"
   },
-  "resources/js/assets/images/icons/product.png": {
-    "file": "assets/product.9c3afb69.png",
-    "src": "resources/js/assets/images/icons/product.png"
+  "resources/js/assets/images/icons/promotion.png": {
+    "file": "assets/promotion.4f8cb597.png",
+    "src": "resources/js/assets/images/icons/promotion.png"
   },
   "resources/js/assets/images/icons/gallery.png": {
     "file": "assets/gallery.f9286a3e.png",
@@ -59,21 +59,21 @@
     "file": "assets/no-result.fa45c63c.svg",
     "src": "resources/js/assets/images/img/no-result.svg"
   },
-  "resources/js/assets/images/bg/auth-bg.png": {
-    "file": "assets/auth-bg.acf2a63e.png",
-    "src": "resources/js/assets/images/bg/auth-bg.png"
-  },
   "resources/images/category/category_one.jpg": {
     "file": "assets/category_one.26ae32b3.jpg",
     "src": "resources/images/category/category_one.jpg"
   },
-  "resources/js/assets/images/bg/bg.svg": {
-    "file": "assets/bg.fb497198.svg",
-    "src": "resources/js/assets/images/bg/bg.svg"
+  "resources/js/assets/images/bg/auth-bg.png": {
+    "file": "assets/auth-bg.acf2a63e.png",
+    "src": "resources/js/assets/images/bg/auth-bg.png"
   },
   "resources/js/assets/images/bg/product-bg.jpg": {
     "file": "assets/product-bg.46af69c3.jpg",
     "src": "resources/js/assets/images/bg/product-bg.jpg"
+  },
+  "resources/js/assets/images/bg/bg.svg": {
+    "file": "assets/bg.fb497198.svg",
+    "src": "resources/js/assets/images/bg/bg.svg"
   },
   "resources/js/assets/images/bg/newsletter.jpg": {
     "file": "assets/newsletter.b06e1c82.jpg",
